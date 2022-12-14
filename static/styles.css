@@ -1,0 +1,140 @@
+.myheader{
+    margin: 3rem;
+    }
+    
+ body{
+    color: #425F57;
+    
+ }   
+    p
+    {
+      padding: 0;
+      margin: 0;
+      
+      margin: 0 auto;     
+    }
+    
+    .sign{
+      text-decoration: none;
+      color: black;
+    }
+    .sign :hover
+    {
+      text-decoration: none;
+      color: white !important;
+      background-color: #D6E4E5;
+    } 
+    .sign :active
+    {
+      text-decoration: none;
+      color: white !important;
+      background-color: #D6E4E5;
+    } 
+      body {
+        color: white;
+         font-weight: 300;  
+         background-color:#EFF5F5;
+         width: 100%; 
+        height: 100%;
+        overflow-x: hidden;
+      }
+      .white
+      {
+        color: white;
+      }
+      .brand
+      {
+        font-size: 2rem;
+      }
+      .navbars
+      {
+        padding: 0 2rem;
+        padding-bottom: 1rem;
+        padding-top: 0.5rem;
+        background-color: #D6E4E5;
+      }
+      .slogan
+      {
+    
+        font-size: 3rem;
+    
+      }
+    
+      .labelu
+      {
+        font-size: 1.2rem;
+        margin: 1rem 0rem;     
+      }
+      .center
+      {
+        margin-top: 2rem;
+        justify-content: center;
+    text-align: center;
+      }
+     .myinput
+     {
+      width:30%;
+      margin: 0.5rem auto;     
+     }
+      .mybtn
+      {
+        margin: 1rem 1rem;     
+        width: 10%;
+      }
+      .container {
+        margin: 4rem auto;
+        padding: 80px 0;
+        text-align: center;
+      }
+      .container-signup {
+        margin: 5% auto;
+        padding: 50px 0;
+        text-align: center;
+      }
+      
+      .container h1 {
+        font-size: 40px;
+        font-weight: 200;
+      }
+      .global-div
+    {
+      margin :0rem 0px;
+      padding: 0rem 0;
+      height: auto;
+      width: auto;
+      margin-top: 0;
+    }
+    
+    .write
+    {
+      justify-content: center;
+      padding: 3rem 18rem;
+    
+    }
+    .submit-write{
+      margin-top: 2rem;
+      width:50%;
+      margin-left: 15rem;
+    }
+    .page-title{
+      background-color: #D6E4E5;
+      text-align: center;
+     margin-block-end: 0;
+     padding-bottom: 1rem;
+    
+    }
+    
+    .textarea-write{
+    
+    margin-bottom: 1rem;
+    
+    }
+    /* new */
+    .signin-form
+    {
+        padding-top:10rem ;
+    }
+    .black{
+
+        color: #425F57;
+    }
