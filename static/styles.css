@@ -125,8 +125,8 @@
       background-color: #D6E4E5;
       text-align: center;
      margin-block-end: 0;
-     padding-bottom: 1rem;
-    
+     /* padding-bottom: 1rem; */
+    /* text-decoration: underline 1px; */
     }
     
     .textarea-write{
@@ -143,3 +143,31 @@
 
         color: #425F57;
     }
+
+    .global-div
+    {
+      margin :0rem 0px;
+      padding: 0rem 0;
+      height: auto;
+      width: auto;
+      margin-top: 0;
+    }
+    .global-first-col
+{
+     margin-left: 0;
+     padding-left: 0;
+     padding-right: 0;
+     margin-right: 0;
+     padding-top: 2rem;
+    border-right: 0.5px solid rgba(0, 0, 0, 0.125);
+    min-height: 37.3rem;
+}
+.global-third-col
+{
+    border-left: 0.5px solid rgba(0, 0, 0, 0.125);
+}
+.header-size{
+
+font-size: 1.5rem;
+
+}

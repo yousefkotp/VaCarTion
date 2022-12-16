@@ -24,9 +24,15 @@ app.get("/signup", (req, res) => {
 app.get("/new_car", (req, res) => {
 
     res.sendFile(__dirname + "/car_form.html");
-
 }
 );
+
+app.get("/admin", (req, res) => {
+
+    res.sendFile(__dirname + "/admin_home.html");
+}
+);
+
 
 
 
