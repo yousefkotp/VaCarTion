@@ -161,6 +161,7 @@
      padding-top: 2rem;
     border-right: 0.5px solid rgba(0, 0, 0, 0.125);
     min-height: 37.3rem;
+    /* background-color: #D6E4E5; */
 }
 .global-third-col
 {
@@ -169,5 +170,13 @@
 .header-size{
 
 font-size: 1.5rem;
+
+}
+.redirect-list
+{
+  background-color: #EFF5F5;
+  background: #EFF5F5;
+  border-left: none;
+  border-right: none;
 
 }
