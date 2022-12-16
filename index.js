@@ -8,18 +8,27 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("static"));
 
 
-app.get("/",(req,res)=>{
+app.get("/", (req, res) => {
 
- res.sendFile(__dirname + "/home.html");
+    res.sendFile(__dirname + "/home.html");
 
 }
 );
-app.get("/signup",(req,res)=>{
+app.get("/signup", (req, res) => {
 
     res.sendFile(__dirname + "/signup.html");
-   
-   }
-   );
+
+}
+);
+
+app.get("/new_car", (req, res) => {
+
+    res.sendFile(__dirname + "/car_form.html");
+
+}
+);
+
+
 
 
 
