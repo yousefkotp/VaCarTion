@@ -10,26 +10,26 @@ app.use(express.static("static"));
 
 app.get("/", (req, res) => {
 
-    res.sendFile(__dirname + "/home.html");
+    res.sendFile(__dirname + "/html/home.html");
 
 }
 );
 app.get("/signup", (req, res) => {
 
-    res.sendFile(__dirname + "/signup.html");
+    res.sendFile(__dirname + "/+html/signup.html");
 
 }
 );
 
 app.get("/new_car", (req, res) => {
 
-    res.sendFile(__dirname + "/car_form.html");
+    res.sendFile(__dirname + "/html/car_form.html");
 }
 );
 
 app.get("/admin", (req, res) => {
 
-    res.sendFile(__dirname + "/admin_home.html");
+    res.sendFile(__dirname + "/html/admin_home.html");
 }
 );
 
