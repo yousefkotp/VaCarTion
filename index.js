@@ -40,6 +40,12 @@ app.get("/payments-search", (req, res) => {
 }
 );
 
+app.get("/cars-status-search", (req, res) => {
+
+    res.sendFile(__dirname + "/html/car_status_search.html");
+}
+);
+
 
 
 app.listen(3000, () => { console.log("server started") });
