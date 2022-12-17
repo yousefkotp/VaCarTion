@@ -125,7 +125,7 @@
       background-color: #D6E4E5;
       text-align: center;
      margin-block-end: 0;
-     /* padding-bottom: 1rem; */
+      padding-bottom: 1rem;
     /* text-decoration: underline 1px; */
     }
     
@@ -179,4 +179,15 @@ font-size: 1.5rem;
   border-left: none;
   border-right: none;
 
+}
+.justify-content-center
+{
+
+  justify-content: center;
+  text-align: center;
+}
+.date
+{
+
+  padding: 2rem;
 }

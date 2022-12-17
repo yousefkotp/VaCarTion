@@ -34,7 +34,11 @@ app.get("/admin", (req, res) => {
 );
 
 
+app.get("/payments-search", (req, res) => {
 
+    res.sendFile(__dirname + "/html/payment_report_search.html");
+}
+);
 
 
 
