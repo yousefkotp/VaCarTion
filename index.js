@@ -46,6 +46,24 @@ app.get("/cars-status-search", (req, res) => {
 }
 );
 
+app.get("/customer-res-search", (req, res) => {
+
+    res.sendFile(__dirname + "/html/customer_res_search.html");
+}
+);
+
+app.get("/car-res-search", (req, res) => {
+
+    res.sendFile(__dirname + "/html/car_res_search.html");
+}
+);
+
+app.get("/res-search", (req, res) => {
+
+    res.sendFile(__dirname + "/html/res_search.html");
+}
+);
+
 
 
 app.listen(3000, () => { console.log("server started") });

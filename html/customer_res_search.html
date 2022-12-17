@@ -14,7 +14,7 @@
 <body class="black">
     <nav class="navbar navbar-expand-lg navbars">
         <div class="container-fluid ">
-            <a class="navbar-brand  brand black">VaCarTion</a>
+            <a class="navbar-brand  brand black" >VaCarTion</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
                 aria-label="Toggle navigation">
@@ -29,16 +29,31 @@
             </div>
         </div>
     </nav>
-    <div className="page-title"><h3 class="page-title display-6">Payments Report</h3></div>
-<form action="">
-<div class="justify-content-center">
-    <label for="birthday" class="display-6 date">Start Date:</label>
-    <input type="date" id="birthday" name="birthday" required>
-    <label for="birthday2" class="display-6 date">End Date:</label>
-    <input type="date" id="birthday" name="birthday2" required>
-    <div><button type="submit" class="btn btn-light mybtn g black" >Show Results</button></div>
-</div>
-</form>
+    <div className="page-title"><h3 class="page-title display-6">Costumer Reservatios Report</h3></div>
+
+
+    <div  class="center ">
+        <h1 class="display-6 myheader black">Customer Info</h1>
+        <form method="post" action="/register">
+            <div class="row mb-3 ">
+                <div class="col ">
+                    <input type="username" class="form-control myinput a" id="inputEmail3" placeholder="Username" name="username"  required></input>
+                    <!-- <p class="error1">username can not be empty !</p> -->
+
+                </div>
+            </div>
+            <div class="row mb-3 ">
+                <div class="col ">
+                    <input type="email" class="form-control myinput b" id="inputEmail3" placeholder="E-Mail" name="email" required ></input>
+                    <!-- <p class="error2">wrong email format</p> -->
+
+                </div>
+            </div>
+            <button type="submit" class="btn btn-light mybtn g black"  >Show Results</button>
+
+        </form>
+    </div>
+    
     
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"
                 integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa"
