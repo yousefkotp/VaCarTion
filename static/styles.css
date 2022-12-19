@@ -195,3 +195,62 @@ font-size: 1.5rem;
 padding: 3rem;
 padding-left: 1.5rem;
 }
+
+/* statistics */
+
+.note {
+  border-radius: 7px;
+  box-shadow: 0 2px 5px #000;
+  padding: 10px;
+  width: auto;
+  margin: 2rem;
+
+}
+.note h1 {
+  font-size: 1em;
+  margin-bottom: 1rem;
+}
+.note h2 {
+  font-size: 1.5em;
+  margin-bottom: 1rem;
+}
+.note p {
+  font-size: 1.1em;
+  margin-bottom: 10px;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  margin-bottom: 1rem;
+
+}
+
+.note button {
+  
+  background: #2C3333;
+  position: relative;
+  float: right;
+  margin-right: 10px;
+  color: white;
+  border: none;
+  cursor: pointer;
+  outline: none;
+  text-decoration: none;
+  margin-bottom: 1rem;
+
+}
+.tags{
+  border-radius: 4px;
+  box-shadow: 0 2px 5px #000;
+    background: #2C3333;
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin-right: 10px;
+    color: white;
+    border: none;
+    cursor: pointer;
+    outline: none;
+    text-decoration: none;
+    margin-bottom: 1rem;
+    cursor: alias;
+    
+}
