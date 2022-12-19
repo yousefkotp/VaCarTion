@@ -66,4 +66,58 @@ app.get("/res-search", (req, res) => {
 
 
 
+/*post requests*/
+// ---------------------------------------------------------------------------------------------------------------------
+//car reservation search
+app.post("/car-res-search",(req,res)=>
+{
+var plate_id=req.body.plate_id;
+console.log(plate_id);
+///write the query then redirect to your new page;
+});
+
+
+// customer reservation search
+app.post("/customer-res-search",(req,res)=>
+{
+var username=req.body.username;
+var email=req.body.email;
+console.log(email+" "+username);
+///write the query then redirect to your new page;
+});
+
+
+// cars status at certain day search
+app.post("/cars-status-search", (req, res) => {
+
+    var date=req.body.date;
+    console.log(date);
+    ///write the query then redirect to your new page
+});
+
+
+//payments at certain period search
+app.post("/payments-search", (req, res) => {
+
+   var start_date=req.body.start_date;
+   var end_date=req.body.end_date;
+   console.log(start_date+" ");
+   console.log(end_date);
+    ///write the query then redirect to your new page
+});
+
+
+// reservations at certain period search
+app.post("/res-search", (req, res) => {
+
+    var start_date=req.body.start_date;
+    var end_date=req.body.end_date;
+    console.log(start_date+" ");
+    console.log(end_date);
+     ///write the query then redirect to your new page
+}
+);
+
+
+
 app.listen(3000, () => { console.log("server started") });

@@ -30,12 +30,12 @@
         </div>
     </nav>
     <div className="page-title"><h3 class="page-title display-6">Payments Report</h3></div>
-<form action="">
+<form method="post" action="/payments-search">
 <div class="justify-content-center">
     <label for="birthday" class="display-6 date">Start Date:</label>
-    <input type="date" id="birthday" name="birthday" required>
+    <input type="date" id="birthday" name="start_date" required>
     <label for="birthday2" class="display-6 date">End Date:</label>
-    <input type="date" id="birthday" name="birthday2" required>
+    <input type="date" id="birthday" name="end_date" required>
     <div><button type="submit" class="btn btn-light mybtn g black" >Show Results</button></div>
 </div>
 </form>
