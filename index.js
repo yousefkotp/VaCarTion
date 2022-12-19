@@ -66,8 +66,12 @@ app.get("/res-search", (req, res) => {
 
 
 
+
+
 /*post requests*/
 // ---------------------------------------------------------------------------------------------------------------------
+
+
 //car reservation search
 app.post("/car-res-search",(req,res)=>
 {
