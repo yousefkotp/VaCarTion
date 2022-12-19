@@ -8,6 +8,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("static"));
 
 
+
+
 app.get("/", (req, res) => {
 
     res.sendFile(__dirname + "/html/home.html");
