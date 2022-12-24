@@ -53,19 +53,22 @@
             var plate_id = $("[name=plate_id]").val();
             //make a request to the server
             $.ajax({
-                url: "/car-res-search",
-                type: "GET",
+                url: "/get-car-reservation",
+                type: "POST",
                 data: {
                     plate_id: plate_id,
                 },
                 success: function (data) {
-                    // if the data is not empty
-                    if (data.message.length > 0) {
-                            //data.message[i].reservation_no
-                            //data.message[i].reserve_date
-                            //data.message[i].pickup_date
-                            //data.message[i].return_date
-                            //data.message[i].payment_date
+                    if(data.message != "success"){
+                        alert(data.message);//error in the database 
+                        return;
+                    }
+                    if (data.reservation.length > 0) {
+                            //data.reservation[i].reservation_no
+                            //data.reservation[i].reserve_date
+                            //data.reservation[i].pickup_date
+                            //data.reservation[i].return_date
+                            //data.reservation[i].payment_date
                     }
                     else
                         alert("No data found");
