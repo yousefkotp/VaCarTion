@@ -81,9 +81,61 @@ app.get("/res-search", (req, res) => {
 }
 );
 
+//api to check if ssn is already taken in customer
+app.get("/check_ssn_customer/:ssn", (req, res) => {
+    let ssn = req.params.ssn;
+    db.query("SELECT * FROM customer WHERE ssn = ?", [ssn], (err, result) => {
+        if(err)
+            return res.send({message: err});
+        return res.send({taken: result.length > 0});
+    });
+});
+
+//api to check if email is already taken in customer
+app.get("/check_email_customer/:email", (req, res) => {
+    let email = req.params.email;
+    db.query("SELECT * FROM customer WHERE email = ?", [email], (err, result) => {
+        if(err)
+            return res.send({message: err});
+        return res.send({taken: result.length > 0});
+    });
+});
+
+//api to check if email is already taken in office
+app.get("/check_email_office/:email", (req, res) => {
+    let email = req.params.email;
+    db.query("SELECT * FROM office WHERE email = ?", [email], (req, result) => {
+        if(err)
+            return res.send({message: err});
+        return res.send({taken: result.length > 0});
+    });
+});
+
+//api to check if phone is already taken in customer
+app.get("/check_phone_customer/:phone", (req, res) => {
+    let phone = req.params.phone;
+    db.query("SELECT * FROM customer WHERE phone_no = ?", [phone], (err, result) => {
+        if(err)
+            return res.send({message: err});
+        return res.send({taken: result.length > 0});
+    });
+});
+
+//api to check if phone is already taken in office
+app.get("/check_phone_office/:phone", (req, res) => {
+    let phone = req.params.phone;
+    db.query("SELECT * FROM office WHERE phone_no = ?", [phone], (err, result) => {
+        if(err)
+            return res.send({message: err});
+        return res.send({taken: result.length > 0});
+    });
+});
+
 
 /*post requests*/
 // ---------------------------------------------------------------------------------------------------------------------
+
+
 
 
 app.post("/signup_landing",(req,res)=>{
