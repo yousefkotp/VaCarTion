@@ -131,7 +131,27 @@ app.post("/signup",(req,res)=>{
 
 app.post("/office_signup",(req,res)=>{
     //signing up as an office
+    let email = req.body.email;
+    let password = req.body.password;
+    let name = req.body.name;
+    let phone = req.body.phone_no;
+    let country = req.body.country;
+    let city = req.body.city;
+    let building_no = req.body.building_no;
 
+    //convert password to hash
+    bcrypt.hash(password, saltRound, function(err, hash) {
+        //store the info inside the database
+        db.query("INSERT INTO office (email, password, name, phone_no, country, city, building_no) VALUES (?,?,?,?,?,?,?)",
+        [email, hash, name, phone, country, city, building_no], (err, result) => {
+            if(err){
+                return res.send({message: err});
+            }
+            else{
+                res.sendFile(__dirname + "/views/office_home.html");
+            }
+        });
+    });
 });
 
 //car reservation search
