@@ -97,7 +97,37 @@ app.post("/signin",(req,res)=>{
     password = req.body.password;
     //convert password to hash
     bcrypt.hash(password, saltRound, function(err, hash) {
-        // Store hash in your password DB.
+        //check if email and password match in customer
+        db.query("SELECT * FROM customer WHERE email = ? AND password = ?",
+        [email, hash], (err, result) => {
+            if(err){
+                //return that login failed
+                return res.send({message: err});
+            }
+            else{
+                if(result.length > 0){
+                    res.sendFile(__dirname + "/views/customer_home.html");
+                }
+                else{
+                    //check if email and password match in office
+                    db.query("SELECT * FROM office WHERE email = ? AND password = ?",
+                    [email, hash], (err, result) => {
+                        if(err){
+                            //return that login failed
+                            return res.send({message: err});
+                        }
+                        else{
+                            if(result.length > 0){
+                                res.sendFile(__dirname + "/views/office_home.html");
+                            }
+                            else{
+                                res.sendFile(__dirname + "/views/signin.html");
+                            }
+                        }
+                    });
+                }
+            }
+        });
     });
 });
 
