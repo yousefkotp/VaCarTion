@@ -2,13 +2,12 @@ CREATE SCHEMA `car-rental-system`;
 USE `car-rental-system`;
 
 CREATE TABLE customer (
-    ssn INT,
+    ssn CHAR(14),
     fname VARCHAR(256) NOT NULL,
     lname VARCHAR(256) NOT NULL,
     email VARCHAR(256) UNIQUE NOT NULL,
     phone_no VARCHAR(256) UNIQUE NOT NULL,
     password VARCHAR(256) NOT NULL,
-    photo BLOB NULL,
     wallet REAL DEFAULT 0,
     holder_name VARCHAR(256) NOT NULL,
     card_no VARCHAR(256) NOT NULL,
@@ -42,7 +41,7 @@ CREATE TABLE car(
 
 CREATE TABLE reservation(
     reservation_no INT AUTO_INCREMENT,
-    ssn INT NOT NULL,
+    ssn CHAR(14) NOT NULL,
     car_id INT NOT NULL,
     reserve_date DATE NOT NULL,
     pickup_date DATE NOT NULL,
