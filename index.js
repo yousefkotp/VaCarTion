@@ -389,6 +389,31 @@ app.post("/cars-make-search", (req, res) => {
     });
 });
 
+//get the cars with specific model and make
+app.post("/cars-model-make-search", (req, res) => {
+    var model=req.body.model;
+    var make=req.body.make;
+    //get the cars info from the database
+    db.query("SELECT * FROM car WHERE model = ? AND make = ?",
+    [model, make], (err, result) => {
+        if(err)
+            return res.send({message: err});
+        return res.send({message: result});
+    });
+});
+
+//get the cars with specific office id
+app.post("/cars-office-search", (req, res) => {
+    var office_id=req.body.office_id;
+    //get the cars info from the database
+    db.query("SELECT * FROM car WHERE office_id = ?",
+    [office_id], (err, result) => {
+        if(err)
+            return res.send({message: err});
+        return res.send({message: result});
+    });
+});
+
 app.listen(3000, () => { 
     console.log("server started") 
 });
