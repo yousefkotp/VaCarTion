@@ -246,6 +246,27 @@ app.post("/add_car", (req, res) => {
     });
 });
 
+//post request to add a reservation
+app.post("/add_reservation/:customerId/:plateId/:pickupDate/:returnDate", (req, res) => {
+    let customerId = req.params.customerId;
+    let plateId = req.params.plateId;
+    let pickupDate = req.params.pickupDate;
+    let returnDate = req.params.returnDate;
+    //get the current date
+    let reserveDate = new Date();
+
+    //store the info inside the database
+    db.query("INSERT INTO reservation (ssn, car_id, pickup_date, return_date, reserve_date) VALUES (?,?,?,?)",
+    [customerId, plateId, pickupDate, returnDate, reserveDate], (err, result) => {
+        if(err){
+            return res.send({message: err});
+        }
+        else{
+            res.sendFile(__dirname + "/views/customer_home.html");
+        }
+    });
+});
+
 //car reservation search
 app.post("/car-res-search",(req,res)=>
 {
