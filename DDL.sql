@@ -46,7 +46,7 @@ CREATE TABLE reservation(
     reserve_date DATE NOT NULL,
     pickup_date DATE NOT NULL,
     return_date DATE NOT NULL,
-    payment_date DATE NOT NULL,
+    payment_date DATE,
     CONSTRAINT reservation_pk PRIMARY KEY (reservation_no),
     CONSTRAINT reservation_customer_fk FOREIGN KEY (ssn) REFERENCES customer(ssn),
     CONSTRAINT reservation_car_fk FOREIGN KEY (car_id) REFERENCES car(plate_id)
