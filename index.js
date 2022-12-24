@@ -66,8 +66,8 @@ app.get("/res-search", (req, res) => {
 
 
 //api to check if ssn is already taken in customer
-app.get("/check_ssn_customer/:ssn", (req, res) => {
-    let ssn = req.params.ssn;
+app.get("/check-ssn-customer", (req, res) => {
+    let ssn = req.body.ssn;
     db.query("SELECT * FROM customer WHERE ssn = ?", [ssn], (err, result) => {
         if(err)
             return res.send({message: err});
@@ -76,8 +76,8 @@ app.get("/check_ssn_customer/:ssn", (req, res) => {
 });
 
 //api to check if email is already taken in customer
-app.get("/check_email_customer/:email", (req, res) => {
-    let email = req.params.email;
+app.get("/check-email-customer", (req, res) => {
+    let email = req.body.email;
     db.query("SELECT * FROM customer WHERE email = ?", [email], (err, result) => {
         if(err)
             return res.send({message: err});
@@ -86,8 +86,8 @@ app.get("/check_email_customer/:email", (req, res) => {
 });
 
 //api to check if email is already taken in office
-app.get("/check_email_office/:email", (req, res) => {
-    let email = req.params.email;
+app.get("/check-email-office", (req, res) => {
+    let email = req.body.email;
     db.query("SELECT * FROM office WHERE email = ?", [email], (req, result) => {
         if(err)
             return res.send({message: err});
@@ -96,8 +96,8 @@ app.get("/check_email_office/:email", (req, res) => {
 });
 
 //api to check if phone is already taken in customer
-app.get("/check_phone_customer/:phone", (req, res) => {
-    let phone = req.params.phone;
+app.get("/check-phone-customer", (req, res) => {
+    let phone = req.body.phone;
     db.query("SELECT * FROM customer WHERE phone_no = ?", [phone], (err, result) => {
         if(err)
             return res.send({message: err});
@@ -106,8 +106,8 @@ app.get("/check_phone_customer/:phone", (req, res) => {
 });
 
 //api to check if phone is already taken in office
-app.get("/check_phone_office/:phone", (req, res) => {
-    let phone = req.params.phone;
+app.get("/check-phone-office", (req, res) => {
+    let phone = req.body.phone;
     db.query("SELECT * FROM office WHERE phone_no = ?", [phone], (err, result) => {
         if(err)
             return res.send({message: err});
@@ -116,8 +116,8 @@ app.get("/check_phone_office/:phone", (req, res) => {
 });
 
 //api to get reservation details for a specific car
-app.get("/get_car_reservation/:plateId", (req, res) => {
-    let plateId = req.params.plateId;
+app.get("/get-car-reservation", (req, res) => {
+    let plateId = req.body.plateId;
     db.query("SELECT * FROM reservation WHERE plate_id = ?", [plateId], (err, result) => {
         if(err)
             return res.send({message: err});
@@ -128,7 +128,7 @@ app.get("/get_car_reservation/:plateId", (req, res) => {
 /*post requests*/
 // ---------------------------------------------------------------------------------------------------------------------
 
-app.post("/signup_landing",(req,res)=>{
+app.post("/signup-landing",(req,res)=>{
     email = req.body.email;
     res.render("signup.ejs",{userEmail:email});
 });
@@ -201,7 +201,7 @@ app.post("/signup",(req,res)=>{
     });
 });
 
-app.post("/office_signup",(req,res)=>{
+app.post("/office-signup",(req,res)=>{
     //signing up as an office
     let email = req.body.email;
     let password = req.body.password;
@@ -227,7 +227,7 @@ app.post("/office_signup",(req,res)=>{
 });
 
 //post request to add a car
-app.post("/add_car", (req, res) => {
+app.post("/add-car", (req, res) => {
     let plateId = req.body.plate_id;
     let model = req.body.model;
     let make = req.body.make;
@@ -247,7 +247,7 @@ app.post("/add_car", (req, res) => {
 });
 
 //post request to add a reservation
-app.post("/add_reservation", (req, res) => {
+app.post("/add-reservation", (req, res) => {
     let customerId = req.body.customerId;
     let plateId = req.body.plateId;
     let pickupDate = req.body.pickupDate;
