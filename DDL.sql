@@ -17,7 +17,7 @@ CREATE TABLE customer (
 );
 
 CREATE TABLE office(
-    office_id INT AUTO INCREMENT,
+    office_id INT AUTO_INCREMENT,
     name VARCHAR(256) NOT NULL,
     email VARCHAR(256) UNIQUE NOT NULL,
     phone_no VARCHAR(256) UNIQUE NOT NULL,
@@ -39,7 +39,7 @@ CREATE TABLE car(
 );
 
 CREATE TABLE reservation(
-    reservation_no INT AUTO INCREMENT,
+    reservation_no INT AUTO_INCREMENT,
     ssn INT NOT NULL,
     car_id INT NOT NULL,
     reserve_date DATE NOT NULL,
