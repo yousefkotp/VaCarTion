@@ -115,7 +115,7 @@ app.get("/check-phone-office", (req, res) => {
     });
 });
 
-//api to get reservation details for a specific car
+//get reservation details for a specific car
 app.get("/get-car-reservation", (req, res) => {
     let plateId = req.body.plateId;
     db.query("SELECT * FROM reservation WHERE plate_id = ?", [plateId], (err, result) => {
