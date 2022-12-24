@@ -256,7 +256,7 @@ app.post("/add_reservation/:customerId/:plateId/:pickupDate/:returnDate", (req, 
     let reserveDate = new Date();
 
     //store the info inside the database
-    db.query("INSERT INTO reservation (ssn, car_id, pickup_date, return_date, reserve_date) VALUES (?,?,?,?)",
+    db.query("INSERT INTO reservation (ssn, car_id, pickup_date, return_date, reserve_date) VALUES (?,?,?,?,?)",
     [customerId, plateId, pickupDate, returnDate, reserveDate], (err, result) => {
         if(err){
             return res.send({message: err});
@@ -271,8 +271,13 @@ app.post("/add_reservation/:customerId/:plateId/:pickupDate/:returnDate", (req, 
 app.post("/car-res-search",(req,res)=>
 {
     var plate_id=req.body.plate_id;
-    console.log(plate_id);
-    ///write the query then redirect to your new page;
+    ///get the reservation info from the database
+    db.query("SELECT * FROM reservation WHERE car_id = ?",
+    [plate_id], (err, result) => {
+        if(err)
+            return res.send({message: err});
+        return res.send({message: result});
+    });
 });
 
 
