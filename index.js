@@ -247,11 +247,11 @@ app.post("/add_car", (req, res) => {
 });
 
 //post request to add a reservation
-app.post("/add_reservation/:customerId/:plateId/:pickupDate/:returnDate", (req, res) => {
-    let customerId = req.params.customerId;
-    let plateId = req.params.plateId;
-    let pickupDate = req.params.pickupDate;
-    let returnDate = req.params.returnDate;
+app.post("/add_reservation", (req, res) => {
+    let customerId = req.body.customerId;
+    let plateId = req.body.plateId;
+    let pickupDate = req.body.pickupDate;
+    let returnDate = req.body.returnDate;
     //get the current date
     let reserveDate = new Date().toISOString().split('T')[0];//YYYY-MM-DD
     console.log(reserveDate);
@@ -330,7 +330,17 @@ app.post("/res-search", (req, res) => {
     });
 });
 
-
+//list the cars that are available at a certain date
+app.post("/cars-available-search", (req, res) => {
+    var date=req.body.date;
+    //get the cars info from the database
+    db.query("SELECT * FROM car WHERE plate_id NOT IN (SELECT car_id FROM reservation WHERE return_date < ?)",
+    [date], (err, result) => {
+        if(err)
+            return res.send({message: err});
+        return res.send({message: result});
+    });
+});
 app.listen(3000, () => { 
     console.log("server started") 
 });
