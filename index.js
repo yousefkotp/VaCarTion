@@ -101,7 +101,7 @@ app.post("/signin",(req,res)=>{
     });
 });
 
-app.post("/sign_up",(req,res)=>{
+app.post("/signup",(req,res)=>{
     //signing up as a customer
     let email = req.body.email;
     let password = req.body.password;
@@ -120,7 +120,7 @@ app.post("/sign_up",(req,res)=>{
         [email, hash, fName, lName, ssn, phone, creditCardNo, holdreName, expDate, cvv], (err, result) => {
             if(err){
                 //return that registration failed
-                res.send({message: err});
+                return res.send({message: err});
             }
             else{
                 res.sendFile(__dirname + "/views/customer_home.html");
