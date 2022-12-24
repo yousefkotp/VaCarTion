@@ -35,6 +35,10 @@ app.get("/signup", (req, res) => {
 }
 );
 
+app.get("/office_signup",(req,res)=>{
+    res.sendFile(__dirname + "/views/office_signup.html");
+});
+
 app.get("/new_car", (req, res) => {
 
     res.sendFile(__dirname + "/views/car_form.html");
@@ -87,12 +91,18 @@ app.post("/signup_landing",(req,res)=>{
 });
 
 app.post("/signin",(req,res)=>{
+    //check first in customer, if it doesn't exist check in office
     email = req.body.email;
     password = req.body.password;
 
 });
 
 app.post("/signup",(req,res)=>{
+    //signing up as a customer
+});
+
+app.post("/office_signup",(req,res)=>{
+    //signing up as an office
     
 });
 
