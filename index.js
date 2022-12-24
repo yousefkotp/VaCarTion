@@ -313,12 +313,15 @@ app.post("/payments-search", (req, res) => {
 
 // reservations at certain period search
 app.post("/res-search", (req, res) => {
-
     var start_date=req.body.start_date;
     var end_date=req.body.end_date;
-    console.log(start_date+" ");
-    console.log(end_date);
-     ///write the query then redirect to your new page
+    //get the reservation info from the database within the period
+    db.query("SELECT * FROM reservation WHERE reserve_date BETWEEN ? AND ?",
+    [start_date, end_date], (err, result) => {
+        if(err)
+            return res.send({message: err});
+        return res.send({message: result});
+    });
 });
 
 
