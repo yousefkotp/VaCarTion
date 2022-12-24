@@ -43,7 +43,6 @@ app.get("/new_car", (req, res) => {
 
 
 app.get("/admin", (req, res) => {
-
     res.sendFile(__dirname + "/views/admin_home.html");
 }
 );
@@ -91,6 +90,10 @@ app.post("/signin",(req,res)=>{
     email = req.body.email;
     password = req.body.password;
 
+});
+
+app.post("/signup",(req,res)=>{
+    
 });
 
 //car reservation search
