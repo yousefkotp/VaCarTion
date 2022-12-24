@@ -108,19 +108,19 @@ app.post("/sign_up",(req,res)=>{
     let fName = req.body.fName;
     let lName = req.body.lName;
     let ssn = req.body.ssn;
-    let phone = req.body.phone_no;
     let creditCardNo = req.body.credit_card_no;
     let holdreName = req.body.holder_name;
     let expDate = req.body.credit_card_expiry_date;
     let cvv = req.body.credit_card_cvv;
-    let photo = req.body.photo;
+    let phone = req.body.phone_no;
     //convert password to hash
     bcrypt.hash(password, saltRound, function(err, hash) {
         //store the info inside the database
-        db.query("INSERT INTO customer (email, password, fname, lname, ssn, phone_no, card_no, holder_name, exp_date, cvv,photo) VALUES (?,?,?,?,?,?,?,?,?,?)",
-        [email, hash, fName, lName, ssn, phone, creditCardNo, holdreName, expDate, cvv, photo], (err, result) => {
+        db.query("INSERT INTO customer (email, password, fname, lname, ssn, phone_no, card_no, holder_name, exp_date, cvv) VALUES (?,?,?,?,?,?,?,?,?,?)",
+        [email, hash, fName, lName, ssn, phone, creditCardNo, holdreName, expDate, cvv], (err, result) => {
             if(err){
-                console.log(err);
+                //return that registration failed
+                res.send({message: err});
             }
             else{
                 res.sendFile(__dirname + "/views/customer_home.html");
