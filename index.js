@@ -1,11 +1,18 @@
-//sib el body parser msh hy3ml azma ya joe
 // la tanso npm install 3ashan kol el dependencies tenzel 3andko
+require('dotenv').config()
 const express = require("express");
 const app = express();
 const mysql = require("mysql");
 app.use(express.static("static"));
 app.use(express.urlencoded({extended:true}));
 
+//connect to the database
+const db = mysql.createConnection({
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASS,
+    database: process.env.DB_NAME
+});
 
 
 app.get("/", (req, res) => {
