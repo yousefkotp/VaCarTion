@@ -4,6 +4,7 @@ const express = require("express");
 const app = express();
 const mysql = require("mysql");
 const path = require('path');
+const ejs = require("ejs");
 
 app.set('view engine', 'ejs');
 app.use(express.static(path.join(__dirname +'/public')));
@@ -78,9 +79,10 @@ app.get("/res-search", (req, res) => {
 /*post requests*/
 // ---------------------------------------------------------------------------------------------------------------------
 
-app.post("/signup",(req,res)=>{
+
+app.post("/signup_landing",(req,res)=>{
     email = req.body.email;
-    
+    res.render("signup.ejs",{userEmail:email});
 });
 
 //car reservation search
