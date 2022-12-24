@@ -253,8 +253,8 @@ app.post("/add_reservation/:customerId/:plateId/:pickupDate/:returnDate", (req, 
     let pickupDate = req.params.pickupDate;
     let returnDate = req.params.returnDate;
     //get the current date
-    let reserveDate = new Date();
-
+    let reserveDate = new Date().toISOString().split('T')[0];//YYYY-MM-DD
+    console.log(reserveDate);
     //store the info inside the database
     db.query("INSERT INTO reservation (ssn, car_id, pickup_date, return_date, reserve_date) VALUES (?,?,?,?,?)",
     [customerId, plateId, pickupDate, returnDate, reserveDate], (err, result) => {
