@@ -3,8 +3,13 @@ require('dotenv').config()
 const express = require("express");
 const app = express();
 const mysql = require("mysql");
+const path = require('path');
+
+app.set('view engine', 'ejs');
+app.use(express.static(path.join(__dirname +'/public')));
 app.use(express.static("static"));
 app.use(express.urlencoded({extended:true}));
+
 
 //connect to the database
 const db = mysql.createConnection({
@@ -16,58 +21,53 @@ const db = mysql.createConnection({
 
 
 app.get("/", (req, res) => {
-
-    res.sendFile(__dirname + "/html/home.html");
-
+    res.sendFile(__dirname + "/views/home.html");
 }
 );
 app.get("/signup", (req, res) => {
-
-    res.sendFile(__dirname + "/html/signup.html");
-
+    res.sendFile(__dirname + "/views/signup.html");
 }
 );
 
 app.get("/new_car", (req, res) => {
 
-    res.sendFile(__dirname + "/html/car_form.html");
+    res.sendFile(__dirname + "/views/car_form.html");
 }
 );
 
 app.get("/admin", (req, res) => {
 
-    res.sendFile(__dirname + "/html/admin_home.html");
+    res.sendFile(__dirname + "/views/admin_home.html");
 }
 );
 
 
 app.get("/payments-search", (req, res) => {
 
-    res.sendFile(__dirname + "/html/payment_report_search.html");
+    res.sendFile(__dirname + "/views/payment_report_search.html");
 }
 );
 
 app.get("/cars-status-search", (req, res) => {
 
-    res.sendFile(__dirname + "/html/car_status_search.html");
+    res.sendFile(__dirname + "/views/car_status_search.html");
 }
 );
 
 app.get("/customer-res-search", (req, res) => {
 
-    res.sendFile(__dirname + "/html/customer_res_search.html");
+    res.sendFile(__dirname + "/views/customer_res_search.html");
 }
 );
 
 app.get("/car-res-search", (req, res) => {
 
-    res.sendFile(__dirname + "/html/car_res_search.html");
+    res.sendFile(__dirname + "/views/car_res_search.html");
 }
 );
 
 app.get("/res-search", (req, res) => {
-
-    res.sendFile(__dirname + "/html/res_search.html");
+    res.sendFile(__dirname + "/views/res_search.html");
 }
 );
 
@@ -78,6 +78,10 @@ app.get("/res-search", (req, res) => {
 /*post requests*/
 // ---------------------------------------------------------------------------------------------------------------------
 
+app.post("/signup",(req,res)=>{
+    email = req.body.email;
+    
+});
 
 //car reservation search
 app.post("/car-res-search",(req,res)=>
