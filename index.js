@@ -12,7 +12,6 @@ app.use(express.static(path.join(__dirname +'/public')));
 app.use(express.static("static"));
 app.use(express.urlencoded({extended:true}));
 
-
 //connect to the database
 const db = mysql.createConnection({
     host: process.env.DB_HOST,
@@ -21,65 +20,50 @@ const db = mysql.createConnection({
     database: process.env.DB_NAME
 });
 
-
 app.get("/", (req, res) => {
     res.sendFile(__dirname + "/views/home.html");
-}
-);
+});
 
 app.get("/signin", (req, res) => {
     res.sendFile(__dirname + "/views/signin.html");
-}
-);
+});
 app.get("/signup", (req, res) => {
     res.sendFile(__dirname + "/views/signup.html");
-}
-);
+});
 
 app.get("/office_signup",(req,res)=>{
     res.sendFile(__dirname + "/views/office_signup.html");
 });
 
 app.get("/new_car", (req, res) => {
-
     res.sendFile(__dirname + "/views/car_form.html");
-}
-);
+});
 
 
 app.get("/admin", (req, res) => {
     res.sendFile(__dirname + "/views/admin_home.html");
-}
-);
+});
 
 app.get("/payments-search", (req, res) => {
-
     res.sendFile(__dirname + "/views/payment_report_search.html");
-}
-);
+});
 
 app.get("/cars-status-search", (req, res) => {
-
     res.sendFile(__dirname + "/views/car_status_search.html");
-}
-);
+});
 
 app.get("/customer-res-search", (req, res) => {
-
     res.sendFile(__dirname + "/views/customer_res_search.html");
-}
-);
+});
 
 app.get("/car-res-search", (req, res) => {
-
     res.sendFile(__dirname + "/views/car_res_search.html");
-}
-);
+});
 
 app.get("/res-search", (req, res) => {
     res.sendFile(__dirname + "/views/res_search.html");
-}
-);
+});
+
 
 //api to check if ssn is already taken in customer
 app.get("/check_ssn_customer/:ssn", (req, res) => {
@@ -131,12 +115,18 @@ app.get("/check_phone_office/:phone", (req, res) => {
     });
 });
 
+//api to get reservation details for a specific car
+app.get("/get_car_reservation/:plateId", (req, res) => {
+    let plateId = req.params.plateId;
+    db.query("SELECT * FROM reservation WHERE plate_id = ?", [plateId], (err, result) => {
+        if(err)
+            return res.send({message: err});
+        return res.send({reservations: result});
+    });
+});
 
 /*post requests*/
 // ---------------------------------------------------------------------------------------------------------------------
-
-
-
 
 app.post("/signup_landing",(req,res)=>{
     email = req.body.email;
@@ -236,6 +226,26 @@ app.post("/office_signup",(req,res)=>{
     });
 });
 
+//post request to add a car
+app.post("/add_car", (req, res) => {
+    let plateId = req.body.plate_id;
+    let model = req.body.model;
+    let make = req.body.make;
+    let year = req.body.year;
+    let price = req.body.price;
+    let officeId = req.body.office_id;
+    //store the info inside the database
+    db.query("INSERT INTO car (plate_id, model, make, year, price, office_id) VALUES (?,?,?,?,?,?)",
+    [plateId, model, make, year, price, officeId], (err, result) => {
+        if(err){
+            return res.send({message: err});
+        }
+        else{
+            res.sendFile(__dirname + "/views/office_home.html");
+        }
+    });
+});
+
 //car reservation search
 app.post("/car-res-search",(req,res)=>
 {
@@ -283,8 +293,7 @@ app.post("/res-search", (req, res) => {
     console.log(start_date+" ");
     console.log(end_date);
      ///write the query then redirect to your new page
-}
-);
+});
 
 
 app.listen(3000, () => { 
