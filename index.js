@@ -101,7 +101,7 @@ app.post("/signin",(req,res)=>{
     });
 });
 
-app.post("/signup",(req,res)=>{
+app.post("/sign_up",(req,res)=>{
     //signing up as a customer
     let email = req.body.email;
     let password = req.body.password;
@@ -113,16 +113,17 @@ app.post("/signup",(req,res)=>{
     let holdreName = req.body.holder_name;
     let expDate = req.body.credit_card_expiry_date;
     let cvv = req.body.credit_card_cvv;
+    let photo = req.body.photo;
     //convert password to hash
     bcrypt.hash(password, saltRound, function(err, hash) {
         //store the info inside the database
-        db.query("INSERT INTO customer (email, password, fname, lname, ssn, phone_no, card_no, holder_name, exp_date, cvv) VALUES (?,?,?,?,?,?,?,?,?,?)",
-        [email, hash, fName, lName, ssn, phone, creditCardNo, holdreName, expDate, cvv], (err, result) => {
+        db.query("INSERT INTO customer (email, password, fname, lname, ssn, phone_no, card_no, holder_name, exp_date, cvv,photo) VALUES (?,?,?,?,?,?,?,?,?,?)",
+        [email, hash, fName, lName, ssn, phone, creditCardNo, holdreName, expDate, cvv, photo], (err, result) => {
             if(err){
                 console.log(err);
             }
             else{
-                res.sendFile(__dirname + "/views/customer.html");
+                res.sendFile(__dirname + "/views/customer_home.html");
             }
         });
     });
