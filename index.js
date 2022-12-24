@@ -341,6 +341,54 @@ app.post("/cars-available-search", (req, res) => {
         return res.send({message: result});
     });
 });
+
+//get all the models of cars
+app.post("/cars-models", (req, res) => {
+    //get the cars info from the database
+    db.query("SELECT DISTINCT model FROM car",
+    (err, result) => {
+        if(err)
+            return res.send({message: err});
+        return res.send({message: result});
+    });
+});
+
+//get all the makes of cars for a specific model
+app.post("/cars-makes", (req, res) => {
+    var model=req.body.model;
+    //get the cars info from the database
+    db.query("SELECT DISTINCT make FROM car WHERE model = ?",
+    [model], (err, result) => {
+        if(err)
+            return res.send({message: err});
+        return res.send({message: result});
+    });
+});
+
+//get the cars with specific model
+app.post("/cars-model-search", (req, res) => {
+    var model=req.body.model;
+    //get the cars info from the database
+    db.query("SELECT * FROM car WHERE model = ?",
+    [model], (err, result) => {
+        if(err)
+            return res.send({message: err});
+        return res.send({message: result});
+    });
+});
+
+//get the cars with specific make
+app.post("/cars-make-search", (req, res) => {
+    var make=req.body.make;
+    //get the cars info from the database
+    db.query("SELECT * FROM car WHERE make = ?",
+    [make], (err, result) => {
+        if(err)
+            return res.send({message: err});
+        return res.send({message: result});
+    });
+});
+
 app.listen(3000, () => { 
     console.log("server started") 
 });
