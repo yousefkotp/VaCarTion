@@ -284,16 +284,19 @@ app.post("/car-res-search",(req,res)=>
 // customer reservation search
 app.post("/customer-res-search",(req,res)=>
 {
-    var username=req.body.username;
-    var email=req.body.email;
-    console.log(email+" "+username);
-    ///write the query then redirect to your new page;
+    var ssn=req.body.ssn;
+    ///get the reservation info from the database
+    db.query("SELECT * FROM customer NATURAL INNER JOIN reservation WHERE ssn = ?",
+    [ssn], (err, result) => {
+        if(err)
+            return res.send({message: err});
+        return res.send({message: result});
+    });
 });
 
 
 // cars status at certain day search
 app.post("/cars-status-search", (req, res) => {
-
     var date=req.body.date;
     console.log(date);
     ///write the query then redirect to your new page
