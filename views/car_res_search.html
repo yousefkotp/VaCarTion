@@ -34,25 +34,46 @@
 
     <div  class="center ">
         <h1 class="display-6 myheader black">Car Info</h1>
-        <form method="post" action="/car-res-search">
             <div class="row mb-3 ">
                 <div class="col ">
                     <input type="username" class="form-control myinput a" id="inputEmail3" placeholder="Plate ID" name="plate_id"  required></input>
                     <!-- <p class="error1">username can not be empty !</p> -->
-
                 </div>
             </div>
-            <button type="submit" class="btn btn-light mybtn g black"  >Show Results</button>
-
-        </form>
+            <button class="btn btn-light mybtn g black sumbit-button">Show Results</button>
     </div>
-    
-    
-            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"
-                integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa"
-                crossorigin="anonymous"></script>
-            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-            <script src="signin.js" charset="utf-8"></script>
-</body>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
+    <script>
+
+        // action listner to submit button
+        $(".sumbit-button").click(function (e) {
+            // get the values from the input fields
+            var plate_id = $("[name=plate_id]").val();
+            //make a request to the server
+            $.ajax({
+                url: "/car-res-search",
+                type: "POST",
+                data: {
+                    plate_id: plate_id,
+                },
+                success: function (data) {
+                    // if the data is not empty
+                    if (data.message.length > 0) {
+                            //data.message[i].reservation_no
+                            //data.message[i].reserve_date
+                            //data.message[i].pickup_date
+                            //data.message[i].return_date
+                            //data.message[i].payment_date
+                    }
+                    else
+                        alert("No data found");
+                },
+            });
+            
+        });
+    </script>
+    
+</body>
 </html>
