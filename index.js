@@ -25,6 +25,11 @@ app.get("/", (req, res) => {
     res.sendFile(__dirname + "/views/home.html");
 }
 );
+
+app.get("/signin", (req, res) => {
+    res.sendFile(__dirname + "/views/signin.html");
+}
+);
 app.get("/signup", (req, res) => {
     res.sendFile(__dirname + "/views/signup.html");
 }
@@ -36,12 +41,12 @@ app.get("/new_car", (req, res) => {
 }
 );
 
+
 app.get("/admin", (req, res) => {
 
     res.sendFile(__dirname + "/views/admin_home.html");
 }
 );
-
 
 app.get("/payments-search", (req, res) => {
 
@@ -73,9 +78,6 @@ app.get("/res-search", (req, res) => {
 );
 
 
-
-
-
 /*post requests*/
 // ---------------------------------------------------------------------------------------------------------------------
 
@@ -85,22 +87,28 @@ app.post("/signup_landing",(req,res)=>{
     res.render("signup.ejs",{userEmail:email});
 });
 
+app.post("/signin",(req,res)=>{
+    email = req.body.email;
+    password = req.body.password;
+
+});
+
 //car reservation search
 app.post("/car-res-search",(req,res)=>
 {
-var plate_id=req.body.plate_id;
-console.log(plate_id);
-///write the query then redirect to your new page;
+    var plate_id=req.body.plate_id;
+    console.log(plate_id);
+    ///write the query then redirect to your new page;
 });
 
 
 // customer reservation search
 app.post("/customer-res-search",(req,res)=>
 {
-var username=req.body.username;
-var email=req.body.email;
-console.log(email+" "+username);
-///write the query then redirect to your new page;
+    var username=req.body.username;
+    var email=req.body.email;
+    console.log(email+" "+username);
+    ///write the query then redirect to your new page;
 });
 
 
@@ -134,7 +142,6 @@ app.post("/res-search", (req, res) => {
      ///write the query then redirect to your new page
 }
 );
-
 
 
 app.listen(3000, () => { console.log("server started") });
