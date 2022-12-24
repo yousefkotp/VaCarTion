@@ -5,7 +5,8 @@ const app = express();
 const mysql = require("mysql");
 const path = require('path');
 const ejs = require("ejs");
-
+const bcrypt = require("bcrypt");
+const saltRound = 10;
 app.set('view engine', 'ejs');
 app.use(express.static(path.join(__dirname +'/public')));
 app.use(express.static("static"));
@@ -94,16 +95,42 @@ app.post("/signin",(req,res)=>{
     //check first in customer, if it doesn't exist check in office
     email = req.body.email;
     password = req.body.password;
-
+    //convert password to hash
+    bcrypt.hash(password, saltRound, function(err, hash) {
+        // Store hash in your password DB.
+    });
 });
 
 app.post("/signup",(req,res)=>{
     //signing up as a customer
+    let email = req.body.email;
+    let password = req.body.password;
+    let fName = req.body.fName;
+    let lName = req.body.lName;
+    let ssn = req.body.ssn;
+    let phone = req.body.phone_no;
+    let creditCardNo = req.body.credit_card_no;
+    let holdreName = req.body.holder_name;
+    let expDate = req.body.credit_card_expiry_date;
+    let cvv = req.body.credit_card_cvv;
+    //convert password to hash
+    bcrypt.hash(password, saltRound, function(err, hash) {
+        //store the info inside the database
+        db.query("INSERT INTO customer (email, password, fname, lname, ssn, phone_no, card_no, holder_name, exp_date, cvv) VALUES (?,?,?,?,?,?,?,?,?,?)",
+        [email, hash, fName, lName, ssn, phone, creditCardNo, holdreName, expDate, cvv], (err, result) => {
+            if(err){
+                console.log(err);
+            }
+            else{
+                res.sendFile(__dirname + "/views/customer.html");
+            }
+        });
+    });
 });
 
 app.post("/office_signup",(req,res)=>{
     //signing up as an office
-    
+
 });
 
 //car reservation search
@@ -157,4 +184,6 @@ app.post("/res-search", (req, res) => {
 );
 
 
-app.listen(3000, () => { console.log("server started") });
+app.listen(3000, () => { 
+    console.log("server started") 
+});
