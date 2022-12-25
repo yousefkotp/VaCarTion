@@ -153,16 +153,32 @@ app.post("/signup",(req,res)=>{
     let expDate = req.body.credit_card_expiry_date;
     let cvv = req.body.credit_card_cvv;
     let phone = req.body.phone_no;
+    //add credit card info to the database
+    db.query("INSERT INTO credit_card (card_no, holder_name, exp_date, cvv) VALUES (?,?,?,?)",
+    [creditCardNo, holdreName, expDate, cvv], (err, result) => {
+        if(err){
+            //return that registration failed
+            return res.send({message: err});
+        }
+    });
     //convert password to hash
     bcrypt.hash(password, saltRound, function(err, hash) {
         //store the info inside the database
-        db.query("INSERT INTO customer (email, password, fname, lname, ssn, phone_no, card_no, holder_name, exp_date, cvv) VALUES (?,?,?,?,?,?,?,?,?,?)",
-        [email, hash, fName, lName, ssn, phone, creditCardNo, holdreName, expDate, cvv], (err, result) => {
+        db.query("INSERT INTO customer (email, password, fname, lname, ssn, phone_no) VALUES (?,?,?,?,?,?)",
+        [email, hash, fName, lName, ssn, phone], (err, result) => {
             if(err){
                 //return that registration failed
                 return res.send({message: err});
             }
             else{
+                //add credit card and customer info to the database
+                db.query("INSERT INTO customer_credit (ssn, card_no) VALUES (?,?)",
+                [ssn, creditCardNo], (err, result) => {
+                    if(err){
+                        //return that registration failed
+                        return res.send({message: err});
+                    }
+                });
                 res.sendFile(__dirname + "/views/customer_home.html");
             }
         });
