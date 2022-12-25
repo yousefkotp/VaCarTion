@@ -270,6 +270,7 @@ padding-left: 1.5rem;
 
 .card-container {
   max-width: 1280px;
+  max-height: 100px;
   margin: 0 auto;
   padding: 10px;
   display: flex;
@@ -290,6 +291,13 @@ padding-left: 1.5rem;
   transition: .15s all ease;
 }
 .card-container .card:hover {
+  box-shadow: 0 0 8px 3px rgba(0,0,0,.15);
+  transform: scale(1.025);
+  opacity: 1;
+  filter: grayscale(0);
+  transition: .35s all ease;
+}
+.card-container .card_clicked {
   box-shadow: 0 0 8px 3px rgba(0,0,0,.15);
   transform: scale(1.025);
   opacity: 1;
