@@ -17,12 +17,20 @@ var livereload = require("livereload");
 var connectLiveReload = require("connect-livereload");
 //connect to the database
 const db = mysql.createConnection({
-    host: "db4free.net",
+    host: "localhost",
     port: "3306",
-    user: "car_sys_admin",
-    password: "dbdbdb123",
-    database: "carrentalsysdb12"
+    user: "root",
+    password: "password",
+    database: "car-rental-system",
 });
+
+// msh 3arf a run query begeb not authorized f 3mlt leha comment
+// host: "db4free.net",
+// port: "3306",
+// user: "car_sys_admin",
+// password: "dbdbdb123",
+// database: "carrentalsysdb12"
+
 app.get("/", (req, res) => {
     res.sendFile(__dirname + "/views/home.html");
 });
@@ -86,39 +94,50 @@ app.post("/signin",(req,res)=>{
     //check first in customer, if it doesn't exist check in office
     email = req.body.email;
     password = req.body.password;
-    //convert password to hash
-    bcrypt.hash(password, saltRound, function(err, hash) {
-        //check if email and password match in customer
-        db.query("SELECT * FROM customer WHERE email = ? AND password = ?",
-        [email, hash], (err, result) => {
-            if(err){
-                //return that login failed
-                return res.send({message: err});
-            }
-            else{
-                if(result.length > 0){
+    db.query("SELECT * FROM customer WHERE email = ?", [email], (err, result) => {
+        if(err){
+            //return that login failed
+            return res.send({message: err});
+        }
+        if(result.length > 0){
+            //check if the password is correct
+            bcrypt.compare(password, result[0].password, function(err, response) {
+                if(response){
+                    //return that login is successful
                     res.sendFile(__dirname + "/views/customer_home.html");
                 }
                 else{
-                    //check if email and password match in office
-                    db.query("SELECT * FROM office WHERE email = ? AND password = ?",
-                    [email, hash], (err, result) => {
-                        if(err){
-                            //return that login failed
-                            return res.send({message: err});
+                    //return that login failed
+                    res.sendFile(__dirname + "/views/signin.html");
+                }
+            });
+        }
+        else{
+            //check in office
+            db.query("SELECT * FROM office WHERE email = ?", [email], (err, result) => {
+                if(err){
+                    //return that login failed
+                    return res.send({message: err});
+                }
+                if(result.length > 0){
+                    //check if the password is correct
+                    bcrypt.compare(password, result[0].password, function(err, response) {
+                        if(response){
+                            //return that login is successful
+                            res.sendFile(__dirname + "/views/office_home.html");
                         }
                         else{
-                            if(result.length > 0){
-                                res.sendFile(__dirname + "/views/office_home.html");
-                            }
-                            else{
-                                res.sendFile(__dirname + "/views/signin.html");
-                            }
+                            //return that login failed
+                            res.sendFile(__dirname + "/views/signin.html");
                         }
                     });
                 }
-            }
-        });
+                else{
+                    //return that login failed
+                    res.sendFile(__dirname + "/views/signin.html");
+                }
+            });
+        }
     });
 });
 
