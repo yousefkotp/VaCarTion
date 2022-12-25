@@ -42,7 +42,7 @@ CREATE TABLE car(
 CREATE TABLE reservation(
     reservation_no INT AUTO_INCREMENT,
     ssn CHAR(14) NOT NULL,
-    car_id INT NOT NULL,
+    plate_id INT NOT NULL,
     reserve_date DATE NOT NULL,
     pickup_date DATE NOT NULL,
     return_date DATE NOT NULL,
