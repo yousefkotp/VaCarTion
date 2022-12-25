@@ -11,15 +11,16 @@ app.set('view engine', 'ejs');
 app.use(express.static(path.join(__dirname +'/public')));
 app.use(express.static("static"));
 app.use(express.urlencoded({extended:true}));
-
+console.log(process.env.DB_USER)
 //connect to the database
 const db = mysql.createConnection({
-    host: process.env.DB_HOST,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASS,
-    database: process.env.DB_NAME
+    host: "db4free.net",
+    port: "3306",
+    user: "car_sys_admin",
+    password: "dbdbdb123",
+    database: "carrentalsysdb12"
 });
-
+console.log(db.statistics())
 app.get("/", (req, res) => {
     res.sendFile(__dirname + "/views/home.html");
 });
@@ -63,6 +64,7 @@ app.get("/car-res-search", (req, res) => {
 app.get("/res-search", (req, res) => {
     res.sendFile(__dirname + "/views/res_search.html");
 });
+
 
 
 //api to check if ssn is already taken in customer
