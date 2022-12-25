@@ -9,7 +9,6 @@ CREATE TABLE customer (
     phone_no CHAR(11) UNIQUE NOT NULL,
     password VARCHAR(256) NOT NULL,
     wallet REAL DEFAULT 0,
-    card_no CHAR(16),
     CONSTRAINT customer_pk PRIMARY KEY (ssn)
     CONSTRAINT customer_credit_card_fk FOREIGN KEY (card_no) REFERENCES credit_card(card_no)
 );
@@ -48,6 +47,7 @@ CREATE TABLE car(
     make VARCHAR(32) NOT NULL,
     year YEAR NOT NULL,
     price REAL NOT NULL,
+    registration_date DATE DEFAULT GETDATE(),
     office_id INT NOT NULL,
     CONSTRAINT car_pk PRIMARY KEY (plate_id),
     CONSTRAINT car_office_fk FOREIGN KEY (office_id) REFERENCES office(office_id)
@@ -57,11 +57,10 @@ CREATE TABLE reservation(
     reservation_no INT AUTO_INCREMENT,
     ssn CHAR(6) NOT NULL,
     plate_id VARCHAR(8) NOT NULL,
-    reserve_date DATE NOT NULL,
+    reserve_date DATE NOT NULL DEFAULT GETDATE(),
     pickup_date DATE NOT NULL,
     return_date DATE NOT NULL,
     payment_date DATE DEFAULT NULL,
-    registration_date DATE DEFAULT GETDATE(),
     CONSTRAINT reservation_pk PRIMARY KEY (reservation_no),
     CONSTRAINT reservation_customer_fk FOREIGN KEY (ssn) REFERENCES customer(ssn),
     CONSTRAINT reservation_car_fk FOREIGN KEY (car_id) REFERENCES car(plate_id)
