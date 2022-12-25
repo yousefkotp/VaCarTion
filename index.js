@@ -1,4 +1,5 @@
 // la tanso npm install 3ashan kol el dependencies tenzel 3andko
+// type "$ npm run watch" in terminal instead of "node index.js" to make your server update whenever any change happen
 require('dotenv').config()
 const express = require("express");
 const app = express();
@@ -11,7 +12,9 @@ app.set('view engine', 'ejs');
 app.use(express.static(path.join(__dirname +'/public')));
 app.use(express.static("static"));
 app.use(express.urlencoded({extended:true}));
-console.log(process.env.DB_USER)
+
+var livereload = require("livereload");
+var connectLiveReload = require("connect-livereload");
 //connect to the database
 const db = mysql.createConnection({
     host: "db4free.net",
@@ -20,7 +23,6 @@ const db = mysql.createConnection({
     password: "dbdbdb123",
     database: "carrentalsysdb12"
 });
-console.log(db.statistics())
 app.get("/", (req, res) => {
     res.sendFile(__dirname + "/views/home.html");
 });
@@ -65,6 +67,9 @@ app.get("/res-search", (req, res) => {
     res.sendFile(__dirname + "/views/res_search.html");
 });
 
+app.get("/reserve", (req, res) => {
+    res.sendFile(__dirname + "/views/reserve.html");
+});
 
 
 
@@ -409,7 +414,16 @@ app.post("/get-cars-of-office", (req, res) => {
     });
 });
 
+app.use(connectLiveReload());
 
 app.listen(3000, () => { 
     console.log("server started") 
 });
+
+// const liveReloadServer = livereload.createServer();
+// liveReloadServer.server.once("connection", () => {
+//   setTimeout(() => {
+//     liveReloadServer.refresh("/");
+//   }, 100);
+// });
+
