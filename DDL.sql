@@ -74,7 +74,7 @@ CREATE TABLE car_photos(
     CONSTRAINT car_photos_fk FOREIGN KEY (plate_id) REFERENCES car(plate_id)
 );
 
---- 0-> available, 1-> in maintainance, 2-> rented, 3-> returned
+--- 0-> available, 1-> in maintainance, 2-> being cleaned
 CREATE TABLE car_status(
     plate_id VARCHAR(8),
     status_code SMALLINT,
