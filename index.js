@@ -204,7 +204,7 @@ app.post("/add-reservation", (req, res) => {
     //get the current date
     let reserveDate = new Date().toISOString().split('T')[0];//YYYY-MM-DD
     //store the info inside the database
-    db.query("INSERT INTO reservation (ssn, car_id, pickup_date, return_date, reserve_date) VALUES (?,?,?,?,?)",
+    db.query("INSERT INTO reservation (ssn, plate_id, pickup_date, return_date, reserve_date) VALUES (?,?,?,?,?)",
     [customerId, plateId, pickupDate, returnDate, reserveDate], (err, result) => {
         if(err){
             return res.send({message: err});
@@ -272,7 +272,7 @@ app.post("/get-car-reservation",(req,res)=>
 {
     var plate_id=req.body.plate_id;
     ///get the reservation info from the database
-    db.query("SELECT * FROM reservation WHERE car_id = ?",
+    db.query("SELECT * FROM reservation WHERE plate_id = ?",
     [plate_id], (err, result) => {
         if(err)
             return res.send({message: err});
@@ -308,7 +308,7 @@ app.post("/get-payments-within-period", (req, res) => {
    var start_date=req.body.start_date;
    var end_date=req.body.end_date;
    //get the payments info from the database within the period
-    db.query("SELECT * FROM reservation WHERE payment_date BETWEEN ? AND ?",
+    db.query("SELECT * FROM reservation as r NATURAL INNER JOIN customer NATURAL INNER JOIN car WHERE payment_date BETWEEN ? AND ?",
     [start_date, end_date], (err, result) => {
         if(err)
             return res.send({message: err});
@@ -334,7 +334,7 @@ app.post("/get-reservations-within-period", (req, res) => {
 app.post("/get-cars-available", (req, res) => {
     var date=req.body.date;
     //get the cars info from the database
-    db.query("SELECT * FROM car WHERE plate_id NOT IN (SELECT car_id FROM reservation WHERE return_date < ?)",
+    db.query("SELECT * FROM car WHERE plate_id NOT IN (SELECT plate_id FROM reservation WHERE return_date < ?)",
     [date], (err, result) => {
         if(err)
             return res.send({message: err});
