@@ -1,4 +1,4 @@
--- password is = 123 but $2a$10$5IC.IhPacM5CMrbuz.O6He/ELafovg6kCn1chplnPZZFRM26AyQOe in bcrypt
+-- password is = 123 but $2b$10$rVf5FqeP7PkC0Qj6No0sbONn7zQyZH0Z2l871rFA4IFPg9Iyo1EIq in bcrypt
 -- generate values to insert into the credit_card table
 INSERT INTO credit_card VALUES ('0234567890123456', 'Farid Mohamed', '123', '2023-06-15');
 INSERT INTO credit_card VALUES ('1234567890123457', 'Ashraf Yousef', '345', '2023-08-15');
@@ -10,12 +10,12 @@ INSERT INTO credit_card VALUES ('5234567890123461', 'Mohamed Farid', '233', '202
 
 
 -- generate values to insert into the customer table
-INSERT INTO customer (ssn, fname, lname, email, phone_no, password) VALUES('123456','Farid','Mohamed','farid@gmail.com','01012345678','$2a$10$5IC.IhPacM5CMrbuz.O6He/ELafovg6kCn1chplnPZZFRM26AyQOe');
-INSERT INTO customer (ssn, fname, lname, email, phone_no, password) VALUES('234567','Ashraf','Yousef','ashraf@gmail.com','01123456789','$2a$10$5IC.IhPacM5CMrbuz.O6He/ELafovg6kCn1chplnPZZFRM26AyQOe');
-INSERT INTO customer (ssn, fname, lname, email, phone_no, password) VALUES('345678','Hossam','Elshamy','hossam@gmail.com','01234567890','$2a$10$5IC.IhPacM5CMrbuz.O6He/ELafovg6kCn1chplnPZZFRM26AyQOe');
-INSERT INTO customer (ssn, fname, lname, email, phone_no, password) VALUES('456789','Yousef','Ashraf','yousef@gmail.com','01512345678','$2a$10$5IC.IhPacM5CMrbuz.O6He/ELafovg6kCn1chplnPZZFRM26AyQOe');
-INSERT INTO customer (ssn, fname, lname, email, phone_no, password) VALUES('567890','Adham','Mohamed','domziano@gmail.com','01623456789','$2a$10$5IC.IhPacM5CMrbuz.O6He/ELafovg6kCn1chplnPZZFRM26AyQOe');
-INSERT INTO customer (ssn, fname, lname, email, phone_no, password) VALUES('678901','Mohamed','Farid','mohamed@gmail.com','01734567890','$2a$10$5IC.IhPacM5CMrbuz.O6He/ELafovg6kCn1chplnPZZFRM26AyQOe');
+INSERT INTO customer (ssn, fname, lname, email, phone_no, password) VALUES('123456','Farid','Mohamed','farid@gmail.com','01012345678','$2b$10$rVf5FqeP7PkC0Qj6No0sbONn7zQyZH0Z2l871rFA4IFPg9Iyo1EIq');
+INSERT INTO customer (ssn, fname, lname, email, phone_no, password) VALUES('234567','Ashraf','Yousef','ashraf@gmail.com','01123456789','$2b$10$rVf5FqeP7PkC0Qj6No0sbONn7zQyZH0Z2l871rFA4IFPg9Iyo1EIq');
+INSERT INTO customer (ssn, fname, lname, email, phone_no, password) VALUES('345678','Hossam','Elshamy','hossam@gmail.com','01234567890','$2b$10$rVf5FqeP7PkC0Qj6No0sbONn7zQyZH0Z2l871rFA4IFPg9Iyo1EIq');
+INSERT INTO customer (ssn, fname, lname, email, phone_no, password) VALUES('456789','Yousef','Ashraf','yousef@gmail.com','01512345678','$2b$10$rVf5FqeP7PkC0Qj6No0sbONn7zQyZH0Z2l871rFA4IFPg9Iyo1EIq');
+INSERT INTO customer (ssn, fname, lname, email, phone_no, password) VALUES('567890','Adham','Mohamed','domziano@gmail.com','01623456789','$2b$10$rVf5FqeP7PkC0Qj6No0sbONn7zQyZH0Z2l871rFA4IFPg9Iyo1EIq');
+INSERT INTO customer (ssn, fname, lname, email, phone_no, password) VALUES('678901','Mohamed','Farid','mohamed@gmail.com','01734567890','$2b$10$rVf5FqeP7PkC0Qj6No0sbONn7zQyZH0Z2l871rFA4IFPg9Iyo1EIq');
 
 -- generate credit card to customer
 INSERT INTO customer_credit(ssn, card_no) VALUES ('123456','0234567890123456');
@@ -26,11 +26,11 @@ INSERT INTO customer_credit(ssn, card_no) VALUES ('567890','4234567890123460');
 INSERT INTO customer_credit(ssn, card_no) VALUES ('678901','5234567890123461');
 
 -- generate values to insert into the office table
-INSERT INTO office (name, email, phone_no, password, country, city, building_no) VALUES('Limozin Gold','limozin@gold.com','01532345678','$2a$10$5IC.IhPacM5CMrbuz.O6He/ELafovg6kCn1chplnPZZFRM26AyQOe','Egypt','Cairo','1');
-INSERT INTO office (name, email, phone_no, password, country, city, building_no) VALUES('El AML','aml@forreal.com','01123456289','$2a$10$5IC.IhPacM5CMrbuz.O6He/ELafovg6kCn1chplnPZZFRM26AyQOe','Egypt','Alexandria','2');
-INSERT INTO office (name, email, phone_no, password, country, city, building_no) VALUES('Safe Ride Office','contact@saferide.com', '01158456289','$2a$10$5IC.IhPacM5CMrbuz.O6He/ELafovg6kCn1chplnPZZFRM26AyQOe','Egypt','Giza','3');
-INSERT INTO office (name, email, phone_no, password, country, city, building_no) VALUES('Lambo office','lambo@lambo.com','01512345698','$2a$10$5IC.IhPacM5CMrbuz.O6He/ELafovg6kCn1chplnPZZFRM26AyQOe','Egypt','Cairo','4');
-INSERT INTO office (name, email, phone_no, password, country, city, building_no) VALUES('Trust Limo','trust@gmail.com','01623456389','$2a$10$5IC.IhPacM5CMrbuz.O6He/ELafovg6kCn1chplnPZZFRM26AyQOe','Egypt','Giza','5');
+INSERT INTO office (name, email, phone_no, password, country, city, building_no) VALUES('Limozin Gold','limozin@gold.com','01532345678','$2b$10$rVf5FqeP7PkC0Qj6No0sbONn7zQyZH0Z2l871rFA4IFPg9Iyo1EIq','Egypt','Cairo','1');
+INSERT INTO office (name, email, phone_no, password, country, city, building_no) VALUES('El AML','aml@forreal.com','01123456289','$2b$10$rVf5FqeP7PkC0Qj6No0sbONn7zQyZH0Z2l871rFA4IFPg9Iyo1EIq','Egypt','Alexandria','2');
+INSERT INTO office (name, email, phone_no, password, country, city, building_no) VALUES('Safe Ride Office','contact@saferide.com', '01158456289','$2b$10$rVf5FqeP7PkC0Qj6No0sbONn7zQyZH0Z2l871rFA4IFPg9Iyo1EIq','Egypt','Giza','3');
+INSERT INTO office (name, email, phone_no, password, country, city, building_no) VALUES('Lambo office','lambo@lambo.com','01512345698','$2b$10$rVf5FqeP7PkC0Qj6No0sbONn7zQyZH0Z2l871rFA4IFPg9Iyo1EIq','Egypt','Cairo','4');
+INSERT INTO office (name, email, phone_no, password, country, city, building_no) VALUES('Trust Limo','trust@gmail.com','01623456389','$2b$10$rVf5FqeP7PkC0Qj6No0sbONn7zQyZH0Z2l871rFA4IFPg9Iyo1EIq','Egypt','Giza','5');
 
 
 
