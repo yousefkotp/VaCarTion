@@ -67,70 +67,12 @@ app.get("/res-search", (req, res) => {
 
 
 
-//api to check if ssn is already taken in customer
-app.get("/check_ssn_customer/:ssn", (req, res) => {
-    let ssn = req.params.ssn;
-    db.query("SELECT * FROM customer WHERE ssn = ?", [ssn], (err, result) => {
-        if(err)
-            return res.send({message: err});
-        return res.send({taken: result.length > 0});
-    });
-});
 
-//api to check if email is already taken in customer
-app.get("/check_email_customer/:email", (req, res) => {
-    let email = req.params.email;
-    db.query("SELECT * FROM customer WHERE email = ?", [email], (err, result) => {
-        if(err)
-            return res.send({message: err});
-        return res.send({taken: result.length > 0});
-    });
-});
-
-//api to check if email is already taken in office
-app.get("/check_email_office/:email", (req, res) => {
-    let email = req.params.email;
-    db.query("SELECT * FROM office WHERE email = ?", [email], (req, result) => {
-        if(err)
-            return res.send({message: err});
-        return res.send({taken: result.length > 0});
-    });
-});
-
-//api to check if phone is already taken in customer
-app.get("/check_phone_customer/:phone", (req, res) => {
-    let phone = req.params.phone;
-    db.query("SELECT * FROM customer WHERE phone_no = ?", [phone], (err, result) => {
-        if(err)
-            return res.send({message: err});
-        return res.send({taken: result.length > 0});
-    });
-});
-
-//api to check if phone is already taken in office
-app.get("/check_phone_office/:phone", (req, res) => {
-    let phone = req.params.phone;
-    db.query("SELECT * FROM office WHERE phone_no = ?", [phone], (err, result) => {
-        if(err)
-            return res.send({message: err});
-        return res.send({taken: result.length > 0});
-    });
-});
-
-//api to get reservation details for a specific car
-app.get("/get_car_reservation/:plateId", (req, res) => {
-    let plateId = req.params.plateId;
-    db.query("SELECT * FROM reservation WHERE plate_id = ?", [plateId], (err, result) => {
-        if(err)
-            return res.send({message: err});
-        return res.send({reservations: result});
-    });
-});
 
 /*post requests*/
 // ---------------------------------------------------------------------------------------------------------------------
 
-app.post("/signup_landing",(req,res)=>{
+app.post("/signup-landing",(req,res)=>{
     email = req.body.email;
     res.render("signup.ejs",{userEmail:email});
 });
@@ -203,7 +145,7 @@ app.post("/signup",(req,res)=>{
     });
 });
 
-app.post("/office_signup",(req,res)=>{
+app.post("/office-signup",(req,res)=>{
     //signing up as an office
     let email = req.body.email;
     let password = req.body.password;
@@ -229,7 +171,7 @@ app.post("/office_signup",(req,res)=>{
 });
 
 //post request to add a car
-app.post("/add_car", (req, res) => {
+app.post("/add-car", (req, res) => {
     let plateId = req.body.plate_id;
     let model = req.body.model;
     let make = req.body.make;
@@ -249,14 +191,13 @@ app.post("/add_car", (req, res) => {
 });
 
 //post request to add a reservation
-app.post("/add_reservation/:customerId/:plateId/:pickupDate/:returnDate", (req, res) => {
-    let customerId = req.params.customerId;
-    let plateId = req.params.plateId;
-    let pickupDate = req.params.pickupDate;
-    let returnDate = req.params.returnDate;
+app.post("/add-reservation", (req, res) => {
+    let customerId = req.body.customerId;
+    let plateId = req.body.plateId;
+    let pickupDate = req.body.pickupDate;
+    let returnDate = req.body.returnDate;
     //get the current date
-    let reserveDate = new Date();
-
+    let reserveDate = new Date().toISOString().split('T')[0];//YYYY-MM-DD
     //store the info inside the database
     db.query("INSERT INTO reservation (ssn, car_id, pickup_date, return_date, reserve_date) VALUES (?,?,?,?,?)",
     [customerId, plateId, pickupDate, returnDate, reserveDate], (err, result) => {
@@ -269,8 +210,60 @@ app.post("/add_reservation/:customerId/:plateId/:pickupDate/:returnDate", (req, 
     });
 });
 
+
+
+//check if ssn is already taken in customer
+app.post("/check-ssn-customer", (req, res) => {
+    let ssn = req.body.ssn;
+    db.query("SELECT * FROM customer WHERE ssn = ?", [ssn], (err, result) => {
+        if(err)
+            return res.send({message: err});
+        return res.send({taken: result.length > 0});
+    });
+});
+
+//check if email is already taken in customer
+app.post("/check-email-customer", (req, res) => {
+    let email = req.body.email;
+    db.query("SELECT * FROM customer WHERE email = ?", [email], (err, result) => {
+        if(err)
+            return res.send({message: err});
+        return res.send({taken: result.length > 0});
+    });
+});
+
+//check if email is already taken for office
+app.post("/check-email-office", (req, res) => {
+    let email = req.body.email;
+    db.query("SELECT * FROM office WHERE email = ?", [email], (req, result) => {
+        if(err)
+            return res.send({message: err});
+        return res.send({taken: result.length > 0});
+    });
+});
+
+//check if phone is already taken for customer
+app.post("/check-phone-customer", (req, res) => {
+    let phone = req.body.phone;
+    db.query("SELECT * FROM customer WHERE phone_no = ?", [phone], (err, result) => {
+        if(err)
+            return res.send({message: err});
+        return res.send({taken: result.length > 0});
+    });
+});
+
+//check if phone is already taken for office
+app.post("/check-phone-office", (req, res) => {
+    let phone = req.body.phone;
+    db.query("SELECT * FROM office WHERE phone_no = ?", [phone], (err, result) => {
+        if(err)
+            return res.send({message: err});
+        return res.send({taken: result.length > 0});
+    });
+});
+
 //car reservation search
-app.post("/car-res-search",(req,res)=>
+app.post("/get-car-reservation",(req,res)=>
 {
     var plate_id=req.body.plate_id;
     ///get the reservation info from the database
@@ -278,13 +271,13 @@ app.post("/car-res-search",(req,res)=>
     [plate_id], (err, result) => {
         if(err)
             return res.send({message: err});
-        return res.send({message: result});
+        return res.send({reservation: result,message : "success"});
     });
 });
 
 
 // customer reservation search
-app.post("/customer-res-search",(req,res)=>
+app.post("/get-customer-reservation",(req,res)=>
 {
     var ssn=req.body.ssn;
     ///get the reservation info from the database
@@ -298,7 +291,7 @@ app.post("/customer-res-search",(req,res)=>
 
 
 // cars status at certain day search
-app.post("/cars-status-search", (req, res) => {
+app.post("/get-cars-status", (req, res) => {
     var date=req.body.date;
     console.log(date);
     ///write the query then redirect to your new page
@@ -306,7 +299,7 @@ app.post("/cars-status-search", (req, res) => {
 
 
 //payments at certain period search
-app.post("/payments-search", (req, res) => {
+app.post("/get-payments-within-period", (req, res) => {
    var start_date=req.body.start_date;
    var end_date=req.body.end_date;
    //get the payments info from the database within the period
@@ -320,12 +313,96 @@ app.post("/payments-search", (req, res) => {
 
 
 // reservations at certain period search
-app.post("/res-search", (req, res) => {
+app.post("/get-reservations-within-period", (req, res) => {
     var start_date=req.body.start_date;
     var end_date=req.body.end_date;
     //get the reservation info from the database within the period
     db.query("SELECT * FROM reservation WHERE reserve_date BETWEEN ? AND ?",
     [start_date, end_date], (err, result) => {
+        if(err)
+            return res.send({message: err});
+        return res.send({message: result});
+    });
+});
+
+//list the cars that are available at a certain date
+app.post("/get-cars-available", (req, res) => {
+    var date=req.body.date;
+    //get the cars info from the database
+    db.query("SELECT * FROM car WHERE plate_id NOT IN (SELECT car_id FROM reservation WHERE return_date < ?)",
+    [date], (err, result) => {
+        if(err)
+            return res.send({message: err});
+        return res.send({message: result});
+    });
+});
+
+//get all the models of cars
+app.post("/get-cars-models", (req, res) => {
+    //get the cars info from the database
+    db.query("SELECT DISTINCT model FROM car",
+    (err, result) => {
+        if(err)
+            return res.send({message: err});
+        return res.send({message: result});
+    });
+});
+
+//get all the makes of cars for a specific model
+app.post("/get-cars-makes", (req, res) => {
+    var model=req.body.model;
+    //get the cars info from the database
+    db.query("SELECT DISTINCT make FROM car WHERE model = ?",
+    [model], (err, result) => {
+        if(err)
+            return res.send({message: err});
+        return res.send({message: result});
+    });
+});
+
+//get the cars with specific model
+app.post("/get-cars-model", (req, res) => {
+    var model=req.body.model;
+    //get the cars info from the database
+    db.query("SELECT * FROM car WHERE model = ?",
+    [model], (err, result) => {
+        if(err)
+            return res.send({message: err});
+        return res.send({message: result});
+    });
+});
+
+//get the cars with specific make
+app.post("/get-cars-make", (req, res) => {
+    var make=req.body.make;
+    //get the cars info from the database
+    db.query("SELECT * FROM car WHERE make = ?",
+    [make], (err, result) => {
+        if(err)
+            return res.send({message: err});
+        return res.send({message: result});
+    });
+});
+
+//get the cars with specific model and make
+app.post("/get-cars-model-make", (req, res) => {
+    var model=req.body.model;
+    var make=req.body.make;
+    //get the cars info from the database
+    db.query("SELECT * FROM car WHERE model = ? AND make = ?",
+    [model, make], (err, result) => {
+        if(err)
+            return res.send({message: err});
+        return res.send({message: result});
+    });
+});
+
+//get the cars with specific office id
+app.post("/get-cars-of-office", (req, res) => {
+    var office_id=req.body.office_id;
+    //get the cars info from the database
+    db.query("SELECT * FROM car WHERE office_id = ?",
+    [office_id], (err, result) => {
         if(err)
             return res.send({message: err});
         return res.send({message: result});

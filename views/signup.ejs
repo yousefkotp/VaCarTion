@@ -32,42 +32,82 @@
         </div>
     </nav>
 
-
-
     <div  class="center ">
         <h1 class="display-6 myheader black">Sign Up</h1>
-        <form method="post" action="/register">
+        <form method="post" action="/signup">
+
             <div class="row mb-3 ">
                 <div class="col ">
-                    <input type="username" class="form-control myinput a" id="inputEmail3" placeholder="Username" name="username"  required></input>
-                    <!-- <p class="error1">username can not be empty !</p> -->
-
+                    <input type="text" class="form-control myinput a"placeholder="SSN" name="ssn"  required></input>
                 </div>
             </div>
+
             <div class="row mb-3 ">
                 <div class="col ">
-                    <input type="email" class="form-control myinput b" id="inputEmail3" placeholder="E-Mail" name="email" required value="<%=userEmail%>"></input>
-                    <!-- <p class="error2">wrong email format</p> -->
+                    <input type="text" class="form-control myinput a"placeholder="First Name" name="fName"  required></input>
+                </div>
+            </div>
 
+            <div class="row mb-3 ">
+                <div class="col ">
+                    <input type="text" class="form-control myinput a" placeholder="Last Name" name="lName"  required></input>
                 </div>
             </div>
+
+            <div class="row mb-3 ">
+                <div class="col ">
+                    <input type="email" class="form-control myinput b" placeholder="E-Mail" name="email" required value="<%=userEmail%>"></input>
+                </div>
+            </div>
+
+            <div class="row mb-3 ">
+                <div class="col ">
+                    <input type="tel" class="form-control myinput b" placeholder="Phone Number" name="phone_no" required ></input>
+                </div>
+            </div>
+
+            <!-- take credit card as input -->
+
+            <div class="row mb-3 ">
+                <div class="col">
+                    <input type="text" class="form-control myinput b" placeholder="Credit Card Holder's name" name="holder_name" required ></input>
+                </div>
+            </div>
+
+            <div class="row mb-3 ">
+                <div class="col">
+                    <input type="text" pattern="[0-9]*" inputmode="numeric"  class="form-control myinput b" placeholder="Credit Card Number" name="credit_card_no" required ></input>
+                </div>
+            </div>
+
             <div class="row mb-3">
                 <div class="col">
-                    <input type="password" class="form-control myinput c" id="inputPassword3" placeholder="Password" name="password" required ></input>
-                    <!-- <p class="error3">password cannot be empty</p> -->
+                    <input type="date" pattern="[0-9]*" inputmode="numeric" class="form-control myinput b" placeholder="Credit Card Expiry Date" name="credit_card_expiry_date" required ></input>
                 </div>
             </div>
+           
             <div class="row mb-3">
                 <div class="col">
-                    <input type="password" class="form-control myinput d" id="inputPassword3" placeholder="confirm" name="confirm" required ></input>
-                    <!-- <p class="error4">passwords does not match !</p> -->
+                    <input type="text"pattern="[0-9]*" inputmode="numeric"  class="form-control myinput b" placeholder="Credit Card CVV" name="credit_card_cvv" required ></input>
                 </div>
             </div>
-            <button type="submit" class="btn btn-light mybtn g black"  >Submit</button>
+            
+            <div class="row mb-3">
+                <div class="col">
+                    <input type="password" class="form-control myinput c" placeholder="Password" name="password" required ></input>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col">
+                    <input type="password" class="form-control myinput d" placeholder="Confirm Password" name="confirm" required ></input>
+                </div>
+            </div>
+            
+            <button type="submit" class="btn btn-light mybtn g black" >Sign up</button>
 
         </form>
     </div>
-    
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa"
