@@ -80,6 +80,9 @@ app.get("/reserve", (req, res) => {
     res.sendFile(__dirname + "/views/reserve.html");
 });
 
+app.get("/car-form", (req, res) => {
+    res.sendFile(__dirname + "/views/car_form.html");
+});
 
 
 
