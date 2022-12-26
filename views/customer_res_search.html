@@ -81,11 +81,17 @@
                         let thead = $("<thead></thead>");
                         let tr = $("<tr></tr>");
                         tr.append($("<th></th>").text("Reservation No"));
+                        tr.append($("<th></th>").text("Customer SSN"));
+                        tr.append($("<th></th>").text("Customer First Name"));
+                        tr.append($("<th></th>").text("Customer Last Name"));
+                        tr.append($("<th></th>").text("Customer Email"));
                         tr.append($("<th></th>").text("Plate ID"));
+                        tr.append($("<th></th>").text("Car Model"));
                         tr.append($("<th></th>").text("Reserve Date"));
                         tr.append($("<th></th>").text("Pick up Date"));
                         tr.append($("<th></th>").text("Return Date"));
                         tr.append($("<th></th>").text("Payment Date"));
+                        
                         thead.append(tr);
                         table.append(thead);
                         //create table body
@@ -93,11 +99,19 @@
                         for (let i = 0; i < data.reservation.length; i++) {
                             let tr = $("<tr></tr>");
                             tr.append($("<td></td>").text(data.reservation[i].reservation_no));
+                            tr.append($("<td></td>").text(data.reservation[i].ssn));
+                            tr.append($("<td></td>").text(data.reservation[i].fname));
+                            tr.append($("<td></td>").text(data.reservation[i].lname));
+                            tr.append($("<td></td>").text(data.reservation[i].email));
                             tr.append($("<td></td>").text(data.reservation[i].plate_id));
-                            tr.append($("<td></td>").text(data.reservation[i].reserve_date));
-                            tr.append($("<td></td>").text(data.reservation[i].pickup_date));
-                            tr.append($("<td></td>").text(data.reservation[i].return_date));
-                            tr.append($("<td></td>").text(data.reservation[i].payment_date));
+                            tr.append($("<td></td>").text(data.reservation[i].model));
+                            tr.append($("<td></td>").text(data.reservation[i].reserve_date.substr(0,10)));
+                            tr.append($("<td></td>").text(data.reservation[i].pickup_date.substr(0,10)));
+                            tr.append($("<td></td>").text(data.reservation[i].return_date.substr(0,10)));
+                            if(data.reservation[i].payment_date == null)
+                                tr.append($("<td></td>").text("Not Paid"));
+                            else
+                                tr.append($("<td></td>").text(data.reservation[i].payment_date.substr(0,10)));
                             tbody.append(tr);
                         }
                         table.append(tbody);

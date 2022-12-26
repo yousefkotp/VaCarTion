@@ -341,7 +341,7 @@ app.post("/get-customer-reservation",(req,res)=>
 {
     var ssn=req.body.ssn;
     ///get the reservation info from the database
-    db.query("SELECT * FROM reservation WHERE ssn = ?",
+    db.query("SELECT * FROM reservation as r NATURAL INNER JOIN customer INNER JOIN car as c on c.plate_id = r.plate_id WHERE r.ssn = ?",
     [ssn], (err, result) => {
         if(err)
             return res.send({message: err});
