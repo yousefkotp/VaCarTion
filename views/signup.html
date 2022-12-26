@@ -30,7 +30,14 @@
         </div>
     </nav>
 
-
+    <!-- ssn CHAR(6),
+    fname VARCHAR(32) NOT NULL,
+    lname VARCHAR(32) NOT NULL,
+    email VARCHAR(64) UNIQUE NOT NULL,
+    phone_no CHAR(11) UNIQUE NOT NULL,
+    password VARCHAR(256) NOT NULL,
+    wallet REAL DEFAULT 0,
+    CONSTRAINT customer_pk PRIMARY KEY (ssn) -->
 
     <div  class="center ">
         <h1 class="display-6 myheader black">Sign Up</h1>
@@ -38,45 +45,53 @@
 
             <div class="row mb-3 ">
                 <div class="col ">
-                    <input type="text" class="form-control myinput a"placeholder="SSN" name="ssn"  required></input>
+                    <input type="text" class="form-control myinput a"placeholder="SSN" name="ssn"  minlength="6" maxlength="6" required></input>
                 </div>
             </div>
 
             <div class="row mb-3 ">
                 <div class="col ">
-                    <input type="text" class="form-control myinput a"placeholder="First Name" name="fName"  required></input>
+                    <input type="text" class="form-control myinput a"placeholder="First Name" name="fName"  maxlength="32" required></input>
                 </div>
             </div>
 
             <div class="row mb-3 ">
                 <div class="col ">
-                    <input type="text" class="form-control myinput a" placeholder="Last Name" name="lName"  required></input>
+                    <input type="text" class="form-control myinput a" placeholder="Last Name" name="lName" maxlength="32" required></input>
                 </div>
             </div>
 
             <div class="row mb-3 ">
                 <div class="col ">
-                    <input type="email" class="form-control myinput b" placeholder="E-Mail" name="email" required ></input>
+                    <input type="email" class="form-control myinput b" placeholder="E-Mail" name="email"maxlength="64" required ></input>
                 </div>
             </div>
 
             <div class="row mb-3 ">
                 <div class="col ">
-                    <input type="tel" class="form-control myinput b" placeholder="Phone Number" name="phone_no" required ></input>
+                    <input type="tel" class="form-control myinput b" placeholder="Phone Number" name="phone_no"   minlength="11" required ></input>
                 </div>
             </div>
 
             <!-- take credit card as input -->
 
+<!-- CREATE TABLE credit_card(
+    card_no CHAR(16),
+    holder_name VARCHAR(64) NOT NULL,
+    cvv CHAR(3) NOT NULL,
+    exp_date DATE NOT NULL,
+    CONSTRAINT credit_card_pk PRIMARY KEY (card_no)
+); -->
+
             <div class="row mb-3 ">
                 <div class="col">
-                    <input type="text" class="form-control myinput b" placeholder="Credit Card Holder's name" name="holder_name" required ></input>
+                    <input type="text" class="form-control myinput b" placeholder="Credit Card Holder's name" name="holder_name" maxlength="64" required ></input>
                 </div>
             </div>
 
             <div class="row mb-3 ">
                 <div class="col">
-                    <input type="text" pattern="[0-9]*" inputmode="numeric"  class="form-control myinput b" placeholder="Credit Card Number" name="credit_card_no" required ></input>
+                    <input type="text" pattern="[0-9]*" inputmode="numeric"  class="form-control myinput b" placeholder="Credit Card Number" name="credit_card_no"   minlength="16" maxlength="16" required ></input>
                 </div>
             </div>
 
@@ -88,7 +103,7 @@
            
             <div class="row mb-3">
                 <div class="col">
-                    <input type="text"pattern="[0-9]*" inputmode="numeric"  class="form-control myinput b" placeholder="Credit Card CVV" name="credit_card_cvv" required ></input>
+                    <input type="text"pattern="[0-9]*" inputmode="numeric"  class="form-control myinput b" placeholder="Credit Card CVV" name="credit_card_cvv" maxlength="3" minlength="3"  required ></input>
                 </div>
             </div>
             
