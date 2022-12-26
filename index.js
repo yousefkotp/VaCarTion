@@ -18,6 +18,7 @@ app.use(express.urlencoded({extended:true}));
 
 var livereload = require("livereload");
 var connectLiveReload = require("connect-livereload");
+const e = require('express');
 
 // connect to the database
 const db = mysql.createConnection({
@@ -168,10 +169,8 @@ app.post("/signup",(req,res)=>{
     //add credit card info to the database
     db.query("INSERT INTO credit_card (card_no, holder_name, exp_date, cvv) VALUES (?,?,?,?)",
     [creditCardNo, holdreName, expDate, cvv], (err, result) => {
-        if(err){
-            //return that registration failed
+        if(err)
             return res.send({message: err});
-        }
     });
     //convert password to hash
     bcrypt.hash(password, saltRound, function(err, hash) {
@@ -184,15 +183,15 @@ app.post("/signup",(req,res)=>{
             db.query("INSERT INTO customer_credit (ssn, card_no) VALUES (?,?)",
             [ssn, creditCardNo], (err, result) => {
                 if(err){
-                    return res.send({message: err});
+                    res.send({message: err});
+                }else{
+                    //authenticating and authorize the user
+                    const user = result[0];
+                    const accessToken = jwt.sign({user, role:"customer"}, process.env.ACCESS_TOKEN_SECRET,{expiresIn: "1h"});
+                    res.cookie("token", accessToken, cookieOptions);
+                    res.sendFile(__dirname + "/views/customer_home.html");
                 }
             });
-            //authenticating and authorize the user
-            const user = result[0];
-            const accessToken = jwt.sign({user, role:"customer"}, process.env.ACCESS_TOKEN_SECRET,{expiresIn: "1h"});
-            res.cookie("token", accessToken, cookieOptions);
-            res.sendFile(__dirname + "/views/customer_home.html");
-            
         });
     });
 });
@@ -212,16 +211,14 @@ app.post("/office-signup",(req,res)=>{
         //store the info inside the database
         db.query("INSERT INTO office (email, password, name, phone_no, country, city, building_no) VALUES (?,?,?,?,?,?,?)",
         [email, hash, name, phone, country, city, building_no], (err, result) => {
-            if(err){
+            if(err)
                 return res.send({message: err});
-            }
-            else{
-                //authenticating and authorize the user
-                const user = result[0];
-                const accessToken = jwt.sign({user, role:"office"}, process.env.ACCESS_TOKEN_SECRET,{expiresIn: "1h"});
-                res.cookie("token", accessToken, cookieOptions);
-                res.sendFile(__dirname + "/views/office_home.html");
-            }
+            
+            //authenticating and authorize the user
+            const user = result[0];
+            const accessToken = jwt.sign({user, role:"office"}, process.env.ACCESS_TOKEN_SECRET,{expiresIn: "1h"});
+            res.cookie("token", accessToken, cookieOptions);
+            res.sendFile(__dirname + "/views/office_home.html");
         });
     });
 });
@@ -240,7 +237,6 @@ app.post("/add-car", (req, res) => {
         if(err)
             return res.send({message: err});
         res.sendFile(__dirname + "/views/office_home.html");
-        
     });
 });
 
@@ -254,12 +250,9 @@ app.post("/add-reservation", (req, res) => {
     //store the info inside the database
     db.query("INSERT INTO reservation (ssn, plate_id, pickup_date, return_date) VALUES (?,?,?,?)",
     [ssn, plateId, pickupDate, returnDate], (err, result) => {
-        if(err){
+        if(err)
             return res.send({message: err});
-        }
-        else{
-            res.sendFile(__dirname + "/views/customer_home.html");
-        }
+        res.sendFile(__dirname + "/views/customer_home.html");
     });
 });
 
@@ -271,7 +264,7 @@ app.post("/check-ssn-customer", (req, res) => {
     db.query("SELECT * FROM customer WHERE ssn = ?", [ssn], (err, result) => {
         if(err)
             return res.send({message: err});
-        return res.send({taken: result.length > 0});
+        res.send({taken: result.length > 0});
     });
 });
 
@@ -281,7 +274,7 @@ app.post("/check-email-customer", (req, res) => {
     db.query("SELECT * FROM customer WHERE email = ?", [email], (err, result) => {
         if(err)
             return res.send({message: err});
-        return res.send({taken: result.length > 0});
+        res.send({taken: result.length > 0});
     });
 });
 
@@ -291,7 +284,7 @@ app.post("/check-email-office", (req, res) => {
     db.query("SELECT * FROM office WHERE email = ?", [email], (req, result) => {
         if(err)
             return res.send({message: err});
-        return res.send({taken: result.length > 0});
+        res.send({taken: result.length > 0});
     });
 });
 
@@ -301,7 +294,7 @@ app.post("/check-phone-customer", (req, res) => {
     db.query("SELECT * FROM customer WHERE phone_no = ?", [phone], (err, result) => {
         if(err)
             return res.send({message: err});
-        return res.send({taken: result.length > 0});
+        res.send({taken: result.length > 0});
     });
 });
 
@@ -311,7 +304,7 @@ app.post("/check-phone-office", (req, res) => {
     db.query("SELECT * FROM office WHERE phone_no = ?", [phone], (err, result) => {
         if(err)
             return res.send({message: err});
-        return res.send({taken: result.length > 0});
+        res.send({taken: result.length > 0});
     });
 });
 
@@ -324,7 +317,7 @@ app.post("/get-car-reservation",(req,res)=>
     [plate_id], (err, result) => {
         if(err)
             return res.send({message: err});
-        return res.send({reservation: result,message : "success"});
+        res.send({reservation: result,message : "success"});
     });
 });
 
@@ -338,7 +331,7 @@ app.post("/get-customer-reservation",(req,res)=>
     [ssn], (err, result) => {
         if(err)
             return res.send({message: err});
-        return res.send({reservation: result, message : "success"});
+        res.send({reservation: result, message : "success"});
     });
 });
 
@@ -360,7 +353,7 @@ app.post("/get-payments-within-period", (req, res) => {
     [start_date, end_date], (err, result) => {
         if(err)
             return res.send({message: err});
-        return res.send({payment: result, message : "success"});
+        res.send({payment: result, message : "success"});
     });
 });
 
@@ -374,7 +367,7 @@ app.post("/get-reservations-within-period", (req, res) => {
     [start_date, end_date], (err, result) => {
         if(err)
             return res.send({message: err});
-        return res.send({reservation: result, message : "success"});
+        res.send({reservation: result, message : "success"});
     });
 });
 
@@ -386,7 +379,7 @@ app.post("/get-cars-available", (req, res) => {
     [date, date], (err, result) => {
         if(err)
             return res.send({message: err});
-        return res.send({availableCars: result, message : "success"});
+        res.send({availableCars: result, message : "success"});
     });
 });
 
@@ -397,7 +390,7 @@ app.post("/get-all-cars-models", (req, res) => {
     (err, result) => {
         if(err)
             return res.send({message: err});
-        return res.send({carModels: result, message : "success"});
+        res.send({carModels: result, message : "success"});
     });
 });
 
@@ -409,7 +402,7 @@ app.post("/get-all-cars-makes", (req, res) => {
     [model], (err, result) => {
         if(err)
             return res.send({message: err});
-        return res.send({carMakes: result, message : "success"});
+        res.send({carMakes: result, message : "success"});
     });
 });
 
@@ -421,7 +414,7 @@ app.post("/get-cars-using-model", (req, res) => {
     [model], (err, result) => {
         if(err)
             return res.send({message: err});
-        return res.send({cars: result, message : "success"});
+        res.send({cars: result, message : "success"});
     });
 });
 
@@ -433,7 +426,7 @@ app.post("/get-cars-using-make", (req, res) => {
     [make], (err, result) => {
         if(err)
             return res.send({message: err});
-        return res.send({cars: result, message : "success"});
+        res.send({cars: result, message : "success"});
     });
 });
 
@@ -446,7 +439,7 @@ app.post("/get-cars-using-model-and-make", (req, res) => {
     [model, make], (err, result) => {
         if(err)
             return res.send({message: err});
-        return res.send({cars: result, message : "success"});
+        res.send({cars: result, message : "success"});
     });
 });
 
@@ -458,7 +451,7 @@ app.post("/get-cars-using-office", (req, res) => {
     [office_id], (err, result) => {
         if(err)
             return res.send({message: err});
-        return res.send({cars: result, message : "success"});
+        res.send({cars: result, message : "success"});
     });
 });
 
