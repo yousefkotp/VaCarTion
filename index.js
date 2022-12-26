@@ -10,7 +10,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const {authorizeAdmin, authorizeCustomer, authorizeOffice} = require('./authServer');
 const saltRound = 10;
-const cookieOptions = {httpOnly: true, secure: false};//change secure to true when deploying
+const cookieOptions = {httpOnly: true, secure: false}; //change secure to true when deploying
 
 app.set('view engine', 'ejs');
 app.use(express.static(path.join(__dirname +'/public')));
@@ -325,9 +325,9 @@ app.post("/get-car-reservation",(req,res)=>
 // customer reservation search
 app.post("/get-customer-reservation",(req,res)=>
 {
-    var ssn=req.user.ssn;
+    var ssn=req.body.ssn;
     ///get the reservation info from the database
-    db.query("SELECT * FROM customer NATURAL INNER JOIN reservation WHERE ssn = ?",
+    db.query("SELECT * FROM reservation WHERE ssn = ?",
     [ssn], (err, result) => {
         if(err)
             return res.send({message: err});
@@ -456,7 +456,6 @@ app.post("/get-cars-using-office", (req, res) => {
 });
 
 app.use(connectLiveReload());
-
 
 app.listen(process.env.PORT || 3000, () => { 
     console.log("server started on port: ", process.env.PORT || 3000) 
