@@ -469,6 +469,38 @@ app.post("/get-cars-using-office", (req, res) => {
     });
 });
 
+app.post("/get-most-rented-model",(req,res)=>{
+    db.query("SELECT model, COUNT(*) as count FROM reservation NATURAL INNER JOIN car GROUP BY model ORDER BY count DESC LIMIT 1",(err,result)=>{
+        if(err)
+            return res.send({message: err});
+        res.send({mostRentedModel: result, message : "success"});
+    });
+});
+
+app.post("/get-most-rented-make",(req,res)=>{
+    db.query("SELECT make, COUNT(*) as count FROM reservation NATURAL INNER JOIN car GROUP BY make ORDER BY count DESC LIMIT 1",(err,result)=>{
+        if(err)
+            return res.send({message: err});
+        res.send({mostRentedMake: result, message : "success"});
+    });
+});
+
+app.post("/get-most-profitable-office",(req,res)=>{
+    let query = `SELECT o.name, o.office_id, SUM(((r.return_date-r.pickup_date)*c.price )) as total
+                FROM reservation as r
+                NATURAL INNER JOIN car as c
+                INNER JOIN office as o ON o.office_id = c.office_id
+                WHERE r.payment_date is not null
+                GROUP BY c.office_id 
+                ORDER BY total DESC 
+                LIMIT 1;`
+    db.query(query,(err,result)=>{
+        if(err)
+            return res.send({message: err});
+        res.send({mostProfitableOffice: result, message : "success"});
+    });
+});
+
 app.post("/logout",(req,res)=>{
     res.clearCookie("token");
     res.redirect("/");
