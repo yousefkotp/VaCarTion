@@ -51,9 +51,10 @@
         
     
         $(".sumbit-button").click(function (e) {
-            $(".table").remove();
+            table.empty();
             let start_date = $("[name='start_date']").val()
             let end_date = $("[name='end_date']").val()
+            currentDiv.append(table);
             //make a request to the server
             $.ajax({
                 url: "/get-reservations-within-period",
@@ -69,7 +70,7 @@
                     }
                     console.log(data);
                     if (data.reservation.length > 0) {
-                        currentDiv.append(table);
+                        
                         //create table header
                         let thead = $("<thead></thead>");
                         let tr = $("<tr></tr>");

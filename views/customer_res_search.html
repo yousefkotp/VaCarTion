@@ -48,15 +48,13 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script>
-        
         let currentDiv = $(".center");
-        //create table inside the center div
         let table = $("<table></table>").addClass("table table-striped table-dark");
-        //put table inside the center div
-        
+        currentDiv.append(table);
+
         // action listner to submit button
         $(".sumbit-button").click(function (e) {
-            $(".table").remove();
+            table.empty();
             // get the values from the input fields
             var ssn = $("[name=ssn]").val();
             //make a request to the server
@@ -72,7 +70,7 @@
                         return;
                     }
                     if (data.reservation.length > 0) {
-                        currentDiv.append(table);
+                        
                         //create table header
                         let thead = $("<thead></thead>");
                         let tr = $("<tr></tr>");
