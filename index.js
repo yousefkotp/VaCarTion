@@ -518,13 +518,6 @@ function authorizeOffice(req, res, next) {
     });
 }
 
-app.post("/add-car", (req, res) => {
-    var plate_id = req.body.plate_id;
-    var model = req.body.model;
-    var make = req.body.make;
-    var year = req.body.year;
-    console.log(plate_id);
-})
 
 app.listen(process.env.PORT || 3000, () => { 
     console.log("server started on port: ", process.env.PORT || 3000) 
