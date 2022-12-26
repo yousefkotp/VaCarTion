@@ -9,6 +9,8 @@ const ejs = require("ejs");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const saltRound = 10;
+const cookieOptions = {httpOnly: true, secure: false};//change secure to true when deploying
+
 app.set('view engine', 'ejs');
 app.use(express.static(path.join(__dirname +'/public')));
 app.use(express.static("static"));
@@ -16,6 +18,7 @@ app.use(express.urlencoded({extended:true}));
 
 var livereload = require("livereload");
 var connectLiveReload = require("connect-livereload");
+
 //connect to the database
 const db = mysql.createConnection({
     host: "localhost",
@@ -50,7 +53,6 @@ app.get("/office_signup",(req,res)=>{
 app.get("/new_car", (req, res) => {
     res.sendFile(__dirname + "/views/car_form.html");
 });
-
 
 app.get("/admin", (req, res) => {
     res.sendFile(__dirname + "/views/admin_home.html");
@@ -106,7 +108,7 @@ app.post("/signin", (req,res)=>{
                     //authenticating and authorize the user
                     const user = result[0];
                     const accessToken = jwt.sign({user, role:"admin"}, process.env.ACCESS_TOKEN_SECRET,{expiresIn: "1h"});
-                    res.cookie("token", accessToken, {httpOnly: true, secure: true});
+                    res.cookie("token", accessToken, cookieOptions);
                     res.sendFile(__dirname + "/views/admin_home.html");
                 }
             });
@@ -119,8 +121,8 @@ app.post("/signin", (req,res)=>{
                     bcrypt.compare(password, result[0].password, function(err, response) {
                         if(response){
                             const user = result[0];
-                            const accessToken = jwt.sign({user, role:"customer"}, process.env.ACCESS_TOKEN_SECRET);
-                            res.cookie("token", accessToken, {httpOnly: true, secure: true});
+                            const accessToken = jwt.sign({user, role:"customer"}, process.env.ACCESS_TOKEN_SECRET,{expiresIn: "1h"});
+                            res.cookie("token", accessToken, cookieOptions);
                             res.sendFile(__dirname + "/views/customer_home.html");
                         }
                     });
@@ -132,8 +134,8 @@ app.post("/signin", (req,res)=>{
                             bcrypt.compare(password, result[0].password, function(err, response) {
                                 if(response){
                                     const user = result[0];
-                                    const accessToken = jwt.sign({user, role:"office"}, process.env.ACCESS_TOKEN_SECRET);
-                                    res.cookie("token", accessToken, {httpOnly: true, secure: true});
+                                    const accessToken = jwt.sign({user, role:"office"}, process.env.ACCESS_TOKEN_SECRET,{expiresIn: "1h"});
+                                    res.cookie("token", accessToken, cookieOptions);
                                     res.sendFile(__dirname + "/views/office_home.html");
                                 }else
                                     res.sendFile(__dirname + "/views/signin.html");
@@ -188,7 +190,8 @@ app.post("/signup",(req,res)=>{
                 });
                 //authenticating and authorize the user
                 const user = result[0];
-                const accessToken = jwt.sign({user, role:"customer"}, process.env.ACCESS_TOKEN_SECRET);
+                const accessToken = jwt.sign({user, role:"customer"}, process.env.ACCESS_TOKEN_SECRET,{expiresIn: "1h"});
+                res.cookie("token", accessToken, cookieOptions);
                 res.sendFile(__dirname + "/views/customer_home.html");
             }
         });
@@ -197,10 +200,10 @@ app.post("/signup",(req,res)=>{
 
 app.post("/office-signup",(req,res)=>{
     //signing up as an office
-    let email = req.body.email;
-    let password = req.body.password;
     let name = req.body.name;
+    let email = req.body.email;
     let phone = req.body.phone_no;
+    let password = req.body.password;
     let country = req.body.country;
     let city = req.body.city;
     let building_no = req.body.building_no;
@@ -214,6 +217,10 @@ app.post("/office-signup",(req,res)=>{
                 return res.send({message: err});
             }
             else{
+                //authenticating and authorize the user
+                const user = result[0];
+                const accessToken = jwt.sign({user, role:"office"}, process.env.ACCESS_TOKEN_SECRET,{expiresIn: "1h"});
+                res.cookie("token", accessToken, cookieOptions);
                 res.sendFile(__dirname + "/views/office_home.html");
             }
         });
@@ -227,7 +234,7 @@ app.post("/add-car", (req, res) => {
     let make = req.body.make;
     let year = req.body.year;
     let price = req.body.price;
-    let officeId = req.body.office_id;
+    let officeId = req.user.office_id;
     //store the info inside the database
     db.query("INSERT INTO car (plate_id, model, make, year, price, office_id) VALUES (?,?,?,?,?,?)",
     [plateId, model, make, year, price, officeId], (err, result) => {
@@ -242,15 +249,14 @@ app.post("/add-car", (req, res) => {
 
 //post request to add a reservation
 app.post("/add-reservation", (req, res) => {
-    let customerId = req.body.customerId;
+    let ssn = req.user.ssn;
     let plateId = req.body.plateId;
     let pickupDate = req.body.pickupDate;
     let returnDate = req.body.returnDate;
     //get the current date
-    let reserveDate = new Date().toISOString().split('T')[0];//YYYY-MM-DD
     //store the info inside the database
-    db.query("INSERT INTO reservation (ssn, plate_id, pickup_date, return_date, reserve_date) VALUES (?,?,?,?,?)",
-    [customerId, plateId, pickupDate, returnDate, reserveDate], (err, result) => {
+    db.query("INSERT INTO reservation (ssn, plate_id, pickup_date, return_date) VALUES (?,?,?,?)",
+    [ssn, plateId, pickupDate, returnDate], (err, result) => {
         if(err){
             return res.send({message: err});
         }
@@ -524,8 +530,8 @@ function authorizeOffice(req, res, next) {
 
 
 
-app.listen(3000, () => { 
-    console.log("server started") 
+app.listen(process.env.PORT || 3000, () => { 
+    console.log("server started on port: ", process.env.PORT || 3000) 
 });
 
 // const liveReloadServer = livereload.createServer();
