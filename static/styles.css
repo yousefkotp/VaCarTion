@@ -129,6 +129,8 @@
     /* text-decoration: underline 1px; */
     }
     
+    .nav-link{
+font-size: 1.2rem;    }
     .textarea-write{
     
     margin-bottom: 1rem;
