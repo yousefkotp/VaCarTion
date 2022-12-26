@@ -36,16 +36,25 @@
     <input type="date" id="birthday" name="end_date" required>
     <div><button type="submit" class="btn btn-light mybtn g black sumbit-button" >Show Results</button></div>
 </div>
+
+<div class="ajax padd-left padd-right justify-content-center">
+    <!-- <h3 class="display-6 black"> Results </h3> -->
+
+ </div>
+
     
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa"crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script>
-        let currentDiv = $(".justify-content-center");
+        let currentDiv = $(".ajax");
         //create table inside the center div
         let table = $("<table></table>").addClass("table table-striped table-success");
         //put table inside the center div
         
         $(".sumbit-button").click(function (e) {
+            let header=$("<h3></h3>").addClass("display-6 black padd-down");
+            currentDiv.append(header);
+
             let start_date = $("[name='start_date']").val()
             let end_date = $("[name='end_date']").val()
             currentDiv.append(table);
