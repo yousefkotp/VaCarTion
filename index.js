@@ -63,23 +63,23 @@ app.get("/admin", authorizeAdmin,(req, res) => {
     res.sendFile(__dirname + "/views/admin_home.html");
 });
 
-app.get("/payments-search", (req, res) => {
+app.get("/payments-search", authorizeAdmin, (req, res) => {
     res.sendFile(__dirname + "/views/payment_report_search.html");
 });
 
-app.get("/cars-status-search", (req, res) => {
+app.get("/cars-status-search", authorizeAdmin, (req, res) => {
     res.sendFile(__dirname + "/views/car_status_search.html");
 });
 
-app.get("/customer-res-search", (req, res) => {
+app.get("/customer-res-search", authorizeAdmin, (req, res) => {
     res.sendFile(__dirname + "/views/customer_res_search.html");
 });
 
-app.get("/car-res-search", (req, res) => {
+app.get("/car-res-search", authorizeAdmin, (req, res) => {
     res.sendFile(__dirname + "/views/car_res_search.html");
 });
 
-app.get("/res-search", (req, res) => {
+app.get("/res-search", authorizeAdmin, (req, res) => {
     res.sendFile(__dirname + "/views/res_search.html");
 });
 
