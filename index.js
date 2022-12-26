@@ -463,6 +463,11 @@ app.post("/get-cars-using-office", (req, res) => {
     });
 });
 
+app.post("/logout",(req,res)=>{
+    res.clearCookie("token");
+    res.redirect("/");
+});
+
 app.use(connectLiveReload());
 
 app.listen(process.env.PORT || 3000, () => { 

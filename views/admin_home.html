@@ -113,7 +113,7 @@
                         <a class="list-group-item redirect-list" href="/advanced-search">Advanced Search </a>
                     </ul>
                     <div class="padd-up2">
-                        <button type="button" class="btn btn-outline-danger add-car">Log Out </button>
+                        <button type="button" class="btn btn-outline-danger add-car logout-button">Log Out </button>
                     </div>
                 </div>
             </div>
@@ -124,7 +124,17 @@
                 integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa"
                 crossorigin="anonymous"></script>
             <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-            <script src="signin.js" charset="utf-8"></script>
+            <script>
+                $(".logout-button").click(function () {
+                    $.ajax({
+                        url: "/logout",
+                        type: "POST",
+                        success: function (response) {
+                            window.location.href = "/";
+                        }
+                    });
+                });
+            </script>
 </body>
 
 </html>
