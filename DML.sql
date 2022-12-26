@@ -1,4 +1,8 @@
 -- password is = 123 but $2b$10$rVf5FqeP7PkC0Qj6No0sbONn7zQyZH0Z2l871rFA4IFPg9Iyo1EIq in bcrypt
+
+-- generate values to insert into the admin table
+INSERT INTO admin VALUES ('admin@gmail.com','$2b$10$rVf5FqeP7PkC0Qj6No0sbONn7zQyZH0Z2l871rFA4IFPg9Iyo1EIq');
+
 -- generate values to insert into the credit_card table
 INSERT INTO credit_card VALUES ('0234567890123456', 'Farid Mohamed', '123', '2023-06-15');
 INSERT INTO credit_card VALUES ('1234567890123457', 'Ashraf Yousef', '345', '2023-08-15');
