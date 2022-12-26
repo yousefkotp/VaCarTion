@@ -19,7 +19,7 @@ app.use(express.urlencoded({extended:true}));
 var livereload = require("livereload");
 var connectLiveReload = require("connect-livereload");
 
-//connect to the database
+// connect to the database
 const db = mysql.createConnection({
     host: "localhost",
     port: "3306",
@@ -82,6 +82,9 @@ app.get("/reserve", (req, res) => {
     res.sendFile(__dirname + "/views/reserve.html");
 });
 
+app.get("/car-form", (req, res) => {
+    res.sendFile(__dirname + "/views/car_form.html");
+});
 
 
 
@@ -522,7 +525,13 @@ function authorizeOffice(req, res, next) {
     });
 }
 
-
+app.post("/add-car", (req, res) => {
+    var plate_id = req.body.plate_id;
+    var model = req.body.model;
+    var make = req.body.make;
+    var year = req.body.year;
+    console.log(plate_id);
+})
 
 app.listen(process.env.PORT || 3000, () => { 
     console.log("server started on port: ", process.env.PORT || 3000) 
