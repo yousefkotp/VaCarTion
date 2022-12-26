@@ -175,25 +175,21 @@ app.post("/signup",(req,res)=>{
         //store the info inside the database
         db.query("INSERT INTO customer (email, password, fname, lname, ssn, phone_no) VALUES (?,?,?,?,?,?)",
         [email, hash, fName, lName, ssn, phone], (err, result) => {
-            if(err){
-                //return that registration failed
+            if(err)
                 return res.send({message: err});
-            }
-            else{
-                //add credit card and customer info to the database
-                db.query("INSERT INTO customer_credit (ssn, card_no) VALUES (?,?)",
-                [ssn, creditCardNo], (err, result) => {
-                    if(err){
-                        //return that registration failed
-                        return res.send({message: err});
-                    }
-                });
-                //authenticating and authorize the user
-                const user = result[0];
-                const accessToken = jwt.sign({user, role:"customer"}, process.env.ACCESS_TOKEN_SECRET,{expiresIn: "1h"});
-                res.cookie("token", accessToken, cookieOptions);
-                res.sendFile(__dirname + "/views/customer_home.html");
-            }
+
+            db.query("INSERT INTO customer_credit (ssn, card_no) VALUES (?,?)",
+            [ssn, creditCardNo], (err, result) => {
+                if(err){
+                    return res.send({message: err});
+                }
+            });
+            //authenticating and authorize the user
+            const user = result[0];
+            const accessToken = jwt.sign({user, role:"customer"}, process.env.ACCESS_TOKEN_SECRET,{expiresIn: "1h"});
+            res.cookie("token", accessToken, cookieOptions);
+            res.sendFile(__dirname + "/views/customer_home.html");
+            
         });
     });
 });
@@ -238,12 +234,10 @@ app.post("/add-car", (req, res) => {
     //store the info inside the database
     db.query("INSERT INTO car (plate_id, model, make, year, price, office_id) VALUES (?,?,?,?,?,?)",
     [plateId, model, make, year, price, officeId], (err, result) => {
-        if(err){
+        if(err)
             return res.send({message: err});
-        }
-        else{
-            res.sendFile(__dirname + "/views/office_home.html");
-        }
+        res.sendFile(__dirname + "/views/office_home.html");
+        
     });
 });
 
@@ -335,13 +329,13 @@ app.post("/get-car-reservation",(req,res)=>
 // customer reservation search
 app.post("/get-customer-reservation",(req,res)=>
 {
-    var ssn=req.body.ssn;
+    var ssn=req.user.ssn;
     ///get the reservation info from the database
     db.query("SELECT * FROM customer NATURAL INNER JOIN reservation WHERE ssn = ?",
     [ssn], (err, result) => {
         if(err)
             return res.send({message: err});
-        return res.send({message: result});
+        return res.send({reservation: result, message : "success"});
     });
 });
 
@@ -359,11 +353,11 @@ app.post("/get-payments-within-period", (req, res) => {
    var start_date=req.body.start_date;
    var end_date=req.body.end_date;
    //get the payments info from the database within the period
-    db.query("SELECT * FROM reservation as r NATURAL INNER JOIN customer NATURAL INNER JOIN car WHERE payment_date BETWEEN ? AND ?",
+    db.query("SELECT * FROM reservation as r NATURAL INNER JOIN customer INNER JOIN car as c ON c.plate_id = r.plate_id WHERE payment_date BETWEEN ? AND ?",
     [start_date, end_date], (err, result) => {
         if(err)
             return res.send({message: err});
-        return res.send({message: result});
+        return res.send({payment: result, message : "success"});
     });
 });
 
@@ -377,71 +371,71 @@ app.post("/get-reservations-within-period", (req, res) => {
     [start_date, end_date], (err, result) => {
         if(err)
             return res.send({message: err});
-        return res.send({message: result});
+        return res.send({reservation: result, message : "success"});
     });
 });
 
 //list the cars that are available at a certain date
 app.post("/get-cars-available", (req, res) => {
-    var date=req.body.date;
+    var date = req.body.date;
     //get the cars info from the database
-    db.query("SELECT * FROM car WHERE plate_id NOT IN (SELECT plate_id FROM reservation WHERE return_date < ?)",
-    [date], (err, result) => {
+    db.query("SELECT * FROM car WHERE plate_id NOT IN (SELECT DISTINCT plate_id FROM reservation WHERE return_date >= ? AND reserve_date <= ?)",
+    [date, date], (err, result) => {
         if(err)
             return res.send({message: err});
-        return res.send({message: result});
+        return res.send({availableCars: result, message : "success"});
     });
 });
 
 //get all the models of cars
-app.post("/get-cars-models", (req, res) => {
+app.post("/get-all-cars-models", (req, res) => {
     //get the cars info from the database
     db.query("SELECT DISTINCT model FROM car",
     (err, result) => {
         if(err)
             return res.send({message: err});
-        return res.send({message: result});
+        return res.send({carModels: result, message : "success"});
     });
 });
 
 //get all the makes of cars for a specific model
-app.post("/get-cars-makes", (req, res) => {
+app.post("/get-all-cars-makes", (req, res) => {
     var model=req.body.model;
     //get the cars info from the database
     db.query("SELECT DISTINCT make FROM car WHERE model = ?",
     [model], (err, result) => {
         if(err)
             return res.send({message: err});
-        return res.send({message: result});
+        return res.send({carMakes: result, message : "success"});
     });
 });
 
 //get the cars with specific model
-app.post("/get-cars-model", (req, res) => {
+app.post("/get-cars-using-model", (req, res) => {
     var model=req.body.model;
     //get the cars info from the database
     db.query("SELECT * FROM car WHERE model = ?",
     [model], (err, result) => {
         if(err)
             return res.send({message: err});
-        return res.send({message: result});
+        return res.send({cars: result, message : "success"});
     });
 });
 
 //get the cars with specific make
-app.post("/get-cars-make", (req, res) => {
+app.post("/get-cars-using-make", (req, res) => {
     var make=req.body.make;
     //get the cars info from the database
     db.query("SELECT * FROM car WHERE make = ?",
     [make], (err, result) => {
         if(err)
             return res.send({message: err});
-        return res.send({message: result});
+        return res.send({cars: result, message : "success"});
     });
 });
 
 //get the cars with specific model and make
-app.post("/get-cars-model-make", (req, res) => {
+app.post("/get-cars-using-model-and-make", (req, res) => {
     var model=req.body.model;
     var make=req.body.make;
     //get the cars info from the database
@@ -449,19 +443,19 @@ app.post("/get-cars-model-make", (req, res) => {
     [model, make], (err, result) => {
         if(err)
             return res.send({message: err});
-        return res.send({message: result});
+        return res.send({cars: result, message : "success"});
     });
 });
 
 //get the cars with specific office id
-app.post("/get-cars-of-office", (req, res) => {
+app.post("/get-cars-using-office", (req, res) => {
     var office_id=req.body.office_id;
     //get the cars info from the database
     db.query("SELECT * FROM car WHERE office_id = ?",
     [office_id], (err, result) => {
         if(err)
             return res.send({message: err});
-        return res.send({message: result});
+        return res.send({cars: result, message : "success"});
     });
 });
 
