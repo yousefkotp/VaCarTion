@@ -377,7 +377,7 @@ app.post("/get-reservations-within-period", (req, res) => {
     var start_date=req.body.start_date;
     var end_date=req.body.end_date;
     //get the reservation info from the database within the period
-    db.query("SELECT * FROM reservation WHERE reserve_date BETWEEN ? AND ?",
+    db.query("SELECT * FROM reservation as r NATURAL INNER JOIN customer INNER JOIN car as c on c.plate_id = r.plate_id WHERE reserve_date BETWEEN ? AND ?",
     [start_date, end_date], (err, result) => {
         if(err)
             return res.send({message: err});

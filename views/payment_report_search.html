@@ -94,10 +94,10 @@
                             tr.append($("<td></td>").text(data.payment[i].reservation_no));
                             tr.append($("<td></td>").text(data.payment[i].ssn));
                             tr.append($("<td></td>").text(data.payment[i].plate_id));
-                            tr.append($("<td></td>").text(data.payment[i].reserve_date));
-                            tr.append($("<td></td>").text(data.payment[i].pickup_date));
-                            tr.append($("<td></td>").text(data.payment[i].return_date));
-                            tr.append($("<td></td>").text(data.payment[i].payment_date));
+                            tr.append($("<td></td>").text(data.payment[i].reserve_date.substr(0,10)));
+                            tr.append($("<td></td>").text(data.payment[i].pickup_date.substr(0,10)));
+                            tr.append($("<td></td>").text(data.payment[i].return_date.substr(0,10)));
+                            tr.append($("<td></td>").text(data.payment[i].payment_date.substr(0,10)));
                             tr.append($("<td></td>").text(data.payment[i].revenue));
                             tbody.append(tr);
                         }
