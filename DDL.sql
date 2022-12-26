@@ -1,6 +1,12 @@
 CREATE SCHEMA `car-rental-system`;
 USE `car-rental-system`;
 
+CREATE TABLE admin(
+    email VARCHAR(64),
+    password VARCHAR(256) NOT NULL,
+    CONSTRAINT admin_pk PRIMARY KEY (email)
+);
+
 CREATE TABLE customer (
     ssn CHAR(6),
     fname VARCHAR(32) NOT NULL,
