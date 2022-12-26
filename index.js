@@ -95,6 +95,13 @@ app.get("/advanced-search", (req, res) => {
     res.sendFile(__dirname + "/views/advanced_search.html");
 });
 
+app.get("/office-home",(req,res)=>{
+    res.sendFile(__dirname + "/views/office_home.html");
+});
+
+app.get("/customer-home",(req,res)=>{
+    res.sendFile(__dirname + "/views/customer_home.html");
+});
 
 /*post requests*/
 // ---------------------------------------------------------------------------------------------------------------------
@@ -120,7 +127,7 @@ app.post("/signin", (req,res)=>{
                     const user = result[0];
                     const accessToken = jwt.sign({user, role:"admin"}, process.env.ACCESS_TOKEN_SECRET,{expiresIn: "1h"});
                     res.cookie("token", accessToken, cookieOptions);
-                    res.sendFile(__dirname + "/views/admin_home.html");
+                    res.redirect("/admin");
                 }
             });
         }else{
@@ -134,7 +141,7 @@ app.post("/signin", (req,res)=>{
                             const user = result[0];
                             const accessToken = jwt.sign({user, role:"customer"}, process.env.ACCESS_TOKEN_SECRET,{expiresIn: "1h"});
                             res.cookie("token", accessToken, cookieOptions);
-                            res.sendFile(__dirname + "/views/customer_home.html");
+                            res.redirect("/customer-home");
                         }
                     });
                 }else{
@@ -147,7 +154,7 @@ app.post("/signin", (req,res)=>{
                                     const user = result[0];
                                     const accessToken = jwt.sign({user, role:"office"}, process.env.ACCESS_TOKEN_SECRET,{expiresIn: "1h"});
                                     res.cookie("token", accessToken, cookieOptions);
-                                    res.sendFile(__dirname + "/views/office_home.html");
+                                    res.redirect("/office-home")
                                 }else
                                     res.sendFile(__dirname + "/views/signin.html");
                             });
