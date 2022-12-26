@@ -8,6 +8,7 @@ const path = require('path');
 const ejs = require("ejs");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const {authorizeAdmin, authorizeCustomer, authorizeOffice} = require('./authServer');
 const saltRound = 10;
 const cookieOptions = {httpOnly: true, secure: false};//change secure to true when deploying
 
@@ -18,7 +19,6 @@ app.use(express.urlencoded({extended:true}));
 
 var livereload = require("livereload");
 var connectLiveReload = require("connect-livereload");
-const e = require('express');
 
 // connect to the database
 const db = mysql.createConnection({
@@ -456,67 +456,6 @@ app.post("/get-cars-using-office", (req, res) => {
 });
 
 app.use(connectLiveReload());
-
-function authorizeAdmin(req, res, next) {
-    let token = req.cookies.token;
-    if(token == null){
-        res.status = 401;
-        return res.redirect('/signin');
-    }
-        
-    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
-        if(err){
-            res.status = 403;
-            return res.redirect('/signin');
-        }
-        req.user = decoded;
-        if(req.user.role != 'admin'){
-            res.status = 403;
-            return res.redirect('/signin');
-        }
-        next();
-    });
-};
-
-function authorizeCustomer(req, res, next) {
-    let token = req.cookies.token;
-    if(token == null){
-        res.status = 401;
-        return res.redirect('/signin');
-    }
-    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
-        if(err){
-            res.status = 403;
-            return res.redirect('/signin');
-        }
-        req.user = decoded;
-        if(req.user.role != 'customer'){
-            res.status = 403;
-            return res.redirect('/signin');
-        }
-        next();
-    });
-};
-
-function authorizeOffice(req, res, next) {
-    let token = req.cookies.token;
-    if(token == null){
-        res.status = 401;
-        return res.redirect('/signin');
-    }
-    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
-        if(err){
-            res.status = 403;
-            return res.redirect('/signin');
-        }
-        req.user = decoded;
-        if(req.user.role != 'office'){
-            res.status = 403;
-            return res.redirect('/signin');
-        }
-        next();
-    });
-}
 
 
 app.listen(process.env.PORT || 3000, () => { 
