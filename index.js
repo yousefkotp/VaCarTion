@@ -8,7 +8,9 @@ const path = require('path');
 const ejs = require("ejs");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const {authorizeAdmin, authorizeCustomer, authorizeOffice} = require('./authServer');
+const cookieParser = require("cookie-parser");
+
+const {authorizeCustomer, authorizeOffice} = require('./authServer');
 const saltRound = 10;
 const cookieOptions = {httpOnly: true, secure: false}; //change secure to true when deploying
 
@@ -16,6 +18,7 @@ app.set('view engine', 'ejs');
 app.use(express.static(path.join(__dirname +'/public')));
 app.use(express.static("static"));
 app.use(express.urlencoded({extended:true}));
+app.use(cookieParser());
 
 var livereload = require("livereload");
 var connectLiveReload = require("connect-livereload");
@@ -27,11 +30,6 @@ const db = mysql.createConnection({
     password: "password",
     database: "car-rental-system",
 });
-
-
-//   db.connect();
-  
-
 
 // msh 3arf a run query begeb not authorized f 3mlt leha comment
 // host: "db4free.net",
@@ -59,7 +57,7 @@ app.get("/new_car", (req, res) => {
     res.sendFile(__dirname + "/views/car_form.html");
 });
 
-app.get("/admin", (req, res) => {
+app.get("/admin", authorizeAdmin,(req, res) => {
     res.sendFile(__dirname + "/views/admin_home.html");
 });
 
@@ -506,7 +504,26 @@ app.post("/logout",(req,res)=>{
     res.redirect("/");
 });
 
-
+function authorizeAdmin(req, res, next) {
+    let token = req.cookies.token;
+    if(token == null){
+        res.status = 401;
+        return res.redirect('/signin');
+    }
+    console.log(token);
+    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
+        if(err){
+            res.status = 403;
+            return res.redirect('/signin');
+        }
+        if(decoded.role != 'admin'){
+            res.status = 403;
+            return res.redirect('/signin');
+        }
+        req.user = decoded;
+        next();
+    });
+};
 
 app.use(connectLiveReload());
 
