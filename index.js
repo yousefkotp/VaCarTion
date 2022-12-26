@@ -249,8 +249,8 @@ app.post("/add-car", (req, res) => {
         if(err)
             return res.send({message: err});
         //make the car status = 0 (available) in the car_status table
-        db.query("INSERT INTO car_status (plate_id, status) VALUES (?,?)",
-        [plateId, 0], (err, result) => {
+        db.query("INSERT INTO car_status (plate_id) VALUES (?)",
+        [plateId], (err, result) => {
             if(err)
                 return res.send({message: err});
             res.sendFile(__dirname + "/views/office_home.html");

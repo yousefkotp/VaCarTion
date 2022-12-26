@@ -55,11 +55,11 @@ INSERT INTO car_photos (plate_id, photo) VALUES('56789012','https://www.bmw.com/
 
 
 -- generate values to insert into the car_status table
-INSERT INTO car_status (plate_id, status_code) VALUES('12345678','0');
-INSERT INTO car_status (plate_id, status_code) VALUES('23456789','0');
-INSERT INTO car_status (plate_id, status_code) VALUES('34567890','0');
-INSERT INTO car_status (plate_id, status_code) VALUES('45678901','0');
-INSERT INTO car_status (plate_id, status_code) VALUES('56789012','0');
+INSERT INTO car_status (plate_id) VALUES('12345678');
+INSERT INTO car_status (plate_id) VALUES('23456789');
+INSERT INTO car_status (plate_id) VALUES('34567890');
+INSERT INTO car_status (plate_id) VALUES('45678901');
+INSERT INTO car_status (plate_id) VALUES('56789012');
 
 
 -- generate values to insert into the reservation table
