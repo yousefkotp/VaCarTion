@@ -20,14 +20,13 @@ app.use(express.urlencoded({extended:true}));
 var livereload = require("livereload");
 var connectLiveReload = require("connect-livereload");
 
-// connect to the database
-// const db = mysql.createConnection({
-//     host: "localhost",
-//     port: "3306",
-//     user: "root",
-//     password: "password",
-//     database: "car-rental-system",
-// });
+const db = mysql.createConnection({
+    host: "localhost",
+    port: "3306",
+    user: "root",
+    password: "password",
+    database: "car-rental-system",
+});
 
 
 //   db.connect();
@@ -351,10 +350,10 @@ app.post("/get-cars-status", (req, res) => {
 
 //payments at certain period search
 app.post("/get-payments-within-period", (req, res) => {
-   var start_date=req.body.start_date;
-   var end_date=req.body.end_date;
-   //get the payments info from the database within the period
-    db.query("SELECT * FROM reservation as r NATURAL INNER JOIN customer INNER JOIN car as c ON c.plate_id = r.plate_id WHERE payment_date BETWEEN ? AND ?",
+    var start_date=req.body.start_date;
+    var end_date=req.body.end_date;
+    //get the payments info from the database within the period
+    db.query("SELECT *,((return_date-pickup_date)*price )as revenue FROM reservation NATURAL INNER JOIN car WHERE payment_date BETWEEN ? AND ?",
     [start_date, end_date], (err, result) => {
         if(err)
             return res.send({message: err});

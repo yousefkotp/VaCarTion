@@ -53,9 +53,10 @@
         //create table inside the center div
         let table = $("<table></table>").addClass("table table-striped table-dark");
         //put table inside the center div
-        currentDiv.append(table);
+        
         // action listner to submit button
         $(".sumbit-button").click(function (e) {
+            $(".table").remove();
             // get the values from the input fields
             var ssn = $("[name=ssn]").val();
             //make a request to the server
@@ -71,6 +72,7 @@
                         return;
                     }
                     if (data.reservation.length > 0) {
+                        currentDiv.append(table);
                         //create table header
                         let thead = $("<thead></thead>");
                         let tr = $("<tr></tr>");

@@ -30,18 +30,76 @@
         </div>
     </nav>
     <div className="page-title"><h3 class="page-title display-6">Payments Report</h3></div>
-<form method="post" action="/payments-search">
 <div class="justify-content-center">
     <label for="birthday" class="display-6 date">Start Date:</label>
     <input type="date" id="birthday" name="start_date" required>
     <label for="birthday2" class="display-6 date">End Date:</label>
     <input type="date" id="birthday" name="end_date" required>
-    <div><button type="submit" class="btn btn-light mybtn g black" >Show Results</button></div>
+    <div><button type="submit" class="btn btn-light mybtn g black sumbit-button" >Show Results</button></div>
 </div>
-</form>
     
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa"crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+         let currentDiv = $(".justify-content-center");
+        //create table inside the center div
+        let table = $("<table></table>").addClass("table table-striped table-dark");
+        //put table inside the center div
+        
+        $(".sumbit-button").click(function (e) {
+            $(".table").remove();
+            let start_date = $("[name='start_date']").val()
+            let end_date = $("[name='end_date']").val()
+            //make a request to the server
+            $.ajax({
+                url: "/get-payments-within-period",
+                type: "POST",
+                data: {
+                    start_date: start_date,
+                    end_date: end_date
+                },
+                success: function (data) {
+                    if(data.message != "success"){
+                        alert(data.message);//error in the database 
+                        return;
+                    }
+                    if (data.payment.length > 0) {
+                        currentDiv.append(table);
+                        //create table header
+                        let thead = $("<thead></thead>");
+                        let tr = $("<tr></tr>");
+                        tr.append($("<th></th>").text("Reservation No"));
+                        tr.append($("<th></th>").text("SSN"));
+                        tr.append($("<th></th>").text("Plate ID"));
+                        tr.append($("<th></th>").text("Reserve Date"));
+                        tr.append($("<th></th>").text("Pick up Date"));
+                        tr.append($("<th></th>").text("Return Date"));
+                        tr.append($("<th></th>").text("Payment Date"));
+                        tr.append($("<th></th>").text("Payment Amount"));
+                        thead.append(tr);
+                        table.append(thead);
+                        //create table body
+                        let tbody = $("<tbody></tbody>");
+                        for (let i = 0; i < data.payment.length; i++) {
+                            let tr = $("<tr></tr>");
+                            tr.append($("<td></td>").text(data.payment[i].reservation_no));
+                            tr.append($("<td></td>").text(data.payment[i].ssn));
+                            tr.append($("<td></td>").text(data.payment[i].plate_id));
+                            tr.append($("<td></td>").text(data.payment[i].reserve_date));
+                            tr.append($("<td></td>").text(data.payment[i].pickup_date));
+                            tr.append($("<td></td>").text(data.payment[i].return_date));
+                            tr.append($("<td></td>").text(data.payment[i].payment_date));
+                            tr.append($("<td></td>").text(data.payment[i].revenue));
+                            tbody.append(tr);
+                        }
+                        table.append(tbody);
+                    }
+                    else
+                        alert("No data found");
+                },
+            });
+        });
+    </script>
             
 </body>
 
