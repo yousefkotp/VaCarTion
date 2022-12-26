@@ -389,6 +389,19 @@ app.post("/get-reservations-within-period", (req, res) => {
     });
 });
 
+app.post("/get-car-reservation-within-period",(req,res)=>{
+    var plate_id=req.body.plate_id;
+    var start_date=req.body.start_date;
+    var end_date=req.body.end_date;
+    ///get the reservation info from the database
+    db.query("SELECT * FROM reservation as r NATURAL INNER JOIN customer INNER JOIN car as c on c.plate_id = r.plate_id WHERE r.plate_id = ? AND reserve_date BETWEEN ? AND ?",
+    [plate_id, start_date, end_date], (err, result) => {
+        if(err)
+            return res.send({message: err});
+        res.send({reservation: result, message : "success"});
+    });
+});
+
 //list the cars that are available at a certain date
 app.post("/get-cars-available", (req, res) => {
     var date = req.body.date;
