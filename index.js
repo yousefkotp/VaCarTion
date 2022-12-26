@@ -21,13 +21,18 @@ var livereload = require("livereload");
 var connectLiveReload = require("connect-livereload");
 
 // connect to the database
-const db = mysql.createConnection({
-    host: "localhost",
-    port: "3306",
-    user: "root",
-    password: "password",
-    database: "car-rental-system",
-});
+// const db = mysql.createConnection({
+//     host: "localhost",
+//     port: "3306",
+//     user: "root",
+//     password: "password",
+//     database: "car-rental-system",
+// });
+
+
+//   db.connect();
+  
+
 
 // msh 3arf a run query begeb not authorized f 3mlt leha comment
 // host: "db4free.net",
