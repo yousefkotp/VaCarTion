@@ -12,11 +12,11 @@ function authorizeAdmin(req, res, next) {
             res.status = 403;
             return res.redirect('/signin');
         }
-        req.user = decoded;
         if(req.user.role != 'admin'){
             res.status = 403;
             return res.redirect('/signin');
         }
+        req.user = decoded;
         next();
     });
 };
@@ -32,11 +32,12 @@ function authorizeCustomer(req, res, next) {
             res.status = 403;
             return res.redirect('/signin');
         }
-        req.user = decoded;
+        
         if(req.user.role != 'customer'){
             res.status = 403;
             return res.redirect('/signin');
         }
+        req.user = decoded;
         next();
     });
 };
@@ -52,11 +53,11 @@ function authorizeOffice(req, res, next) {
             res.status = 403;
             return res.redirect('/signin');
         }
-        req.user = decoded;
         if(req.user.role != 'office'){
             res.status = 403;
             return res.redirect('/signin');
         }
+        req.user = decoded;
         next();
     });
 }
