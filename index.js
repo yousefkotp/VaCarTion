@@ -10,7 +10,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const cookieParser = require("cookie-parser");
 
-const {authorizeCustomer, authorizeOffice} = require('./authServer');
+const {authorizeAdmin, authorizeCustomer, authorizeOffice} = require('./authServer');
 const saltRound = 10;
 const cookieOptions = {httpOnly: true, secure: false}; //change secure to true when deploying
 
@@ -504,26 +504,6 @@ app.post("/logout",(req,res)=>{
     res.redirect("/");
 });
 
-function authorizeAdmin(req, res, next) {
-    let token = req.cookies.token;
-    if(token == null){
-        res.status = 401;
-        return res.redirect('/signin');
-    }
-    console.log(token);
-    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
-        if(err){
-            res.status = 403;
-            return res.redirect('/signin');
-        }
-        if(decoded.role != 'admin'){
-            res.status = 403;
-            return res.redirect('/signin');
-        }
-        req.user = decoded;
-        next();
-    });
-};
 
 app.use(connectLiveReload());
 
