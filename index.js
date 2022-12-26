@@ -7,6 +7,7 @@ const mysql = require("mysql");
 const path = require('path');
 const ejs = require("ejs");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 const saltRound = 10;
 app.set('view engine', 'ejs');
 app.use(express.static(path.join(__dirname +'/public')));
@@ -90,51 +91,57 @@ app.post("/signup-landing",(req,res)=>{
     res.render("signup.ejs",{userEmail:email});
 });
 
-app.post("/signin",(req,res)=>{
+app.post("/signin", (req,res)=>{
     //check first in customer, if it doesn't exist check in office
     email = req.body.email;
     password = req.body.password;
-    db.query("SELECT * FROM customer WHERE email = ?", [email], (err, result) => {
-        if(err){
-            //return that login failed
+    //check in admin in database
+    db.query("SELECT * FROM admin WHERE email = ?", [email], (err, result) => {
+        if(err)
             return res.send({message: err});
-        }
         if(result.length > 0){
             //check if the password is correct
             bcrypt.compare(password, result[0].password, function(err, response) {
                 if(response){
-                    //return that login is successful
-                    res.sendFile(__dirname + "/views/customer_home.html");
-                }
-                else{
-                    //return that login failed
-                    res.sendFile(__dirname + "/views/signin.html");
+                    //authenticating and authorize the user
+                    const user = result[0];
+                    const accessToken = jwt.sign({user, role:"admin"}, process.env.ACCESS_TOKEN_SECRET,{expiresIn: "1h"});
+                    res.cookie("token", accessToken, {httpOnly: true, secure: true});
+                    res.sendFile(__dirname + "/views/admin_home.html");
                 }
             });
-        }
-        else{
-            //check in office
-            db.query("SELECT * FROM office WHERE email = ?", [email], (err, result) => {
-                if(err){
-                    //return that login failed
+        }else{
+            //check in customer
+            db.query("SELECT * FROM customer WHERE email = ?", [email], (err, result) => {
+                if(err)
                     return res.send({message: err});
-                }
                 if(result.length > 0){
-                    //check if the password is correct
                     bcrypt.compare(password, result[0].password, function(err, response) {
                         if(response){
-                            //return that login is successful
-                            res.sendFile(__dirname + "/views/office_home.html");
+                            const user = result[0];
+                            const accessToken = jwt.sign({user, role:"customer"}, process.env.ACCESS_TOKEN_SECRET);
+                            res.cookie("token", accessToken, {httpOnly: true, secure: true});
+                            res.sendFile(__dirname + "/views/customer_home.html");
                         }
-                        else{
-                            //return that login failed
+                    });
+                }else{
+                    db.query("SELECT * FROM office WHERE email = ?", [email], (err, result) => {
+                        if(err)
+                            return res.send({message: err});
+                        if(result.length > 0){
+                            bcrypt.compare(password, result[0].password, function(err, response) {
+                                if(response){
+                                    const user = result[0];
+                                    const accessToken = jwt.sign({user, role:"office"}, process.env.ACCESS_TOKEN_SECRET);
+                                    res.cookie("token", accessToken, {httpOnly: true, secure: true});
+                                    res.sendFile(__dirname + "/views/office_home.html");
+                                }else
+                                    res.sendFile(__dirname + "/views/signin.html");
+                            });
+                        }else{
                             res.sendFile(__dirname + "/views/signin.html");
                         }
                     });
-                }
-                else{
-                    //return that login failed
-                    res.sendFile(__dirname + "/views/signin.html");
                 }
             });
         }
@@ -179,6 +186,9 @@ app.post("/signup",(req,res)=>{
                         return res.send({message: err});
                     }
                 });
+                //authenticating and authorize the user
+                const user = result[0];
+                const accessToken = jwt.sign({user, role:"customer"}, process.env.ACCESS_TOKEN_SECRET);
                 res.sendFile(__dirname + "/views/customer_home.html");
             }
         });
@@ -450,6 +460,69 @@ app.post("/get-cars-of-office", (req, res) => {
 });
 
 app.use(connectLiveReload());
+
+function authorizeAdmin(req, res, next) {
+    let token = req.cookies.token;
+    if(token == null){
+        res.status = 401;
+        return res.redirect('/signin');
+    }
+        
+    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
+        if(err){
+            res.status = 403;
+            return res.redirect('/signin');
+        }
+        req.user = decoded;
+        if(req.user.role != 'admin'){
+            res.status = 403;
+            return res.redirect('/signin');
+        }
+        next();
+    });
+};
+
+function authorizeCustomer(req, res, next) {
+    let token = req.cookies.token;
+    if(token == null){
+        res.status = 401;
+        return res.redirect('/signin');
+    }
+    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
+        if(err){
+            res.status = 403;
+            return res.redirect('/signin');
+        }
+        req.user = decoded;
+        if(req.user.role != 'customer'){
+            res.status = 403;
+            return res.redirect('/signin');
+        }
+        next();
+    });
+};
+
+function authorizeOffice(req, res, next) {
+    let token = req.cookies.token;
+    if(token == null){
+        res.status = 401;
+        return res.redirect('/signin');
+    }
+    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
+        if(err){
+            res.status = 403;
+            return res.redirect('/signin');
+        }
+        req.user = decoded;
+        if(req.user.role != 'office'){
+            res.status = 403;
+            return res.redirect('/signin');
+        }
+        next();
+    });
+}
+
+
 
 app.listen(3000, () => { 
     console.log("server started") 
