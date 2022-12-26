@@ -91,6 +91,9 @@ app.get("/car-form", (req, res) => {
     res.sendFile(__dirname + "/views/car_form.html");
 });
 
+app.get("/advanced-search", (req, res) => {
+    res.sendFile(__dirname + "/views/advanced_search.html");
+});
 
 
 /*post requests*/
