@@ -1,5 +1,7 @@
 // la tanso npm install 3ashan kol el dependencies tenzel 3andko
 // type "$ npm run watch" in terminal instead of "node index.js" to make your server update whenever any change happen
+// thning to take care of: 1- can't query car status in the future aka n3ml form validation hnak
+
 require('dotenv').config()
 const express = require("express");
 const app = express();
@@ -270,10 +272,20 @@ app.post("/add-reservation", (req, res) => {
     [ssn, plateId, pickupDate, returnDate], (err, result) => {
         if(err)
             return res.send({message: err});
-        res.sendFile(__dirname + "/views/customer_home.html");
+        
+        db.query("INSERT INTO car_status (plate_id, status_code, status_date) VALUES (?,?)",
+        [plateId, 1, pickupDate], (err, result) => {
+            if(err)
+                return res.send({message: err});
+            db.query("INSERT INTO car_status (plate_id, status_code, status_date) VALUES (?,?,?)",
+            [plateId, 0, returnDate], (err, result) => {
+                if(err)
+                    return res.send({message: err});
+                res.sendFile(__dirname + "/views/customer_home.html");
+            });
+        });
     });
 });
-
 
 
 //check if ssn is already taken in customer
