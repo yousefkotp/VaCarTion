@@ -14,7 +14,7 @@ const cookieParser = require("cookie-parser");
 
 const {authorizeAdmin, authorizeCustomer, authorizeOffice} = require('./authServer');
 const saltRound = 10;
-const cookieOptions = {httpOnly: true, secure: false}; //change secure to true when deploying
+const cookieOptions = {secure: false}; //change secure to true when deploying
 
 app.set('view engine', 'ejs');
 app.use(express.static(path.join(__dirname +'/public')));
