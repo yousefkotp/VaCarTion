@@ -518,6 +518,22 @@ app.post("/get-most-profitable-office",(req,res)=>{
     });
 });
 
+app.post("/get-car-status-on-a-day",(req,res)=>{
+    let date = req.body.date;
+    let query = `SELECT *
+                FROM car_status
+                NATURAL INNER JOIN car
+                WHERE (plate_id,status_date) in (SELECT plate_id, MAX(status_date)
+                                                FROM car_status
+                                                where status_date <= ?
+                                                GROUP BY plate_id);`
+    db.query(query,[date],(err,result)=>{
+        if(err)
+            return res.send({message: err});
+        res.send({carStatus: result, message : "success"});
+    });
+});
+
 app.post("/logout",(req,res)=>{
     res.clearCookie("token");
     res.redirect("/");

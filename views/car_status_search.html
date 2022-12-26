@@ -30,19 +30,87 @@
         </div>
     </nav>
     <div className="page-title"><h3 class="page-title display-6">Cars Status Report</h3></div>
-<form method="post" action="/cars-status-search">
 <div class="justify-content-center">
     <label for="birthday" class="display-6 date">Date:</label>
     <input type="date" id="birthday" name="date" required>
-    <div><button type="submit" class="btn btn-light mybtn g black" >Show Results</button></div>
+    <div><button type="submit" class="btn btn-light mybtn g black submit-button" >Show Results</button></div>
 </div>
-</form>
+<div class="ajax padd-left padd-right justify-content-center">
+    <!-- <h3 class="display-6 black"> Results </h3> -->
+
+ </div>
     
-            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"
-                integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa"
-                crossorigin="anonymous"></script>
-            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-            <script src="signin.js" charset="utf-8"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa"
+        crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+
+        let currentDiv = $(".ajax");
+        let header=$("<h3></h3>").addClass("display-6 black padd-down");
+        currentDiv.append(header);
+        let table = $("<table></table>").addClass("table table-striped table-success");
+        currentDiv.append(table);
+
+        // action listner to submit button
+        $(".submit-button").click(function (e) {
+            table.empty();
+            header.text("Results");
+            // get the values from the input fields
+            var date = $("[name=date]").val();
+            //make a request to the server
+            $.ajax({
+                url: "/get-car-status-on-a-day",
+                type: "POST",
+                data: {
+                    date: date,
+                },
+                success: function (data) {
+                    if(data.message != "success"){
+                        alert(data.message);//error in the database 
+                        return;
+                    }
+                    //log the length of carStatus array
+                    if (data.carStatus.length > 0) {
+                        //create table header
+                        let thead = $("<thead></thead>");
+                        let tr = $("<tr></tr>");
+                        tr.append($("<th></th>").text("Car Plate ID"));
+                        tr.append($("<th></th>").text("Car Model"));
+                        tr.append($("<th></th>").text("Car Make"));
+                        tr.append($("<th></th>").text("Car Year"));
+                        tr.append($("<th></th>").text("Car Price/Hour"));
+                        tr.append($("<th></th>").text("Status"));
+                        thead.append(tr);
+                        table.append(thead);
+                        //create table body
+                        let tbody = $("<tbody></tbody>");
+                        for (let i = 0; i < data.carStatus.length; i++) {
+                            let tr = $("<tr></tr>");
+                            tr.append($("<td></td>").text(data.carStatus[i].plate_id));
+                            tr.append($("<td></td>").text(data.carStatus[i].model));
+                            tr.append($("<td></td>").text(data.carStatus[i].make));
+                            tr.append($("<td></td>").text(data.carStatus[i].year));
+                            tr.append($("<td></td>").text(data.carStatus[i].price));
+                            if(data.carStatus[i].status_code ==0)
+                                tr.append($("<td></td>").text("Available"));
+                            else if(data.carStatus[i].status_code ==1)
+                                tr.append($("<td></td>").text("In maintenance"));
+                            else if(data.carStatus[i].status_code ==2)
+                                tr.append($("<td></td>").text("Being Cleaned"));
+                            else if(data.carStatus[i].status_code ==3)
+                                tr.append($("<td></td>").text("Rented"));
+                            tbody.append(tr);
+                        }
+                        table.append(tbody);
+                    }
+                    else
+                        alert("No data found");
+                },
+            });
+            
+        });
+    </script>
 </body>
 
 </html>
