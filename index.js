@@ -467,6 +467,8 @@ app.post("/logout",(req,res)=>{
     res.redirect("/");
 });
 
+
+
 app.use(connectLiveReload());
 
 app.listen(process.env.PORT || 3000, () => { 

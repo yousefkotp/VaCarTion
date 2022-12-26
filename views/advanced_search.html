@@ -42,7 +42,7 @@
 
     <div class="center ">
         <h1 class="display-6 myheader black">Advanced Search</h1>
-        <form method="post" action="/add-car">
+        <div>
             <div class="row mb-3 ">
                 <div class="col ">
                     <input type="text" class="form-control myinput a" id="inputEmail3" placeholder="Make" name="make"
@@ -107,12 +107,16 @@
                     <input type="tel" class="form-control myinput b" placeholder="Phone Number" name="phone_no"   maxlength="11"  minlength="11"  ></input>
                 </div>
             </div>
-
+            <div class="row mb-3">
+                <div class="col">
+                    <input type="date" pattern="[0-9]*" inputmode="numeric" class="form-control myinput b" placeholder="Reservation Date" name="reservation_date" required ></input>
+                </div>
+            </div>
 
 
             <button type="submit" class="btn btn-light mybtn g black">Show Results</button>
 
-        </form>
+        </div>
     </div>
 
 
