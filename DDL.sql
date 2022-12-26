@@ -82,7 +82,7 @@ CREATE TABLE car_photos(
 CREATE TABLE car_status(
     plate_id VARCHAR(8),
     status_code SMALLINT,
-    status_date DATE,
+    status_date DATE DEFAULT (CURRENT_DATE),
     CONSTRAINT car_status_pk PRIMARY KEY (plate_id),
     CONSTRAINT car_status_fk FOREIGN KEY (plate_id) REFERENCES car(plate_id)
 );

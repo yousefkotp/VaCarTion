@@ -248,7 +248,13 @@ app.post("/add-car", (req, res) => {
     [plateId, model, make, year, price, officeId], (err, result) => {
         if(err)
             return res.send({message: err});
-        res.sendFile(__dirname + "/views/office_home.html");
+        //make the car status = 0 (available) in the car_status table
+        db.query("INSERT INTO car_status (plate_id, status) VALUES (?,?)",
+        [plateId, 0], (err, result) => {
+            if(err)
+                return res.send({message: err});
+            res.sendFile(__dirname + "/views/office_home.html");
+        });
     });
 });
 
