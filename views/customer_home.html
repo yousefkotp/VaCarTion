@@ -73,7 +73,7 @@
                 //add data to table body
                 for (var i = 0; i < data.reservation.length; i++) {
                     var reservation = data.reservation[i];
-                    var row = '<tr><td>' + reservation.reservation_no + '</td><td>' + reservation.plate_id + '</td><td>' + reservation.pickup_date + '</td><td>' + reservation.return_date + '</td><td>' + reservation.model + '</td><td>' + reservation.make + '</td><td>' + reservation.year + '</td><td>' + reservation.revenue + '</td></tr>';
+                    var row = '<tr><td>' + reservation.reservation_no + '</td><td>' + reservation.plate_id + '</td><td>' + reservation.pickup_date.substr(0,10) + '</td><td>' + reservation.return_date.substr(0,10) + '</td><td>' + reservation.model + '</td><td>' + reservation.make + '</td><td>' + reservation.year + '</td><td>' + reservation.revenue + '</td></tr>';
                     $('.customer-reservation').append(row);
                 }
             }
