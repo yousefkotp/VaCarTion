@@ -10,7 +10,62 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    
+    <!-- build customer home page for car rental system -->
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h1 class="text-center">VaCarTion</h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <h2 class="text-center">Welcome, {{customer_name}}</h2>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <h3 class="text-center">Your current reservations</h3>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th scope="col">Reservation ID</th>
+                            <th scope="col">Car ID</th>
+                            <th scope="col">Pickup Date</th>
+                            <th scope="col">Return Date</th>
+                            <th scope="col">Pickup Location</th>
+                            <th scope="col">Return Location</th>
+                            <th scope="col">Total Cost</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for reservation in reservations %}
+                        <tr>
+                            <td>{{reservation.reservation_id}}</td>
+                            <td>{{reservation.car_id}}</td>
+                            <td>{{reservation.pickup_date}}</td>
+                            <td>{{reservation.return_date}}</td>
+                            <td>{{reservation.pickup_location}}</td>
+                            <td>{{reservation.return_location}}</td>
+                            <td>{{reservation.total_cost}}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <h3 class="text-center">Make a new reservation</h3>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <form action="/customer_home" method="POST">
+                    <div class="form-group
 
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
