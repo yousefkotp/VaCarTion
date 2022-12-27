@@ -11,6 +11,8 @@ const ejs = require("ejs");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const cookieParser = require("cookie-parser");
+const nodemailer = require("nodemailer");
+
 
 const {authorizeAdmin, authorizeCustomer, authorizeOffice} = require('./authServer');
 const saltRound = 10;
@@ -203,6 +205,7 @@ app.post("/signup",(req,res)=>{
                     const user = result[0];
                     const accessToken = jwt.sign({user, role:"customer"}, process.env.ACCESS_TOKEN_SECRET,{expiresIn: "1h"});
                     res.cookie("token", accessToken, cookieOptions);
+                    /*Sending mail*/
                     res.sendFile(__dirname + "/views/customer_home.html");
                 }
             });
