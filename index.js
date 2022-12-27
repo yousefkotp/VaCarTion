@@ -566,6 +566,67 @@ app.post("/get-car-status-on-a-day",(req,res)=>{
     });
 });
 
+app.post("/advanced-search",(req,res)=>{
+    let model = req.body.model;
+    let make = req.body.make;
+    let year = req.body.year;
+    let plate_id = req.body.plate_id;
+    let ssn = req.body.ssn;
+    let fname = req.body.fName;
+    let lname = req.body.lName;
+    let customerEmail = req.body.email;
+    let customerPhone = req.body.phone_no;
+    let reservationDate = req.body.reservation_date;
+    //query reservation and join with customer and car to get the info
+    let query = `SELECT *
+                FROM reservation as r
+                NATURAL INNER JOIN car as c
+                NATURAL INNER JOIN customer as cu`;
+    //add the conditions to the query
+    let conditions = [];
+    if(model != ""){
+        conditions.push(`c.model = '${model}'`);
+    }
+    if(make != ""){
+        conditions.push(`c.make = '${make}'`);
+    }
+    if(year != ""){
+        conditions.push(`c.year = '${year}'`);
+    }
+    if(plate_id != ""){
+        conditions.push(`c.plate_id = '${plate_id}'`);
+    }
+    if(ssn != ""){
+        conditions.push(`cu.ssn = '${ssn}'`);
+    }
+    if(fname != ""){
+        conditions.push(`cu.fname = '${fname}'`);
+    }
+    if(lname != ""){
+        conditions.push(`cu.lname = '${lname}'`);
+    }
+    if(customerEmail != ""){
+        conditions.push(`cu.email = '${customerEmail}'`);
+    }
+    if(customerPhone != ""){
+        conditions.push(`cu.phone_no = '${customerPhone}'`);
+    }
+    if(reservationDate != ""){
+        conditions.push(`r.reservation_date = '${reservationDate}'`);
+    }
+    if(conditions.length > 0){
+        query += " WHERE " + conditions.join(" AND ");
+    }
+    
+    db.query
+    (query,(err,result)=>{
+        if(err)
+            return res.send({message: err});
+        res.send({reservation: result, message : "success"});
+    }
+    );
+});
+
 app.post("/logout",(req,res)=>{
     res.clearCookie("token");
     res.redirect("/");

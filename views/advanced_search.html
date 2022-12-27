@@ -63,7 +63,7 @@
 
             <div class="row mb-3 ">
                 <div class="col ">
-                    <input type="number" min="1990" max="2023" step="1" value="2020" class="form-control myinput a"
+                    <input type="number" min="1990" max="2023" step="1" class="form-control myinput a"
                         id="inputEmail3" placeholder="Year" name="year" ></input>
                     <!-- <p class="error1">username can not be empty !</p> -->
 
@@ -81,31 +81,31 @@
             
             <div class="row mb-3 ">
                 <div class="col ">
-                    <input type="text" class="form-control myinput a"placeholder="SSN" name="ssn"  minlength="6" maxlength="6" ></input>
+                    <input type="text" class="form-control myinput a"placeholder="Customer SSN" name="ssn"  minlength="6" maxlength="6" ></input>
                 </div>
             </div>
 
             <div class="row mb-3 ">
                 <div class="col ">
-                    <input type="text" class="form-control myinput a"placeholder="First Name" name="fName"  maxlength="32" ></input>
+                    <input type="text" class="form-control myinput a"placeholder="Customer First Name" name="fName"  maxlength="32" ></input>
                 </div>
             </div>
 
             <div class="row mb-3 ">
                 <div class="col ">
-                    <input type="text" class="form-control myinput a" placeholder="Last Name" name="lName" maxlength="32" ></input>
+                    <input type="text" class="form-control myinput a" placeholder="Customer Last Name" name="lName" maxlength="32" ></input>
                 </div>
             </div>
 
             <div class="row mb-3 ">
                 <div class="col ">
-                    <input type="email" class="form-control myinput b" placeholder="E-Mail" name="email" maxlength="64" ></input>
+                    <input type="email" class="form-control myinput b" placeholder="Customer E-Mail" name="email" maxlength="64" ></input>
                 </div>
             </div>
 
             <div class="row mb-3 ">
                 <div class="col ">
-                    <input type="tel" class="form-control myinput b" placeholder="Phone Number" name="phone_no"   maxlength="11"  minlength="11"  ></input>
+                    <input type="tel" class="form-control myinput b" placeholder="Customer Phone Number" name="phone_no"   maxlength="11"  minlength="11"  ></input>
                 </div>
             </div>
             <div class="row mb-3">
@@ -115,17 +115,86 @@
             </div>
 
 
-            <button type="submit" class="btn btn-light mybtn g black">Show Results</button>
+            <button type="submit" class="btn btn-light mybtn g black submit-button">Show Results</button>
+
+        </div>
+        <div class="ajax">
 
         </div>
     </div>
+
 
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa"
         crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="app.js" charset="utf-8"></script>
+    <script>
+        let table = $("<table></table>").addClass("table table-striped table-success");
+        //add event listener to the submit button
+        document.querySelector('.submit-button').addEventListener('click', function (e) {
+            table.empty();
+            //get values of all the inputs in a separate variable by name
+            var make = document.querySelector('input[name="make"]').value;
+            var model = document.querySelector('input[name="model"]').value;
+            var year = document.querySelector('input[name="year"]').value;
+            var plate_id = document.querySelector('input[name="plate_id"]').value;
+            var ssn = document.querySelector('input[name="ssn"]').value;
+            var fName = document.querySelector('input[name="fName"]').value;
+            var lName = document.querySelector('input[name="lName"]').value;
+            var email = document.querySelector('input[name="email"]').value;
+            var phone_no = document.querySelector('input[name="phone_no"]').value;
+            var reservation_date = document.querySelector('input[name="reservation_date"]').value;
+            //post request to the /advanced-search endpoint
+            $.post('/advanced-search', {
+                make: make,
+                model: model,
+                year: year,
+                plate_id: plate_id,
+                ssn: ssn,
+                fName: fName,
+                lName: lName,
+                email: email,
+                phone_no: phone_no,
+                reservation_date: reservation_date
+            }, function (data) {
+                //append the table to the div with id table
+                $(".ajax").append(table);
+                let thead = $("<thead></thead>");
+                let tr = $("<tr></tr>");
+                tr.append($("<th></th>").text("Reservation Number"));
+                tr.append($("<th></th>").text("Make"));
+                tr.append($("<th></th>").text("Model"));
+                tr.append($("<th></th>").text("Year"));
+                tr.append($("<th></th>").text("Plate ID"));
+                tr.append($("<th></th>").text("Customer SSN"));
+                tr.append($("<th></th>").text("Customer First Name"));
+                tr.append($("<th></th>").text("Customer Last Name"));
+                tr.append($("<th></th>").text("Customer E-Mail"));
+                tr.append($("<th></th>").text("Customer Phone Number"));
+                tr.append($("<th></th>").text("Reservation Date"));
+                thead.append(tr);
+                table.append(thead);
+                let tbody = $("<tbody></tbody>");
+                for (let i = 0; i < data.reservation.length; i++) {
+                    let tr = $("<tr></tr>");
+                    tr.append($("<td></td>").text(data.reservation[i].reservation_no));
+                    tr.append($("<td></td>").text(data.reservation[i].make));
+                    tr.append($("<td></td>").text(data.reservation[i].model));
+                    tr.append($("<td></td>").text(data.reservation[i].year));
+                    tr.append($("<td></td>").text(data.reservation[i].plate_id));
+                    tr.append($("<td></td>").text(data.reservation[i].ssn));
+                    tr.append($("<td></td>").text(data.reservation[i].fname));
+                    tr.append($("<td></td>").text(data.reservation[i].lname));
+                    tr.append($("<td></td>").text(data.reservation[i].email));
+                    tr.append($("<td></td>").text(data.reservation[i].phone_no));
+                    tr.append($("<td></td>").text(data.reservation[i].reserve_date.substr(0, 10)));
+                    tbody.append(tr);
+                }
+                table.append(tbody);
+            });
+        });
+    </script>
 </body>
 
 </html>
