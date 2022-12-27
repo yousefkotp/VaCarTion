@@ -1,7 +1,4 @@
-// la tanso npm install 3ashan kol el dependencies tenzel 3andko
-// type "$ npm run watch" in terminal instead of "node index.js" to make your server update whenever any change happen
-// thning to take care of: 1- can't query car status in the future aka n3ml form validation hnak
-
+//
 require('dotenv').config()
 const express = require("express");
 const app = express();
@@ -581,7 +578,7 @@ app.post("/advanced-search",(req,res)=>{
     let query = `SELECT *
                 FROM reservation as r
                 NATURAL INNER JOIN car as c
-                NATURAL INNER JOIN customer as cu`;
+                INNER JOIN customer as cu ON cu.ssn = r.ssn`;
     //add the conditions to the query
     let conditions = [];
     if(model != ""){
@@ -617,7 +614,7 @@ app.post("/advanced-search",(req,res)=>{
     if(conditions.length > 0){
         query += " WHERE " + conditions.join(" AND ");
     }
-    
+
     db.query
     (query,(err,result)=>{
         if(err)
