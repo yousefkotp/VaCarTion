@@ -230,7 +230,7 @@ app.post("/signup",(req,res)=>{
                            //res.send("success");
                         }
                     });
-                    res.sendFile(__dirname + "/views/customer_home.html");
+                    res.redirect("/signin");
                 }
             });
         });
@@ -259,7 +259,7 @@ app.post("/office-signup",(req,res)=>{
             const user = result[0];
             const accessToken = jwt.sign({user, role:"office"}, process.env.ACCESS_TOKEN_SECRET,{expiresIn: "1h"});
             res.cookie("token", accessToken, cookieOptions);
-            res.sendFile(__dirname + "/views/office_home.html");
+            res.redirect("/signin");
         });
     });
 });
