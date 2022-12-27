@@ -14,7 +14,7 @@ const cookieParser = require("cookie-parser");
 const nodemailer = require("nodemailer");
 
 
-const {authorizeAdmin, authorizeCustomer, authorizeOffice} = require('./authServer');
+const {decodeToken, authorizeAdmin, authorizeCustomer, authorizeOffice} = require('./authServer');
 const saltRound = 10;
 const cookieOptions = {secure: false}; //change secure to true when deploying
 
@@ -354,13 +354,30 @@ app.post("/get-car-reservation",(req,res)=>
     });
 });
 
+//get customer name from ssn
+app.post("/get-customer-name",(req,res)=>
+{
+    let token = decodeToken(req.cookies.token);
+    var ssn = token.user.ssn;
+    ///get the reservation info from the database
+    db.query("SELECT fname,lname FROM customer WHERE ssn = ?",
+    [ssn], (err, result) => {
+        if(err)
+            return res.send({message: err});
+        res.send({customer: result,message : "success"});
+    });
+});
 
 // customer reservation search
 app.post("/get-customer-reservation",(req,res)=>
 {
-    var ssn=req.body.ssn;
+    //get decoded token from the request
+    user = decodeToken(req.cookies.token);
+    var ssn = user.user.ssn;
+    if(ssn == null)
+        ssn=req.body.ssn;
     ///get the reservation info from the database
-    db.query("SELECT * FROM reservation as r NATURAL INNER JOIN customer INNER JOIN car as c on c.plate_id = r.plate_id WHERE r.ssn = ?",
+    db.query("SELECT *, ((return_date-pickup_date)*price )as revenue FROM reservation as r NATURAL INNER JOIN customer INNER JOIN car as c on c.plate_id = r.plate_id WHERE r.ssn = ?",
     [ssn], (err, result) => {
         if(err)
             return res.send({message: err});
