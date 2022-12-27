@@ -31,6 +31,17 @@ const db = mysql.createConnection({
     password: process.env.DB_PASS,
     database: process.env.DB_NAME,
 });
+db.connect();
+
+
+const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: process.env.EMAIL,
+        pass: process.env.PASSWORD
+    }
+});
+
 
 // msh 3arf a run query begeb not authorized f 3mlt leha comment
 // host: "db4free.net",
@@ -203,6 +214,22 @@ app.post("/signup",(req,res)=>{
                     const accessToken = jwt.sign({user, role:"customer"}, process.env.ACCESS_TOKEN_SECRET,{expiresIn: "1h"});
                     res.cookie("token", accessToken, cookieOptions);
                     /*Sending mail*/
+                    var mailOptions = {
+                        from: process.env.EMAIL,
+                        to: email,
+                        subject: 'Welcome to VaCarTion🚘💚',
+                        text: "habiby ahamo"
+                    };
+                    transporter.sendMail(mailOptions, function (error, info) {
+                        if (error) {
+                            console.log(error);
+                           // res.send("failure");
+                
+                        } else {
+                           console.log('Email sent: ' + info.response);
+                           //res.send("success");
+                        }
+                    });
                     res.sendFile(__dirname + "/views/customer_home.html");
                 }
             });
