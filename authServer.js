@@ -24,6 +24,9 @@ function authorizeAdmin(req, res, next) {
     });
 };
 
+function decodeToken(token){
+    return jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+}
 
 
 function authorizeCustomer(req, res, next) {
@@ -66,4 +69,4 @@ function authorizeOffice(req, res, next) {
         next();
     });
 }
-module.exports = {authorizeAdmin, authorizeCustomer, authorizeOffice};
+module.exports = {authorizeAdmin, authorizeCustomer, authorizeOffice, decodeToken};
