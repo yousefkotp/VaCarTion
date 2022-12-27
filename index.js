@@ -11,7 +11,7 @@ const cookieParser = require("cookie-parser");
 const nodemailer = require("nodemailer");
 
 
-const {decodeToken, authorizeAdmin, authorizeCustomer, authorizeOffice} = require('./authServer');
+const {decodeToken, authorizeAdmin, authorizeCustomer, authorizeOffice, authroizeAdminOrCustomer} = require('./authServer');
 const saltRound = 10;
 const cookieOptions = {secure: false}; //change secure to true when deploying
 
@@ -230,7 +230,7 @@ app.post("/signup",(req,res)=>{
                            //res.send("success");
                         }
                     });
-                    res.sendFile(__dirname + "/views/customer_home.html");
+                    res.redirect("/signin");
                 }
             });
         });
@@ -259,7 +259,7 @@ app.post("/office-signup",(req,res)=>{
             const user = result[0];
             const accessToken = jwt.sign({user, role:"office"}, process.env.ACCESS_TOKEN_SECRET,{expiresIn: "1h"});
             res.cookie("token", accessToken, cookieOptions);
-            res.sendFile(__dirname + "/views/office_home.html");
+            res.redirect("/signin");
         });
     });
 });
@@ -366,7 +366,7 @@ app.post("/check-phone-office", (req, res) => {
 });
 
 //car reservation search
-app.post("/get-car-reservation",(req,res)=>
+app.post("/get-car-reservation", authorizeAdmin, (req,res)=>
 {
     var plate_id=req.body.plate_id;
     ///get the reservation info from the database
@@ -379,7 +379,7 @@ app.post("/get-car-reservation",(req,res)=>
 });
 
 //get customer name from ssn
-app.post("/get-customer-name",(req,res)=>
+app.post("/get-customer-name", authroizeAdminOrCustomer,(req,res)=>
 {
     let token = decodeToken(req.cookies.token);
     var ssn = token.user.ssn;
@@ -393,7 +393,7 @@ app.post("/get-customer-name",(req,res)=>
 });
 
 // customer reservation search
-app.post("/get-customer-reservation",(req,res)=>
+app.post("/get-customer-reservation", authroizeAdminOrCustomer, (req,res)=>
 {
     //get decoded token from the request
     user = decodeToken(req.cookies.token);
@@ -410,16 +410,8 @@ app.post("/get-customer-reservation",(req,res)=>
 });
 
 
-// cars status at certain day search
-app.post("/get-cars-status", (req, res) => {
-    var date=req.body.date;
-    console.log(date);
-    ///write the query then redirect to your new page
-});
-
-
 //payments at certain period search
-app.post("/get-payments-within-period", (req, res) => {
+app.post("/get-payments-within-period", authorizeAdmin, (req, res) => {
     var start_date=req.body.start_date;
     var end_date=req.body.end_date;
     //get the payments info from the database within the period
@@ -433,7 +425,7 @@ app.post("/get-payments-within-period", (req, res) => {
 
 
 // reservations at certain period search
-app.post("/get-reservations-within-period", (req, res) => {
+app.post("/get-reservations-within-period", authorizeAdmin,(req, res) => {
     var start_date=req.body.start_date;
     var end_date=req.body.end_date;
     //get the reservation info from the database within the period
@@ -445,7 +437,8 @@ app.post("/get-reservations-within-period", (req, res) => {
     });
 });
 
-app.post("/get-car-reservation-within-period",(req,res)=>{
+// reservation at certain period search for a specific car
+app.post("/get-car-reservation-within-period", authorizeAdmin, (req,res)=>{
     var plate_id=req.body.plate_id;
     var start_date=req.body.start_date;
     var end_date=req.body.end_date;
@@ -542,7 +535,7 @@ app.post("/get-cars-using-office", (req, res) => {
     });
 });
 
-app.post("/get-most-rented-model",(req,res)=>{
+app.post("/get-most-rented-model", authorizeAdmin, (req,res)=>{
     db.query("SELECT model, COUNT(*) as count FROM reservation NATURAL INNER JOIN car GROUP BY model ORDER BY count DESC LIMIT 1",(err,result)=>{
         if(err)
             return res.send({message: err});
@@ -550,7 +543,7 @@ app.post("/get-most-rented-model",(req,res)=>{
     });
 });
 
-app.post("/get-most-rented-make",(req,res)=>{
+app.post("/get-most-rented-make", authorizeAdmin, (req,res)=>{
     db.query("SELECT make, COUNT(*) as count FROM reservation NATURAL INNER JOIN car GROUP BY make ORDER BY count DESC LIMIT 1",(err,result)=>{
         if(err)
             return res.send({message: err});
@@ -558,7 +551,7 @@ app.post("/get-most-rented-make",(req,res)=>{
     });
 });
 
-app.post("/get-most-profitable-office",(req,res)=>{
+app.post("/get-most-profitable-office", authorizeAdmin, (req,res)=>{
     let query = `SELECT o.name, o.office_id, SUM(((r.return_date-r.pickup_date)*c.price )) as total
                 FROM reservation as r
                 NATURAL INNER JOIN car as c
@@ -574,7 +567,7 @@ app.post("/get-most-profitable-office",(req,res)=>{
     });
 });
 
-app.post("/get-car-status-on-a-day",(req,res)=>{
+app.post("/get-car-status-on-a-day", authorizeAdmin, (req,res)=>{
     let date = req.body.date;
     let query = `SELECT *
                 FROM car_status
@@ -590,7 +583,7 @@ app.post("/get-car-status-on-a-day",(req,res)=>{
     });
 });
 
-app.post("/advanced-search",(req,res)=>{
+app.post("/advanced-search", authorizeAdmin,(req,res)=>{
     let model = req.body.model;
     let make = req.body.make;
     let year = req.body.year;

@@ -56,29 +56,31 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script>
-        //get customer name from post request to get-customer-name
-        $.ajax({
-            url: '/get-customer-name',
-            type: 'POST',
-            success: function (data) {
-                //add name to customer-name class
-                $('.customer-name').text(data.customer[0].fname + ' ' + data.customer[0].lname);
-            }
-        });
-        //make post request to get-customer-reservation
-        $.ajax({
-            url: '/get-customer-reservation',
-            type: 'POST',
-            success: function (data) {
-                //add data to table body
-                for (var i = 0; i < data.reservation.length; i++) {
-                    var reservation = data.reservation[i];
-                    var row = '<tr><td>' + reservation.reservation_no + '</td><td>' + reservation.plate_id + '</td><td>' + reservation.pickup_date.substr(0,10) + '</td><td>' + reservation.return_date.substr(0,10) + '</td><td>' + reservation.model + '</td><td>' + reservation.make + '</td><td>' + reservation.year + '</td><td>' + reservation.revenue + '</td></tr>';
-                    $('.customer-reservation').append(row);
+        // wait for the DOM to be loaded
+        $(document).ready(function () {
+            //make post request to get-customer-name
+            $.ajax({
+                url: '/get-customer-name',
+                type: 'POST',
+                success: function (data) {
+                    //add name to customer-name class
+                    $('.customer-name').text(data.customer[0].fname + ' ' + data.customer[0].lname);
                 }
-            }
+            });
+            //make post request to get-customer-reservation
+            $.ajax({
+                url: '/get-customer-reservation',
+                type: 'POST',
+                success: function (data) {
+                    //add data to table body
+                    for (var i = 0; i < data.reservation.length; i++) {
+                        var reservation = data.reservation[i];
+                        var row = '<tr><td>' + reservation.reservation_no + '</td><td>' + reservation.plate_id + '</td><td>' + reservation.pickup_date.substr(0,10) + '</td><td>' + reservation.return_date.substr(0,10) + '</td><td>' + reservation.model + '</td><td>' + reservation.make + '</td><td>' + reservation.year + '</td><td>' + reservation.revenue + '</td></tr>';
+                        $('.customer-reservation').append(row);
+                    }
+                }
+            });
         });
-
     </script>
 </body>
 </html>
