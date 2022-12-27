@@ -130,10 +130,17 @@
         crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script>
+        
+
+        let currentDiv = $(".ajax");
         let table = $("<table></table>").addClass("table table-striped table-success");
+        let header=$("<h3></h3>").addClass("display-6 black padd-down");
+        //remove header and table if they exist
+        currentDiv.empty();
+        
         //add event listener to the submit button
         document.querySelector('.submit-button').addEventListener('click', function (e) {
-            let header=$("<h3></h3>").addClass("display-6 black padd-down");
+            
             currentDiv.append(header);
             header.text("Results");
             table.empty();
