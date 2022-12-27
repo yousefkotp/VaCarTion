@@ -575,46 +575,56 @@ app.post("/advanced-search",(req,res)=>{
     let customerPhone = req.body.phone_no;
     let reservationDate = req.body.reservation_date;
     //query reservation and join with customer and car to get the info
-    let query = `SELECT *
-                FROM reservation as r
-                NATURAL INNER JOIN car as c
-                INNER JOIN customer as cu ON cu.ssn = r.ssn`;
+    let query1 = `SELECT * FROM reservation as r
+                NATURAL LEFT JOIN car AS c
+                LEFT JOIN customer AS cu ON cu.ssn = r.ssn
+                `
+                
+    let join = `UNION ALL\n`
+    let query2 = `SELECT * FROM reservation as r
+                NATURAL RIGHT JOIN car As c
+                RIGHT JOIN customer AS cu ON cu.ssn = r.ssn
+                WHERE r.plate_id IS NULL`;
+                
     //add the conditions to the query
     let conditions = [];
-    if(model != ""){
+    if(model != "" && model != null){
         conditions.push(`c.model = '${model}'`);
     }
-    if(make != ""){
+    if(make != "" && make != null){
         conditions.push(`c.make = '${make}'`);
     }
-    if(year != ""){
+    if(year != "" && year != null){
         conditions.push(`c.year = '${year}'`);
     }
-    if(plate_id != ""){
+    if(plate_id != "" && plate_id != null){
         conditions.push(`c.plate_id = '${plate_id}'`);
     }
-    if(ssn != ""){
+    if(ssn != "" && ssn != null){
         conditions.push(`cu.ssn = '${ssn}'`);
     }
-    if(fname != ""){
+    if(fname != "" && fname != null){
         conditions.push(`cu.fname = '${fname}'`);
     }
-    if(lname != ""){
+    if(lname != "" && lname != null){
         conditions.push(`cu.lname = '${lname}'`);
     }
-    if(customerEmail != ""){
+    if(customerEmail != "" && customerEmail != null){
         conditions.push(`cu.email = '${customerEmail}'`);
     }
-    if(customerPhone != ""){
+    if(customerPhone != "" && customerPhone != null){
         conditions.push(`cu.phone_no = '${customerPhone}'`);
     }
-    if(reservationDate != ""){
+    if(reservationDate != "" && reservationDate != null){
         conditions.push(`r.reservation_date = '${reservationDate}'`);
     }
     if(conditions.length > 0){
-        query += " WHERE " + conditions.join(" AND ");
+        query1 += " WHERE " + conditions.join(" AND ");
     }
-
+    if(conditions.length > 0){
+        query2 += " AND " + conditions.join(" AND ");
+    }
+    let query = query1 + join + query2;
     db.query
     (query,(err,result)=>{
         if(err)
