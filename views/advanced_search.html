@@ -118,7 +118,7 @@
             <button type="submit" class="btn btn-light mybtn g black submit-button">Show Results</button>
 
         </div>
-        <div class="ajax">
+        <div class="ajax padd-left padd-right justify-content-center">
 
         </div>
     </div>
@@ -133,6 +133,9 @@
         let table = $("<table></table>").addClass("table table-striped table-success");
         //add event listener to the submit button
         document.querySelector('.submit-button').addEventListener('click', function (e) {
+            let header=$("<h3></h3>").addClass("display-6 black padd-down");
+            currentDiv.append(header);
+            header.text("Results");
             table.empty();
             //get values of all the inputs in a separate variable by name
             var make = document.querySelector('input[name="make"]').value;
