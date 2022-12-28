@@ -675,14 +675,17 @@ app.post("/get-car-status-on-a-day", authorizeAdmin, (req, res) => {
 
 app.post("/get-car-status-by-plate-id", authorizeOffice, (req, res) => {
     let plate_id = req.body.plate_id;
+    //get current Date in the format of YYYY-MM-DD
+    let date = new Date().toISOString().slice(0, 10);
+
     let query = `SELECT *
                 FROM car_status
                 NATURAL INNER JOIN car
                 WHERE (plate_id,status_date) in (SELECT plate_id, MAX(status_date)
                                                 FROM car_status
-                                                where plate_id = ?
+                                                where plate_id = ? and status_date <= ?
                                                 GROUP BY plate_id);`
-    db.query(query, [plate_id], (err, result) => {
+    db.query(query, [plate_id, date], (err, result) => {
         if (err)
             return res.send({ message: err });
         res.send({ carStatus: result, message: "success" });
