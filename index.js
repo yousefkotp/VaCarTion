@@ -673,6 +673,22 @@ app.post("/get-car-status-on-a-day", authorizeAdmin, (req, res) => {
     });
 });
 
+app.post("/get-car-status-by-plate-id", authorizeOffice, (req, res) => {
+    let plate_id = req.body.plate_id;
+    let query = `SELECT *
+                FROM car_status
+                NATURAL INNER JOIN car
+                WHERE (plate_id,status_date) in (SELECT plate_id, MAX(status_date)
+                                                FROM car_status
+                                                where plate_id = ?
+                                                GROUP BY plate_id);`
+    db.query(query, [plate_id], (err, result) => {
+        if (err)
+            return res.send({ message: err });
+        res.send({ carStatus: result, message: "success" });
+    });
+});
+
 app.post("/advanced-search", authorizeAdmin, (req, res) => {
     let model = req.body.model;
     let make = req.body.make;
