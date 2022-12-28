@@ -13,7 +13,7 @@
 
 <body>
     <div class="container-fluid">
-        <div class="row" >
+        <div class="row">
             <div class="col-2" style="margin: 10px;;">
                 <h1 class="text-center black">VaCarTion <img src="/car.png"></img></h1>
             </div>
@@ -21,11 +21,12 @@
                 <h2 class="text-center black"><span class="office-name"></h2>
             </div>
             <div class="col-2" style="padding-left: 100px;">
-                <button type="button" class="col btn btn-outline-danger logout-button" style="margin:10px;">Log Out </button>
+                <button type="button" class="col btn btn-outline-danger logout-button" style="margin:10px;">Log Out
+                </button>
             </div>
         </div>
 
-        <div class="row" style="padding-top:50px; margin:50px;">
+        <div class="row" style="padding-top:10px; margin:50px;">
             <div class="col-12">
                 <h3 class="text-center black">Your current reservations</h3>
             </div>
@@ -84,12 +85,6 @@
         integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa"
         crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"
-      integrity="sha512-qTXRIMyZIFb8iQcfjXWCO8+M5Tbc38Qi5WzdPOYZHIlZpzBHG3L3by84BBBOiRGiEb7KKtAOAs5qYdUiZiQNNQ=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    ></script>
     <script>
         let status = ["Available", "In Maintainance", "Being Cleaned", "Rented"];
 
@@ -116,15 +111,14 @@
                         const rDate = new Date(reservation.return_date);
                         const pDate = new Date(reservation.pickup_date);
                         const resDate = new Date(reservation.pickup_date);
-                        const diffTime = Math.abs(pDate - rDate);
-                        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                        //const diffTime = Math.abs(pDate - rDate);
+                        //const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
-                        reservation.return_date = moment(rDate).format('l');
-                        reservation.pickup_date = moment(pDate).format('l');
-                        reservation.reserve_date = moment(resDate).format('l');
-                        console.log(diffDays);
-                        var revenue = reservation.price * diffDays;
-                        var row = '<tr><td>' + reservation.reservation_no + '</td><td>' + reservation.plate_id + '</td><td>' + reservation.fname + " " + reservation.lname + '</td><td>' + reservation.reserve_date + '</td><td>' + reservation.pickup_date + '</td><td>' + reservation.return_date + '</td><td>' + revenue + '</td></tr>';
+                        reservation.return_date = moment(rDate).format('DD/MM/YYYY');
+                        reservation.pickup_date = moment(pDate).format('DD/MM/YYYY');
+                        reservation.reserve_date = moment(resDate).format('DD/MM/YYYY');
+                        //var revenue = reservation.price * diffDays;
+                        var row = '<tr><td>' + reservation.reservation_no + '</td><td>' + reservation.plate_id + '</td><td>' + reservation.fname + " " + reservation.lname + '</td><td>' + reservation.reserve_date.substr(0, 10) + '</td><td>' + reservation.pickup_date.substr(0, 10) + '</td><td>' + reservation.return_date.substr(0, 10) + '</td><td>' + reservation.revenue + '</td></tr>';
                         $('.office-reservation').append(row);
                     }
                 }
@@ -138,18 +132,17 @@
                         var car = data.cars[i];
                         console.log(car);
                         var d = new Date(car.registration_date);
-                        car.registration_date = moment(d).format('l');
                         status.unshift(status[Number(car.status_code)]);
                         var status_codes = status.filter((element, index) => {
                             return status.indexOf(element) === index;
                         });
-                        var row = '<tr><td>' + car.plate_id + '</td>' + "<TD ALIGN=\"center\"> <select>\
+                        var row = '<tr><td>' + car.plate_id + '</td>' + "<TD> <select>\
                                  <option value=\"saab\">"+ status_codes[0] + "</option>\
                                  <option value=\"volvo\">" + status_codes[1] + "</option>\
                                  <option value=\"mercedes\">"+ status_codes[2] + "</option>\
                                  <option value=\"audi\">"+ status_codes[3] + "</option>\
                             </select>\
-                         </TD><td>" + car.registration_date + '</td><td>' + car.make + '</td><td>' + car.model + '</td><td>' + car.year + '</td><td>' + car.price +
+                         </TD><td>" + car.registration_date.substr(0, 10) + '</td><td>' + car.make + '</td><td>' + car.model + '</td><td>' + car.year + '</td><td>' + car.price +
                             "<td><button style=\"padding: 0\;border: none\;background: none\; \"><img src=\"/remove.png\" width=25 height=25> </button></td>" + '</td></tr>';
                         $('.office-cars').append(row);
                     }
@@ -157,7 +150,7 @@
             });
 
             $('.office-cars').on('click', 'select', function (e) {
-                var new_status = status.indexOf($(this).find(":selected").text())-1;
+                var new_status = status.indexOf($(this).find(":selected").text()) - 1;
                 console.log(new_status);
                 //console.log($(this).closest('tr').children('td:first').text());
                 $.ajax({
@@ -170,10 +163,10 @@
                     success: function (response) {
                         //window.location.href = "/";
                         console.log(response);
-                        if(response.success)
-                        alert("Status Updated Successfully")
+                        if (response.success)
+                            alert("Status Updated Successfully")
                     },
-                    error: function (response){
+                    error: function (response) {
                         console.log(response);
                     }
                 });
@@ -207,7 +200,7 @@
             $("#add_car_btn").click(function () {
                 $.ajax({
                     url: "/add-car",
-                    type: "POST",
+                    type: "GET",
                     success: function (response) {
                         window.location.href = "/add-car";
                     }
