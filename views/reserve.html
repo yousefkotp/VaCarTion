@@ -34,71 +34,21 @@
             <h3 class="display-3 align-content-center text-center">Reserve a Car</h3>
         </div>
         <div class="row specs" style="margin:50px;">
+            <select class="col m-5" id="modelSelect"></select>
+            <select class="col m-5" id="makeSelect"></select>
+            <select class="col m-5" id="locationSelect"></select>
+        </div>
+        <div class="justify-content-center">
+            <label for="pickDate" class="display-6 date">Pickup Date</label>
+            <input type="date" id="pickDate" name="start_date" required="">
+            <label for="returnDate" class="display-6 date">Return Date:</label>
+            <input type="date" id="returnDate" name="end_date" required="">
+            <div><button id="getAvailable" class="btn btn-light mybtn g black">Show Available Cars</button></div>
         </div>
         <form method="post" action="/reserveCar">
-            <form method="get" action="/getAvailabeCars">
-                <div class="justify-content-center">
-                    <label for="birthday" class="display-6 date">Pickup Date</label>
-                    <input type="date" id="birthday" name="start_date" required="">
-                    <label for="birthday2" class="display-6 date">Return Date:</label>
-                    <input type="date" id="birthday" name="end_date" required="">
-                    <div><button type="submit" class="btn btn-light mybtn g black">Show Available Cars</button></div>
-                </div>
-            </form>
+
             <div class="card-container overflow-auto" style="max-height:1000px;">
 
-                <div class="card" id="card1">
-                    <img src="https://placeimg.com/800/500/animals">
-                    <div class="content">
-                        <h3>What a cute animal!</h3>
-                        <p>Nanotechnology immersion along the information highway will close the loop on focusing solely
-                            on
-                            the bottom line.</p>
-                    </div>
-                </div>
-
-                <div class="card" id="card2">
-                    <img src="https://placeimg.com/800/500/arch">
-                    <div class="content">
-                        <h3>Architecture is wonderful.</h3>
-                        <p>Override the digital divide with additional clickthroughs from DevOps.</p>
-                    </div>
-                </div>
-
-                <div class="card" id="card3">
-                    <img src="https://placeimg.com/800/500/nature">
-                    <div class="content">
-                        <h3>Be one with mother nature.</h3>
-                        <p>Capitalize on low hanging fruit to identify a ballpark value added activity to beta test.</p>
-                    </div>
-                </div>
-
-                <div class="card" id="card4">
-                    <img src="https://placeimg.com/800/500/people">
-                    <div class="content">
-                        <h3>There's billions of people, let's be excellent to them.</h3>
-                        <p>Leverage agile frameworks to provide a robust synopsis for high level overviews.</p>
-                    </div>
-                </div>
-
-                <div class="card" id="card5">
-                    <img src="https://placeimg.com/800/500/tech">
-                    <div class="content">
-                        <h3>Technology is life...</h3>
-                        <p>Organically grow the holistic world view of disruptive innovation via workplace diversity and
-                            empowerment.</p>
-                    </div>
-                </div>
-
-                <div class="card" id="card6">
-                    <img src="https://placeimg.com/800/500/any">
-                    <div class="content">
-                        <h3>Do you feel lucky?</h3>
-                        <p>Iterative approaches to corporate strategy foster collaborative thinking to further the
-                            overall
-                            value proposition.</p>
-                    </div>
-                </div>
             </div>
             <div class="form-check justify-content-center h4" style="margin: 10px;">
                 <input class="form-check-input h4" style="float:inherit;" type="checkbox" value=""
@@ -183,7 +133,6 @@
                     selectedCar = $(this).attr('id')
                 }
             });
-
             $(document).ready(function () {
                 $.ajax({
                     url: '/get-customer-name',
@@ -194,38 +143,119 @@
                     }
                 });
 
+                $("#modelSelect").change(function () {
+                    var carModel = $('#modelSelect').find(":selected").text()
+                    $.ajax({
+                        url: '/get-all-cars-makes',
+                        type: 'POST',
+                        data: {
+                            model: carModel
+                        },
+                        success: function (data) {
+                            console.log(typeof carModel)
+                            console.log($('#modelSelect').find(":selected").text().toString())
+                            //var dropDown = "<select class=\"col-2\">"
+                            var dropDown = ""
+                            dropDown += "<option>Any</option>"
+                            //add data to table body
+                            console.log(data.carMakes);
+                            for (var i = 0; i < data.carMakes.length; i++) {
+                                var car = data.carMakes[i].make;
+                                console.log(car);
+                                dropDown += "<option>" + car + "</option>"
+                            }
+                            $('#makeSelect').empty();
+                            $('#makeSelect').append(dropDown);
+                        }
+                    });
+                });
                 $.ajax({
                     url: '/get-all-cars-models',
                     type: 'POST',
                     success: function (data) {
-                        var dropDown = "<select class=\"col-2\">"
+                        //var dropDown = "<select class=\"col-2\">"
+                        var dropDown = ""
+                        dropDown += "<option>Any</option>"
                         //add data to table body
-                        console.log(data.carModels);
                         for (var i = 0; i < data.carModels.length; i++) {
                             var car = data.carModels[i].model;
-                            console.log(car);
-                            dropDown += "<option value=\"saab\">" + car + "</option>"
+                            dropDown += "<option>" + car + "</option>"
                         }
-                        dropDown += "</select>"
-                        $('.specs').append(dropDown);
+                        $('#modelSelect').append(dropDown);
                     }
                 });
-
                 $.ajax({
                     url: '/get-all-cars-makes',
                     type: 'POST',
+                    data: {
+                        model: 'Any'
+                    },
                     success: function (data) {
-                        var dropDown = "<select class=\"col-2\">"
+                        //console.log($('#modelSelect').find(":selected").text().toString())
+                        var dropDown = ""
+                        dropDown += "<option>Any</option>"
                         //add data to table body
-                        console.log(data.carMakes);
+                        //console.log(data.carMakes);
                         for (var i = 0; i < data.carMakes.length; i++) {
-                            var car = data.carMakes[i].model;
-                            console.log(car);
-                            dropDown += "<option value=\"saab\">" + car + "</option>"
+                            var car = data.carMakes[i].make;
+                            dropDown += "<option>" + car + "</option>"
                         }
-                        dropDown += "</select>"
-                        $('.specs').append(dropDown);
+                        $('#makeSelect').empty();
+                        $('#makeSelect').append(dropDown);
                     }
+                });
+                $.ajax({
+                    url: '/get-all-offices',
+                    type: 'POST',
+                    success: function (data) {
+                        var dropDown = ""
+                        dropDown += "<option>Any</option>"
+                        //add data to table body
+                        for (var i = 0; i < data.offices.length; i++) {
+                            var office = data.offices[i].name + " - " + data.offices[i].building_no + ", " + data.offices[i].city + ", " + data.offices[i].city + " " + data.offices[i].country;
+                            dropDown += "<option>" + office + "</option>"
+                        }
+                        $('#locationSelect').empty();
+                        $('#locationSelect').append(dropDown);
+                    }
+                });
+                $("#getAvailable").click(function () {
+                    var pickDate = $("#pickDate").val()
+                    var retDate = $("#returnDate").val()
+
+                    if (pickDate === "" || retDate === "") {
+                        alert("Please select a pick up and return date")
+                        return
+                    }
+                    $.ajax({
+                        url: '/get-cars-available-make-model',
+                        type: 'POST',
+                        data: {
+                            date: pickDate,
+                            make: 'Any',
+                            model: 'Any'
+                        },
+                        success: function (data) {
+                            //console.log($('#modelSelect').find(":selected").text().toString())
+                            var cards = ""
+                            //cards += "<option>Any</option>"
+                            //add data to table body
+                            //console.log(data.carMakes);
+                            console.log(data)
+                            for (var i = 0; i < data.cars.length; i++) {
+                                var car = data.cars[i];
+                                cards += "<div class=\"card\" id=\"" + car.plate_id + "\">\
+                                    <img src=\""+ car.photo + "\">\
+                                    <div class=\"content\">\
+                                        <h4>"+ car.make + " - " + car.model + ", " + car.year + "</h4>\
+                                        <p>"+ car.price + " $/Day" + "</p>\
+                                    </div>\
+                                </div>"
+                            }
+                            $('.card-container').empty();
+                            $('.card-container').append(cards);
+                        }
+                    });
                 });
                 $(".logout-button").click(function () {
                     $.ajax({
