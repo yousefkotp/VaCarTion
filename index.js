@@ -719,6 +719,39 @@ app.post("/advanced-search", authorizeAdmin, (req, res) => {
         );
 });
 
+app.post("/show-avaialable-cars",(req,res)=>{
+    let pickup_date = req.body.pickup_date;
+    let return_date = req.body.return_date;
+    let model = req.body.model;
+    let make = req.body.make;;
+    let location = req.body.location;
+    let office_name = req.body.office_name;
+    let conditions = []
+    let query = `SELECT * FROM car as c
+                WHERE c.plate_id NOT IN (SELECT r.plate_id FROM reservation as r WHERE r.pickup_date <= ? AND r.return_date >= ?)`
+    if(model != "Any"){
+        conditions.push(`c.model = '${model}'`);
+    }
+    if(make != "Any"){
+        conditions.push(`c.make = '${make}'`);
+    }
+    if(location != "Any"){
+        conditions.push(`c.office_id = '${location}'`);
+    }
+    if(office_name != "Any"){
+        conditions.push(`c.office_id = '${office_name}'`);
+    }
+    if(conditions.length > 0){
+        query+= " WHERE " + conditions.join(" AND ");
+    }
+    db.query(query,[return_date,pickup_date],(err,result)=>{
+        if(err)
+            return res.send({message:err});
+        res.send({car:result,message:"success"});
+    });
+});
+
+
 app.post("/logout", (req, res) => {
     res.clearCookie("token");
     res.redirect("/");
