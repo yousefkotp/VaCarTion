@@ -61,7 +61,17 @@
             crossorigin="anonymous"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <!-- <script src="signin.js" charset="utf-8"></script> -->
+ <!-- JavaScript -->
+ <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
 
+ <!-- CSS -->
+ <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css" />
+ <!-- Default theme -->
+ <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/default.min.css" />
+ <!-- Semantic UI theme -->
+ <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/semantic.min.css" />
+ <!-- Bootstrap theme -->
+ <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/bootstrap.min.css" />
 
         <script>
             $(document).ready(function () {
@@ -190,17 +200,17 @@
                     //get today in yyyy-mm-dd format
                     let currentDate = new Date().toISOString().slice(0, 10);
                     if(pickDate < currentDate){
-                        alert("You can't travel in time mf!")
+                        alertify.alert("You can't travel in time mf!").set('frameless', true);
                         return
                     }
                     if (pickDate === "" || retDate === "") {
-                        alert("Please select a pick up and return date")
+                        alertify.alert("Please select a pick up and return date").set('frameless', true);
                         return
                     }
                     const x = new Date(pickDate);
                     const y = new Date(retDate);
                     if (x > y) {
-                        alert("How the fuck you want to return a car before you pick it up!!!!!!")
+                        alertify.alert("How the fuck you want to return a car before you pick it up!!!!!!").set('frameless', true);
                         return
                     }
                     var loc = $('#locationSelect').find(":selected").text().toString()
@@ -270,15 +280,15 @@
                     const x = new Date(pickDate);
                     const y = new Date(retDate);
                     if (pickDate === "" || retDate === "") {
-                        alert("Please select a pick up and return date")
+                        alertify.alert("Please select a pick up and return date").set('frameless', true);
                         return
                     }
                     if (x > y) {
-                        alert("How the fuck you want to return a car before you pick it up!!!!!!")
+                        alertify.alert("How the fuck you want to return a car before you pick it up!!!!!!!!").set('frameless', true);
                         return
                     }
                     if (selectedCar === "") {
-                        alert("Please select a car")
+                        alertify.alert("Please select a car").set('frameless', true);
                         return
                     }
                     $.ajax({
