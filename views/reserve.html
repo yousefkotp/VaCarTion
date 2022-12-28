@@ -211,7 +211,7 @@
                         dropDown += "<option>Any</option>"
                         //add data to table body
                         for (var i = 0; i < data.offices.length; i++) {
-                            var office = data.offices[i].name + " - " + data.offices[i].building_no + ", " + data.offices[i].city + ", " + data.offices[i].city + " " + data.offices[i].country;
+                            var office = data.offices[i].name + " - " + data.offices[i].building_no + ", " + data.offices[i].city + ", " + data.offices[i].country;
                             dropDown += "<option>" + office + "</option>"
                         }
                         $('#locationSelect').empty();
@@ -226,13 +226,29 @@
                         alert("Please select a pick up and return date")
                         return
                     }
+                    var loc = $('#locationSelect').find(":selected").text().toString()
+                    var office_name = ''
+                    var office_building = ''
+                    var office_city = ''
+                    var office_country = ''
+                    if (loc !== 'Any') {
+                        var office_name = loc.split(" - ")[0]
+                        var office_building = loc.split(" - ")[1].split(", ")[0]
+                        var office_city = loc.split(" - ")[1].split(", ")[1]
+                        var office_country = loc.split(" - ")[1].split(", ")[2]
+                    }
                     $.ajax({
-                        url: '/get-cars-available-make-model',
+                        url: '/show-avaialable-cars',
                         type: 'POST',
                         data: {
-                            date: pickDate,
-                            make: 'Any',
-                            model: 'Any'
+                            make: $('#makeSelect').find(":selected").text().toString(),
+                            model: $('#modelSelect').find(":selected").text().toString(),
+                            pickup_date: pickDate,
+                            return_date: retDate,
+                            city: office_city,
+                            country: office_country,
+                            office_build_no: office_building,
+                            office_name: office_name
                         },
                         success: function (data) {
                             //console.log($('#modelSelect').find(":selected").text().toString())
@@ -243,11 +259,14 @@
                             console.log(data)
                             for (var i = 0; i < data.cars.length; i++) {
                                 var car = data.cars[i];
+                                var office = car.name + " - " + car.building_no + ", " + car.city + ", " + car.country;
+
                                 cards += "<div class=\"card\" id=\"" + car.plate_id + "\">\
                                     <img src=\""+ car.photo + "\">\
                                     <div class=\"content\">\
                                         <h4>"+ car.make + " - " + car.model + ", " + car.year + "</h4>\
                                         <p>"+ car.price + " $/Day" + "</p>\
+                                        <p>"+ office + "</p>\
                                     </div>\
                                 </div>"
                             }
