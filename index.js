@@ -432,7 +432,7 @@ app.post("/get-office-reservation", authorizeOffice, (req, res) => {
     let token = decodeToken(req.cookies.token);
     var id = token.user.office_id;
     ///get the reservation info from the database
-    db.query("SELECT * FROM reservation JOIN car ON reservation.plate_id = car.plate_id JOIN office on car.office_id = office.office_id JOIN customer ON reservation.ssn = customer.ssn where office.office_id = ?",
+    db.query("SELECT * , ((return_date-pickup_date+1)*price ) as revenue FROM reservation JOIN car ON reservation.plate_id = car.plate_id JOIN office on car.office_id = office.office_id JOIN customer ON reservation.ssn = customer.ssn where office.office_id = ?",
         [id], (err, result) => {
             if (err)
                 return res.send({ message: err });
