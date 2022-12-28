@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -9,24 +10,31 @@
 
     <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
-    <div class="container">
+    <div class="container-fluid">
         <div class="row">
-            <div class="col-12">
-                <h1 class="text-center black">VaCarTion</h1>
+            <div class="col-2" style="margin: 10px;;">
+                <h1 class="text-center black">VaCarTion <img src="/car.png"></img></h1>
+            </div>
+            <div class="col" style="margin-top:20px; ">
+                <h2 class="text-center black">Welcome <span class="customer-name"></h2>
+            </div>
+            <div class="col-2" style="padding-left: 100px;">
+                <button type="button" class="col btn btn-outline-danger logout-button" style="margin:10px;">Log Out
+                </button>
             </div>
         </div>
-        <div class="row">
-            <div class="col-12">
-                <h2 class="text-center black">Welcome, <span class="customer-name"> </span></h2>
+        <div class="row" style="margin:50px;">
+            <div class="col-4 m-0">
+                <h3 class="text-center black">Your current Reservations</h3>
+            </div>
+            <div class="col"></div>
+            <div class="col-2">
+                <button type="button" class="col btn btn-outline-primary" id="new_res">New Reservation</button>
             </div>
         </div>
-        <div class="row">
-            <div class="col-12">
-                <h3 class="text-center black">Your current reservations</h3>
-            </div>
-        </div>
-        <div class="row">
+        <div class="row" style=" margin:50px;">
             <div class="col-12">
                 <table class="table table-striped">
                     <thead>
@@ -41,46 +49,65 @@
                             <th scope="col">Total Cost</th>
                         </tr>
                     </thead>
-                    <tbody class="customer-reservation">   
+                    <tbody class="customer-reservation">
                     </tbody>
                 </table>
             </div>
         </div>
         <div class="row">
-            <div class="col-12">
-                <h3 class="text-center black">Make a new reservation</h3>
-            </div>
         </div>
 
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script>
-        // wait for the DOM to be loaded
-        $(document).ready(function () {
-            //make post request to get-customer-name
-            $.ajax({
-                url: '/get-customer-name',
-                type: 'POST',
-                success: function (data) {
-                    //add name to customer-name class
-                    $('.customer-name').text(data.customer[0].fname + ' ' + data.customer[0].lname);
-                }
-            });
-            //make post request to get-customer-reservation
-            $.ajax({
-                url: '/get-customer-reservation',
-                type: 'POST',
-                success: function (data) {
-                    //add data to table body
-                    for (var i = 0; i < data.reservation.length; i++) {
-                        var reservation = data.reservation[i];
-                        var row = '<tr><td>' + reservation.reservation_no + '</td><td>' + reservation.plate_id + '</td><td>' + reservation.pickup_date.substr(0,10) + '</td><td>' + reservation.return_date.substr(0,10) + '</td><td>' + reservation.model + '</td><td>' + reservation.make + '</td><td>' + reservation.year + '</td><td>' + reservation.revenue + '</td></tr>';
-                        $('.customer-reservation').append(row);
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa"
+            crossorigin="anonymous"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script>
+            // wait for the DOM to be loaded
+            $(document).ready(function () {
+                //make post request to get-customer-name
+                $.ajax({
+                    url: '/get-customer-name',
+                    type: 'POST',
+                    success: function (data) {
+                        //add name to customer-name class
+                        $('.customer-name').text(data.customer[0].fname + ' ' + data.customer[0].lname);
                     }
-                }
+                });
+                //make post request to get-customer-reservation
+                $.ajax({
+                    url: '/get-customer-reservation',
+                    type: 'POST',
+                    success: function (data) {
+                        //add data to table body
+                        for (var i = 0; i < data.reservation.length; i++) {
+                            var reservation = data.reservation[i];
+                            var row = '<tr><td>' + reservation.reservation_no + '</td><td>' + reservation.plate_id + '</td><td>' + reservation.pickup_date.substr(0, 10) + '</td><td>' + reservation.return_date.substr(0, 10) + '</td><td>' + reservation.model + '</td><td>' + reservation.make + '</td><td>' + reservation.year + '</td><td>' + reservation.revenue + '</td></tr>';
+                            $('.customer-reservation').append(row);
+                        }
+                    }
+                });
             });
-        });
-    </script>
+            $(".logout-button").click(function () {
+                $.ajax({
+                    url: "/logout",
+                    type: "POST",
+                    success: function (response) {
+                        window.location.href = "/";
+                    }
+                });
+            });
+
+            $("#new_res").click(function () {
+                $.ajax({
+                    url: "/reserve",
+                    type: "GET",
+                    success: function (response) {
+                        window.location.href = "/reserve";
+                    }
+                });
+            });
+        </script>
 </body>
+
 </html>
