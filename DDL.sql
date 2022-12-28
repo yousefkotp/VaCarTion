@@ -83,6 +83,6 @@ CREATE TABLE car_status(
     plate_id VARCHAR(8),
     status_code SMALLINT DEFAULT 0,
     status_date DATE DEFAULT (CURRENT_DATE),
-    CONSTRAINT car_status_pk PRIMARY KEY (plate_id),
-    CONSTRAINT car_status_fk FOREIGN KEY (plate_id) REFERENCES car(plate_id)
+    CONSTRAINT car_status_pk PRIMARY KEY (plate_id,status_code,status_date),
+    CONSTRAINT car_status_fk FOREIGN KEY (plate_id) REFERENCES car(plate_id) ON DELETE CASCADE
 );
