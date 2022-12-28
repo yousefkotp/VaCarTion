@@ -45,21 +45,17 @@
             <input type="date" id="returnDate" name="end_date" required="">
             <div><button id="getAvailable" class="btn btn-light mybtn g black">Show Available Cars</button></div>
         </div>
-        <form method="post" action="/reserveCar">
+        <div class="card-container overflow-auto" style="max-height:1000px;">
 
-            <div class="card-container overflow-auto" style="max-height:1000px;">
+        </div>
+        <div class="form-check justify-content-center h4" style="margin: 10px;">
+            <input class="form-check-input h4" style="float:inherit;" type="checkbox" value="" id="flexCheckDefault">
+            <label class="form-check-label h4" for="flexCheckDefault">
+                Pay Now
+            </label>
+            <div><button id="reserve-btn" class="btn btn-primary mybtn g white">Reserve</button></div>
+        </div>
 
-            </div>
-            <div class="form-check justify-content-center h4" style="margin: 10px;">
-                <input class="form-check-input h4" style="float:inherit;" type="checkbox" value=""
-                    id="flexCheckDefault">
-                <label class="form-check-label h4" for="flexCheckDefault">
-                    Pay Now
-                </label>
-                <div><button type="submit" class="btn btn-primary mybtn g white">Reserve</button></div>
-            </div>
-
-        </form>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa"
             crossorigin="anonymous"></script>
@@ -69,10 +65,11 @@
 
         <script>
             $(document).ready(function () {
+                var returnedSuggestion = ''
+                var selectedCar = ''
                 var zoomFun = function () {
-                    console.log(this.className)
+                    console.log(selectedCar);
                     if (this.className === 'card' || this.className === 'card_clicked') {
-                        console.log(this.className)
                         if (selectedCar !== '') {
                             console.log(selectedCar)
                             if (selectedCar === $(this).attr('id').replace('#', ''))
@@ -90,8 +87,7 @@
                         selectedCar = $(this).attr('id')
                     }
                 }
-                var returnedSuggestion = ''
-                var selectedCar = ''
+
                 // let editor, doc, cursor, line, pos
                 function displayGrey(text) {
                     var element = document.createElement('span')
@@ -102,7 +98,7 @@
                     editor.getElementsByClassName('CodeMirror-line')[lineIndex].appendChild(element)
                     suggestionDisplayed = true
                 }
-                
+
                 $('div').click(zoomFun);
                 $.ajax({
                     url: '/get-customer-name',
@@ -231,7 +227,7 @@
                                 var car = data.cars[i];
                                 var office = car.name + " - " + car.building_no + ", " + car.city + ", " + car.country;
 
-                                cards += "<div class=\"card\" id=\"" + car.plate_id +"\">\
+                                cards += "<div class=\"card\" id=\"" + car.plate_id + "\">\
                                     <img src=\""+ car.photo + "\">\
                                     <div class=\"content\">\
                                         <h4>"+ car.make + " - " + car.model + ", " + car.year + "</h4>\
@@ -253,6 +249,34 @@
                         type: "POST",
                         success: function (response) {
                             window.location.href = "/";
+                        }
+                    });
+                });
+                $("#reserve-btn").click(function () {
+                    var pickDate = $("#pickDate").val()
+                    var retDate = $("#returnDate").val()
+
+                    const x = new Date(pickDate);
+                    const y = new Date(retDate);
+                    if (pickDate === "" || retDate === "") {
+                        alert("Please select a pick up and return date")
+                        return
+                    }
+                    if (selectedCar === "") {
+                        alert("Please select a car")
+                        return
+                    }
+                    $.ajax({
+                        url: "/add-reservation",
+                        type: "POST",
+                        data: {
+                            plateId: selectedCar,
+                            pickupDate: pickDate,
+                            returnDate: retDate
+                        },
+                        success: function (response) {
+                            window.location.href = "/customer-home";
+                            //console.log(response);
                         }
                     });
                 });
