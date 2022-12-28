@@ -13,22 +13,24 @@
 
 <body>
     <div class="container">
-        <div class="row">
-            <div class="col-12">
-                <h1 class="text-center black">VaCarTion</h1>
+        <div class="row fixed-top" style="margin:10px;">
+            <div class="col-2">
+                <h1 class="text-center black">VaCarTion <img src="/car.png"></img></h1>
+            </div>
+            <div class="col" style="margin-top:20px; ">
+                <h2 class="text-center black"><span class="office-name"></h2>
+            </div>
+            <div class="col-2">
+                <button type="button" class="col btn btn-outline-danger logout-button">Log Out </button>
             </div>
         </div>
-        <div class="row">
-            <div class="col-12">
-                <h2 class="text-center black">Welcome, <span class="office-name"></h2>
-            </div>
-        </div>
-        <div class="row">
+
+        <div class="row" style="padding-top:50px;">
             <div class="col-12">
                 <h3 class="text-center black">Your current reservations</h3>
             </div>
         </div>
-        <div class="row">
+        <div class="row" style="margin-bottom:70px;">
             <div class="col-12">
                 <table class="table table-striped">
                     <thead>
@@ -48,8 +50,12 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-12">
+            <div class="col-3 m-0">
                 <h3 class="text-center black">Your current cars</h3>
+            </div>
+            <div class="col"></div>
+            <div class="col-1">
+                <button type="button" class="col btn btn-outline-primary" id="add_car_btn">Add Car</button>
             </div>
         </div>
         <div class="row">
@@ -58,6 +64,7 @@
                     <thead>
                         <tr>
                             <th scope="col">Plate ID</th>
+                            <th scope="col">Status</th>
                             <th scope="col">Registration Date</th>
                             <th scope="col">Make</th>
                             <th scope="col">Model</th>
@@ -67,58 +74,146 @@
                     </thead>
                     <tbody class="office-cars">
                     </tbody>
+                </table>
+
+
             </div>
         </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa"
+        crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"
+      integrity="sha512-qTXRIMyZIFb8iQcfjXWCO8+M5Tbc38Qi5WzdPOYZHIlZpzBHG3L3by84BBBOiRGiEb7KKtAOAs5qYdUiZiQNNQ=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <script>
+        let status = ["Available", "In Maintainance", "Being Cleaned", "Rented"];
 
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa"
-            crossorigin="anonymous"></script>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-        <script>
-            // wait for the DOM to be loaded
-            $(document).ready(function () {
-                //make post request to get-office-name
+        // wait for the DOM to be loaded
+        $(document).ready(function () {
+            //window.status = status;
+            //make post request to get-office-name
+            $.ajax({
+                url: '/get-office-name',
+                type: 'POST',
+                success: function (data) {
+                    $('.office-name').text(data.office[0].name);
+                }
+            });
+            //make post request to get-customer-reservation
+            $.ajax({
+                url: '/get-office-reservation',
+                type: 'POST',
+                success: function (data) {
+                    console.log(data);
+                    //add data to table body
+                    for (var i = 0; i < data.reservations.length; i++) {
+                        var reservation = data.reservations[i];
+                        const rDate = new Date(reservation.return_date);
+                        const pDate = new Date(reservation.pickup_date);
+                        const resDate = new Date(reservation.pickup_date);
+                        const diffTime = Math.abs(pDate - rDate);
+                        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+                        reservation.return_date = moment(rDate).format('l');
+                        reservation.pickup_date = moment(pDate).format('l');
+                        reservation.reserve_date = moment(resDate).format('l');
+                        console.log(diffDays);
+                        var revenue = reservation.price * diffDays;
+                        var row = '<tr><td>' + reservation.reservation_no + '</td><td>' + reservation.plate_id + '</td><td>' + reservation.fname + " " + reservation.lname + '</td><td>' + reservation.reserve_date + '</td><td>' + reservation.pickup_date + '</td><td>' + reservation.return_date + '</td><td>' + revenue + '</td></tr>';
+                        $('.office-reservation').append(row);
+                    }
+                }
+            });
+            $.ajax({
+                url: '/get-cars-using-office',
+                type: 'POST',
+                success: function (data) {
+                    //add data to table body
+                    for (var i = 0; i < data.cars.length; i++) {
+                        var car = data.cars[i];
+                        console.log(car);
+                        var d = new Date(car.registration_date);
+                        car.registration_date = moment(d).format('l');
+                        status.unshift(status[Number(car.status_code)]);
+                        var status_codes = status.filter((element, index) => {
+                            return status.indexOf(element) === index;
+                        });
+                        var row = '<tr><td>' + car.plate_id + '</td>' + "<TD ALIGN=\"center\"> <select>\
+                                 <option value=\"saab\">"+ status_codes[0] + "</option>\
+                                 <option value=\"volvo\">" + status_codes[1] + "</option>\
+                                 <option value=\"mercedes\">"+ status_codes[2] + "</option>\
+                                 <option value=\"audi\">"+ status_codes[3] + "</option>\
+                            </select>\
+                         </TD><td>" + car.registration_date + '</td><td>' + car.make + '</td><td>' + car.model + '</td><td>' + car.year + '</td><td>' + car.price +
+                            "<td><button style=\"padding: 0\;border: none\;background: none\; \"><img src=\"/remove.png\" width=25 height=25> </button></td>" + '</td></tr>';
+                        $('.office-cars').append(row);
+                    }
+                }
+            });
+
+            $('.office-cars').on('click', 'select', function (e) {
+                var new_status = status.indexOf($(this).find(":selected").text())-1;
+                console.log(new_status);
+                //console.log($(this).closest('tr').children('td:first').text());
                 $.ajax({
-                    url: '/get-office-name',
-                    type: 'POST',
-                    success: function (data) {
-                        $('.office-name').text(data.office[0].name);
+                    url: "/add-new-status",
+                    type: "POST",
+                    data: {
+                        plate_id: $(this).closest('tr').children('td:first').text(),
+                        status: new_status
+                    },
+                    success: function (response) {
+                        //window.location.href = "/";
+                        console.log(response);
+                        alert("Status Updated Successfully")
+                    },
+                    error: function (response){
+                        console.log(response);
                     }
                 });
-                //make post request to get-customer-reservation
+
+            });
+            $('.office-cars').on('click', 'button', function (e) {
+                //console.log($(this).closest('tr').children('td:first').text());
+                $(this).closest('tr').remove();
                 $.ajax({
-                    url: '/get-office-reservation',
-                    type: 'POST',
-                    success: function (data) {
-                        console.log(data);
-                        //add data to table body
-                        for (var i = 0; i < data.reservations.length; i++) {
-                            var reservation = data.reservations[i];
-                            const date1 = new Date(reservation.return_date);
-                            const date2 = new Date(reservation.pickup_date);
-                            const diffTime = Math.abs(date2 - date1);
-                            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-                            <!-- console.log(diffDays); -->
-                            var revenue = reservation.price * diffDays;
-                            var row = '<tr><td>' + reservation.reservation_no + '</td><td>' + reservation.plate_id + '</td><td>' + reservation.fname + " " + reservation.lname + '</td><td>' + reservation.reserve_date + '</td><td>' + reservation.pickup_date + '</td><td>' + reservation.return_date + '</td><td>' + revenue + '</td></tr>';
-                            $('.office-reservation').append(row);
-                        }
-                    }
-                });
-                $.ajax({
-                    url: '/get-cars-using-office',
-                    type: 'POST',
-                    success: function (data) {
-                        //add data to table body
-                        for (var i = 0; i < data.cars.length; i++) {
-                            var car = data.cars[i];
-                            var row = '<tr><td>' + car.plate_id + '</td><td>' + car.registration_date + '</td><td>' + car.make + '</td><td>' + car.model + '</td><td>' + car.year + '</td><td>' + car.price + '</td></tr>';
-                            $('.office-cars').append(row);
-                        }
+                    url: "/delete-car",
+                    type: "POST",
+                    data: {
+                        plate_id: $(this).closest('tr').children('td:first').text()
+                    },
+                    success: function (response) {
+                        //window.location.href = "/";
+                        console.log(response);
                     }
                 });
             });
-        </script>
+            $(".logout-button").click(function () {
+                $.ajax({
+                    url: "/logout",
+                    type: "POST",
+                    success: function (response) {
+                        window.location.href = "/";
+                    }
+                });
+            });
+
+            $("#add_car_btn").click(function () {
+                $.ajax({
+                    url: "/add-car",
+                    type: "POST",
+                    success: function (response) {
+                        window.location.href = "/add-car";
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 
 </html>
