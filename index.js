@@ -729,7 +729,7 @@ app.post("/show-avaialable-cars",(req,res)=>{
     let office_name = req.body.office_name;
     let office_build_no = req.body.office_build_no;
     let conditions = []
-    let query = `SELECT * FROM car as c
+    let query = `SELECT * FROM car as c JOIN car_photos ON c.plate_id = car_photos.plate_id
                 NATURAL INNER JOIN office as o
                 WHERE c.plate_id NOT IN (SELECT r.plate_id FROM reservation as r WHERE r.pickup_date <= ? AND r.return_date >= ?)
                 `;
