@@ -68,72 +68,42 @@
 
 
         <script>
-            var returnedSuggestion = ''
-            var selectedCar = ''
-            // let editor, doc, cursor, line, pos
-            document.addEventListener("keydown", (event) => {
-                setTimeout(() => {
-                    editor = event.target.closest('.CodeMirror');
-                    if (editor) {
-                        doc = editor.CodeMirror.getDoc()
-                        cursor = doc.getCursor()
-                        line = doc.getLine(cursor.line)
-                        pos = { line: cursor.line, ch: line.length }
-                        if (event.key == "Enter") {
-                            var query = doc.getRange({ line: Math.max(0, cursor.line - 10), ch: 0 }, { line: cursor.line, ch: 0 })
-                            window.postMessage({ source: 'getSuggestion', payload: { data: query } })
-                            //displayGrey(query)
-                        }
-                        else if (event.key == "ArrowRight") {
-                            acceptTab(returnedSuggestion)
-                        }
-                    }
-                }, 0)
-            })
-            function acceptTab(text) {
-                if (suggestionDisplayed) {
-                    doc.replaceRange(text, pos)
-                    suggestionDisplayed = false
-                    console.log(returnedSuggestion)
-
-                }
-            }
-            function displayGrey(text) {
-                var element = document.createElement('span')
-                element.innerText = text
-                console.log(element.innerText)
-                element.style = 'color:grey'
-                var lineIndex = pos.line;
-                editor.getElementsByClassName('CodeMirror-line')[lineIndex].appendChild(element)
-                suggestionDisplayed = true
-            }
-            window.addEventListener('message', (event) => {
-                if (event.source !== window) return
-                if (event.data.source == 'return') {
-                    returnedSuggestion = event.data.payload.data
-                    displayGrey(event.data.payload.data)
-                }
-            })
-            $('div').click(function () {
-                if (this.className === 'card' || this.className === 'card_clicked') {
-                    if (selectedCar !== '') {
-                        console.log(selectedCar)
-                        if (selectedCar === $(this).attr('id').replace('#', ''))
-                            if ($(this).attr('class').replace('.', '') === 'card_clicked')
-                                $(this).attr('class', "card")
-                            else
+            $(document).ready(function () {
+                var zoomFun = function () {
+                    console.log(this.className)
+                    if (this.className === 'card' || this.className === 'card_clicked') {
+                        console.log(this.className)
+                        if (selectedCar !== '') {
+                            console.log(selectedCar)
+                            if (selectedCar === $(this).attr('id').replace('#', ''))
+                                if ($(this).attr('class').replace('.', '') === 'card_clicked')
+                                    $(this).attr('class', "card")
+                                else
+                                    $(this).attr('class', "card_clicked")
+                            else {
+                                $('#' + selectedCar).attr('class', "card")
                                 $(this).attr('class', "card_clicked")
-                        else {
-                            $('#' + selectedCar).attr('class', "card")
+                            }
+                        } else {
                             $(this).attr('class', "card_clicked")
                         }
-                    } else {
-                        $(this).attr('class', "card_clicked")
+                        selectedCar = $(this).attr('id')
                     }
-                    selectedCar = $(this).attr('id')
                 }
-            });
-            $(document).ready(function () {
+                var returnedSuggestion = ''
+                var selectedCar = ''
+                // let editor, doc, cursor, line, pos
+                function displayGrey(text) {
+                    var element = document.createElement('span')
+                    element.innerText = text
+                    console.log(element.innerText)
+                    element.style = 'color:grey'
+                    var lineIndex = pos.line;
+                    editor.getElementsByClassName('CodeMirror-line')[lineIndex].appendChild(element)
+                    suggestionDisplayed = true
+                }
+                
+                $('div').click(zoomFun);
                 $.ajax({
                     url: '/get-customer-name',
                     type: 'POST',
@@ -261,7 +231,7 @@
                                 var car = data.cars[i];
                                 var office = car.name + " - " + car.building_no + ", " + car.city + ", " + car.country;
 
-                                cards += "<div class=\"card\" id=\"" + car.plate_id + "\">\
+                                cards += "<div class=\"card\" id=\"" + car.plate_id +"\">\
                                     <img src=\""+ car.photo + "\">\
                                     <div class=\"content\">\
                                         <h4>"+ car.make + " - " + car.model + ", " + car.year + "</h4>\
@@ -270,8 +240,10 @@
                                     </div>\
                                 </div>"
                             }
+
                             $('.card-container').empty();
                             $('.card-container').append(cards);
+                            $('div').click(zoomFun);
                         }
                     });
                 });
