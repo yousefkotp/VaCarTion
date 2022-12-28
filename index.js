@@ -387,7 +387,7 @@ app.post("/check-email-customer", (req, res) => {
 //check if email is already taken for office
 app.post("/check-email-office", (req, res) => {
     let email = req.body.email;
-    db.query("SELECT * FROM office WHERE email = ?", [email], (req, result) => {
+    db.query("SELECT * FROM office WHERE office.email = ?", [email], (err, result) => {
         if (err)
             return res.send({ message: err });
         res.send({ taken: result.length > 0 });

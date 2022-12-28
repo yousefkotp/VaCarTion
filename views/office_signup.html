@@ -34,7 +34,7 @@
 
     <div  class="center ">
         <h1 class="display-6 myheader black">Register your office</h1>
-        <form method="post" action="/office-signup">
+        <form onsubmit="return validateInputs()" method="post" action="/office-signup" >
 
             <div class="row mb-3 ">
                 <div class="col ">
@@ -44,7 +44,7 @@
 
             <div class="row mb-3 ">
                 <div class="col ">
-                    <input type="email" class="form-control myinput b" placeholder="E-Mail" name="email" required ></input>
+                    <input type="email" id="email" class="form-control myinput b" placeholder="E-Mail" name="email" required ></input>
                 </div>
             </div>
 
@@ -61,12 +61,12 @@
             </div>
             <div class="row mb-3 ">
                 <div class="col ">
-                    <input type="email" class="form-control myinput b" placeholder="City" name="city" required ></input>
+                    <input type="text" class="form-control myinput b" placeholder="City" name="city" required ></input>
                 </div>
             </div>
             <div class="row mb-3 ">
                 <div class="col ">
-                    <input type="email" class="form-control myinput b" placeholder="Building Number" name="building_no" required ></input>
+                    <input type="text" class="form-control myinput b" placeholder="Building Number" name="building_no" required ></input>
                 </div>
             </div>
 
@@ -82,7 +82,7 @@
                 </div>
             </div>
 
-            <button type="submit" class="btn btn-light mybtn g black"  >Register</button>
+            <button type="submit" class="btn btn-light mybtn g black">Register</button>
 
         </form>
     </div>
@@ -92,6 +92,41 @@
     integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa"
     crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+         function validateInputs() {
+            console.log("a7a");
+            event.preventDefault();
+            console.log($('#email').val())
+            $.ajax({
+                url: '/check-email-office',
+                type: 'POST',
+                data: {
+                    email: $('#email').val()
+                },
+                success: function (data) {
+                    console.log(data);
+                    if (data.taken == false) {
+                        alert('Email already exists');
+                        return
+                    }
+                }
+            });
+            $.ajax({
+                url: '/check-email-customer',
+                type: 'POST',
+                data: {
+                    email: $('#email').text()
+                },
+                success: function (data) {
+                    console.log(data);
+                    if (data.taken == false) {
+                        alert('Email already exists');
+                        return
+                    }
+                }
+            });
+        }
+    </script>
 </body>
 
 </html>
