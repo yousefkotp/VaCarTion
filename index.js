@@ -293,7 +293,8 @@ app.post("/add-car", authorizeOffice, (req, res) => {
 
 //post request to add a reservation
 app.post("/add-reservation", (req, res) => {
-    let ssn = req.user.ssn;
+    let decodedToken = decodeToken(req.cookies.token);
+    let ssn = decodedToken.user.ssn;
     let plateId = req.body.plateId;
     let pickupDate = req.body.pickupDate;
     let returnDate = req.body.returnDate;
@@ -329,23 +330,47 @@ app.post("/check-ssn-customer", (req, res) => {
     });
 });
 
-app.post("/delete-car", (req, res) => {
+app.post("/delete-car", authorizeOffice, (req, res) => {
     let plate_id = req.body.plate_id;
-    db.query("DELETE FROM `car` WHERE plate_id = ?", [plate_id], (err, result) => {
+    //get office_id from the token
+    let decodedToken = decodeToken(req.cookies.token);
+    let office_id = decodedToken.user.office_id;
+    //check that only the office having that car can delete it
+    db.query("SELECT office_id FROM `car` WHERE plate_id = ?", [plate_id], (err, result) => {
         if (err)
             return res.send({ message: err });
-        res.send({ success: true });
+        if (result[0].office_id == office_id){
+            db.query("DELETE FROM `car` WHERE plate_id = ?", [plate_id], (err, result) => {
+                if (err)
+                    return res.send({ message: err });
+                res.send({ success: true });
+            });
+        }else{
+            res.send({ success: false, message: "You are not authorized to change the status of this car" });
+        }
     });
 });
 
-app.post("/add-new-status", (req, res) => {
+app.post("/add-new-status", authorizeOffice, (req, res) => {
     let status = req.body.status;
     let plate_id = req.body.plate_id;
-    // let status = req.body.status;
-    db.query("INSERT INTO `car_status`(`plate_id`, `status_code`, `status_date`) VALUES (?,?,DATE_ADD(curDate(), INTERVAL 10 DAY))", [plate_id, status], (err, result) => {
+    //get office_id from the token
+    let decodedToken = decodeToken(req.cookies.token);
+    let office_id = decodedToken.user.office_id;
+    
+    //check that only the office having that car can changes its status
+    db.query("SELECT office_id FROM `car` WHERE plate_id = ?", [plate_id], (err, result) => {
         if (err)
-            return res.send({ success: false, message: err });
-        res.send({ success: true });
+            return res.send({ message: err });
+        if (result[0].office_id == office_id) {
+            db.query("INSERT INTO `car_status`(`plate_id`, `status_code`, `status_date`) VALUES (?,?,DATE_ADD(curDate(), INTERVAL 10 DAY))", [plate_id, status], (err, result) => {
+                if (err)
+                    return res.send({ success: false, message: err });
+                res.send({ success: true });
+            });
+        }else{
+            res.send({ success: false, message: "You are not authorized to change the status of this car" });
+        }
     });
 });
 
