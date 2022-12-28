@@ -330,16 +330,28 @@ app.post("/check-ssn-customer", (req, res) => {
     });
 });
 
-app.post("/delete-car", (req, res) => {
+app.post("/delete-car", authorizeOffice, (req, res) => {
     let plate_id = req.body.plate_id;
-    db.query("DELETE FROM `car` WHERE plate_id = ?", [plate_id], (err, result) => {
+    //get office_id from the token
+    let decodedToken = decodeToken(req.cookies.token);
+    let office_id = decodedToken.user.office_id;
+    //check that only the office having that car can delete it
+    db.query("SELECT office_id FROM `car` WHERE plate_id = ?", [plate_id], (err, result) => {
         if (err)
             return res.send({ message: err });
-        res.send({ success: true });
+        if (result[0].office_id == office_id){
+            db.query("DELETE FROM `car` WHERE plate_id = ?", [plate_id], (err, result) => {
+                if (err)
+                    return res.send({ message: err });
+                res.send({ success: true });
+            });
+        }else{
+            res.send({ success: false, message: "You are not authorized to change the status of this car" });
+        }
     });
 });
 
-app.post("/add-new-status", (req, res) => {
+app.post("/add-new-status", authorizeOffice, (req, res) => {
     let status = req.body.status;
     let plate_id = req.body.plate_id;
     //get office_id from the token
