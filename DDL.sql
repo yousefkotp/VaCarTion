@@ -75,7 +75,7 @@ CREATE TABLE car_photos(
     plate_id VARCHAR(8),
     photo VARCHAR(512),
     CONSTRAINT car_photos_pk PRIMARY KEY (plate_id),
-    CONSTRAINT car_photos_fk FOREIGN KEY (plate_id) REFERENCES car(plate_id)
+    CONSTRAINT car_photos_fk FOREIGN KEY (plate_id) REFERENCES car(plate_id) ON DELETE CASCADE
 );
 
 -- 0-> available, 1-> in maintainance, 2-> being cleaned, 3-> rented
