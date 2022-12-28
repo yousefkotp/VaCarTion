@@ -313,7 +313,7 @@ app.post("/add-reservation", (req, res) => {
                         [plateId, 0, returnDate], (err, result) => {
                             if (err)
                                 return res.send({ message: err });
-                            res.sendFile(__dirname + "/views/customer_home.html");
+                            res.redirect("customer-home");
                         });
                 });
         });
