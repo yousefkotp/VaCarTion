@@ -68,7 +68,7 @@ CREATE TABLE reservation(
     payment_date DATE DEFAULT NULL,
     CONSTRAINT reservation_pk PRIMARY KEY (reservation_no),
     CONSTRAINT reservation_customer_fk FOREIGN KEY (ssn) REFERENCES customer(ssn),
-    CONSTRAINT reservation_car_fk FOREIGN KEY (plate_id) REFERENCES car(plate_id)
+    CONSTRAINT reservation_car_fk FOREIGN KEY (plate_id) REFERENCES car(plate_id) ON DELETE CASCADE
 );
 
 CREATE TABLE car_photos(
