@@ -525,12 +525,20 @@ app.post("/get-all-cars-models", (req, res) => {
 app.post("/get-all-cars-makes", (req, res) => {
     var model = req.body.model;
     //get the cars info from the database
-    db.query("SELECT DISTINCT make FROM car WHERE model = ?",
-        [model], (err, result) => {
-            if (err)
-                return res.send({ message: err });
-            res.send({ carMakes: result, message: "success" });
-        });
+    if (model == 'Any')
+        db.query("SELECT DISTINCT make FROM car",
+            [model], (err, result) => {
+                if (err)
+                    return res.send({ message: err });
+                res.send({ carMakes: result, message: "success" });
+            });
+    else
+        db.query("SELECT DISTINCT make FROM car WHERE model = ?",
+            [model], (err, result) => {
+                if (err)
+                    return res.send({ message: err });
+                res.send({ carMakes: result, message: "success" });
+            });
 });
 
 //get the cars with specific model
