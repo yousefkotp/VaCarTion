@@ -41,11 +41,11 @@
 
     <div  class="center ">
         <h1 class="display-6 myheader black">Sign Up</h1>
-        <form method="post" action="/signup">
+        <form id="formmmm">
 
             <div class="row mb-3 ">
                 <div class="col ">
-                    <input type="text" class="form-control myinput a"placeholder="SSN" name="ssn"  minlength="6" maxlength="6" required></input>
+                    <input id="ssn" type="text" class="form-control myinput a"placeholder="SSN" name="ssn"  minlength="6" maxlength="6" required></input>
                 </div>
             </div>
 
@@ -63,13 +63,13 @@
 
             <div class="row mb-3 ">
                 <div class="col ">
-                    <input type="email" class="form-control myinput b" placeholder="E-Mail" name="email"maxlength="64" required ></input>
+                    <input id="email" type="email" class="form-control myinput b" placeholder="E-Mail" name="email"maxlength="64" required ></input>
                 </div>
             </div>
 
             <div class="row mb-3 ">
                 <div class="col ">
-                    <input type="tel" class="form-control myinput b" placeholder="Phone Number" name="phone_no"   minlength="11" required ></input>
+                    <input id="phone" type="tel" class="form-control myinput b" placeholder="Phone Number" name="phone_no"   minlength="11" required ></input>
                 </div>
             </div>
 
@@ -109,17 +109,17 @@
             
             <div class="row mb-3">
                 <div class="col">
-                    <input type="password" class="form-control myinput c" placeholder="Password" name="password" required ></input>
+                    <input id="pass1" type="password" class="form-control myinput c" placeholder="Password" name="password" required ></input>
                 </div>
             </div>
 
             <div class="row mb-3">
                 <div class="col">
-                    <input type="password" class="form-control myinput d" placeholder="Confirm Password" name="confirm" required ></input>
+                    <input id="pass2" type="password" class="form-control myinput d" placeholder="Confirm Password" name="confirm" required ></input>
                 </div>
             </div>
             
-            <button type="submit" class="btn btn-light mybtn g black" >Sign up</button>
+            <button onclick="validateInputs()" class="btn btn-light mybtn g black">Register</button>
 
         </form>
     </div>
@@ -129,7 +129,82 @@
     integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa"
     crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="app.js" charset="utf-8"></script>
+    <!-- JavaScript -->
+    <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css" />
+    <!-- Default theme -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/default.min.css" />
+    <!-- Semantic UI theme -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/semantic.min.css" />
+    <!-- Bootstrap theme -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/bootstrap.min.css" />
+    <script>
+        function validateInputs() {
+            event.preventDefault();
+            let eligable = true;
+            $.ajax({
+                url: '/check-email-customer',
+                type: 'POST',
+                async: false,
+                data: {
+                    email: $('#email').val()
+                },
+                success: function (data) {
+                    if (data.taken == true) {
+                        eligable = false;
+                        alertify.alert("Email already exists, try to signin.").set('frameless', true);
+                    }
+                }
+            });
+            $.ajax({
+                url: '/check-ssn-customer',
+                type: 'POST',
+                async: false,
+                data: {
+                    ssn: $('#ssn').val()
+                },
+                success: function (data) {
+                    if (data.taken == true) {
+                        eligable = false;
+                        alertify.alert("SSN already exists, try to signin.").set('frameless', true);
+                    }
+                }
+            });
+            $.ajax({
+                url: '/check-phone-customer',
+                type: 'POST',
+                async: false,
+                data: {
+                    phone: $('#phone').val()
+                },
+                success: function (data) {
+                    if (data.taken == true) {
+                        eligable = false;
+                        alertify.alert("Phone already exists.").set('frameless', true);
+
+                    }
+                }
+            });
+            if ($('#pass1').val() != $('#pass2').val()) {
+                eligable = false;
+                alertify.alert("Passwords do not match.").set('frameless', true);
+            }
+            if (eligable === true) {
+                console.log(eligable);
+                $.ajax({
+                    url: "/signup",
+                    type: 'post',
+                    async: false,
+                    data: $("#formmmm").serialize(),
+                    success: function (data) {
+                        var notification = alertify.notify('Signed up successfully, redirecting to signin page...', 'success', 3, function(){ window.location.href = "/signin"; });
+                    }
+                });
+            }
+        }
+    </script>
 </body>
 
 </html>
