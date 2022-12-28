@@ -17,172 +17,227 @@
 </head>
 
 <body class="black vsc-initialized">
-    <nav class="navbar navbar-expand-lg navbars">
-        <div class="container-fluid ">
-            <a class="navbar-brand  brand black">VaCarTion</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
-                aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav  mb-2 mb-lg-0 ms-auto">
-                    <li class="nav-item">
-                        <h1 class="display-6 page-title">Customer Name</h1>
-                    </li>
-                </ul>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-3" style="margin-right: 10px; margin-top: 10px;">
+                <h1 class="text-center black">VaCarTion <img src="/car.png"></img></h1>
+            </div>
+            <div class="col" style="margin-top:20px; ">
+                <h2 class="text-center black"><span class="customer-name"></h2>
+            </div>
+            <div class="col-3" style="padding-left: 250px;">
+                <button type="button" class="col btn btn-outline-danger logout-button" style="margin:10px;">Log Out
+                </button>
             </div>
         </div>
-    </nav>
-    <div classname="page-title">
-        <h3 class="page-title display-6">Reserve a Car</h3>
-    </div>
-    <form method="post" action="/reserveCar">
-        <form method="get" action="/getAvailabeCars">
-            <div class="justify-content-center">
-                <label for="birthday" class="display-6 date">Pickup Date</label>
-                <input type="date" id="birthday" name="start_date" required="">
-                <label for="birthday2" class="display-6 date">Return Date:</label>
-                <input type="date" id="birthday" name="end_date" required="">
-                <div><button type="submit" class="btn btn-light mybtn g black">Show Available Cars</button></div>
+        <div>
+            <h3 class="display-3 align-content-center text-center">Reserve a Car</h3>
+        </div>
+        <div class="row specs" style="margin:50px;">
+        </div>
+        <form method="post" action="/reserveCar">
+            <form method="get" action="/getAvailabeCars">
+                <div class="justify-content-center">
+                    <label for="birthday" class="display-6 date">Pickup Date</label>
+                    <input type="date" id="birthday" name="start_date" required="">
+                    <label for="birthday2" class="display-6 date">Return Date:</label>
+                    <input type="date" id="birthday" name="end_date" required="">
+                    <div><button type="submit" class="btn btn-light mybtn g black">Show Available Cars</button></div>
+                </div>
+            </form>
+            <div class="card-container overflow-auto" style="max-height:1000px;">
+
+                <div class="card" id="card1">
+                    <img src="https://placeimg.com/800/500/animals">
+                    <div class="content">
+                        <h3>What a cute animal!</h3>
+                        <p>Nanotechnology immersion along the information highway will close the loop on focusing solely
+                            on
+                            the bottom line.</p>
+                    </div>
+                </div>
+
+                <div class="card" id="card2">
+                    <img src="https://placeimg.com/800/500/arch">
+                    <div class="content">
+                        <h3>Architecture is wonderful.</h3>
+                        <p>Override the digital divide with additional clickthroughs from DevOps.</p>
+                    </div>
+                </div>
+
+                <div class="card" id="card3">
+                    <img src="https://placeimg.com/800/500/nature">
+                    <div class="content">
+                        <h3>Be one with mother nature.</h3>
+                        <p>Capitalize on low hanging fruit to identify a ballpark value added activity to beta test.</p>
+                    </div>
+                </div>
+
+                <div class="card" id="card4">
+                    <img src="https://placeimg.com/800/500/people">
+                    <div class="content">
+                        <h3>There's billions of people, let's be excellent to them.</h3>
+                        <p>Leverage agile frameworks to provide a robust synopsis for high level overviews.</p>
+                    </div>
+                </div>
+
+                <div class="card" id="card5">
+                    <img src="https://placeimg.com/800/500/tech">
+                    <div class="content">
+                        <h3>Technology is life...</h3>
+                        <p>Organically grow the holistic world view of disruptive innovation via workplace diversity and
+                            empowerment.</p>
+                    </div>
+                </div>
+
+                <div class="card" id="card6">
+                    <img src="https://placeimg.com/800/500/any">
+                    <div class="content">
+                        <h3>Do you feel lucky?</h3>
+                        <p>Iterative approaches to corporate strategy foster collaborative thinking to further the
+                            overall
+                            value proposition.</p>
+                    </div>
+                </div>
             </div>
+            <div class="form-check justify-content-center h4" style="margin: 10px;">
+                <input class="form-check-input h4" style="float:inherit;" type="checkbox" value=""
+                    id="flexCheckDefault">
+                <label class="form-check-label h4" for="flexCheckDefault">
+                    Pay Now
+                </label>
+                <div><button type="submit" class="btn btn-primary mybtn g white">Reserve</button></div>
+            </div>
+
         </form>
-        <div class="card-container overflow-auto" style="max-height:1000px;">
-
-            <div class="card" id="card1">
-                <img src="https://placeimg.com/800/500/animals">
-                <div class="content">
-                    <h3>What a cute animal!</h3>
-                    <p>Nanotechnology immersion along the information highway will close the loop on focusing solely on
-                        the bottom line.</p>
-                </div>
-            </div>
-
-            <div class="card" id="card2">
-                <img src="https://placeimg.com/800/500/arch">
-                <div class="content">
-                    <h3>Architecture is wonderful.</h3>
-                    <p>Override the digital divide with additional clickthroughs from DevOps.</p>
-                </div>
-            </div>
-
-            <div class="card" id="card3">
-                <img src="https://placeimg.com/800/500/nature">
-                <div class="content">
-                    <h3>Be one with mother nature.</h3>
-                    <p>Capitalize on low hanging fruit to identify a ballpark value added activity to beta test.</p>
-                </div>
-            </div>
-
-            <div class="card" id="card4">
-                <img src="https://placeimg.com/800/500/people">
-                <div class="content">
-                    <h3>There's billions of people, let's be excellent to them.</h3>
-                    <p>Leverage agile frameworks to provide a robust synopsis for high level overviews.</p>
-                </div>
-            </div>
-
-            <div class="card" id="card5">
-                <img src="https://placeimg.com/800/500/tech">
-                <div class="content">
-                    <h3>Technology is life...</h3>
-                    <p>Organically grow the holistic world view of disruptive innovation via workplace diversity and
-                        empowerment.</p>
-                </div>
-            </div>
-
-            <div class="card" id="card6">
-                <img src="https://placeimg.com/800/500/any">
-                <div class="content">
-                    <h3>Do you feel lucky?</h3>
-                    <p>Iterative approaches to corporate strategy foster collaborative thinking to further the overall
-                        value proposition.</p>
-                </div>
-            </div>
-        </div>
-        <div class="form-check justify-content-center h4" style="margin: 10px;">
-            <input class="form-check-input h4" style="float:inherit;" type="checkbox" value="" id="flexCheckDefault">
-            <label class="form-check-label h4" for="flexCheckDefault">
-                Pay Now
-            </label>
-            <div><button type="submit" class="btn btn-primary mybtn g white">Reserve</button></div>
-        </div>
-
-    </form>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa"
-        crossorigin="anonymous"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <!-- <script src="signin.js" charset="utf-8"></script> -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa"
+            crossorigin="anonymous"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <!-- <script src="signin.js" charset="utf-8"></script> -->
 
 
-    <script>
-        var returnedSuggestion = ''
-        var selectedCar = ''
-        // let editor, doc, cursor, line, pos
-        document.addEventListener("keydown", (event) => {
-            setTimeout(() => {
-                editor = event.target.closest('.CodeMirror');
-                if (editor) {
-                    doc = editor.CodeMirror.getDoc()
-                    cursor = doc.getCursor()
-                    line = doc.getLine(cursor.line)
-                    pos = { line: cursor.line, ch: line.length }
-                    if (event.key == "Enter") {
-                        var query = doc.getRange({ line: Math.max(0, cursor.line - 10), ch: 0 }, { line: cursor.line, ch: 0 })
-                        window.postMessage({ source: 'getSuggestion', payload: { data: query } })
-                        //displayGrey(query)
+        <script>
+            var returnedSuggestion = ''
+            var selectedCar = ''
+            // let editor, doc, cursor, line, pos
+            document.addEventListener("keydown", (event) => {
+                setTimeout(() => {
+                    editor = event.target.closest('.CodeMirror');
+                    if (editor) {
+                        doc = editor.CodeMirror.getDoc()
+                        cursor = doc.getCursor()
+                        line = doc.getLine(cursor.line)
+                        pos = { line: cursor.line, ch: line.length }
+                        if (event.key == "Enter") {
+                            var query = doc.getRange({ line: Math.max(0, cursor.line - 10), ch: 0 }, { line: cursor.line, ch: 0 })
+                            window.postMessage({ source: 'getSuggestion', payload: { data: query } })
+                            //displayGrey(query)
+                        }
+                        else if (event.key == "ArrowRight") {
+                            acceptTab(returnedSuggestion)
+                        }
                     }
-                    else if (event.key == "ArrowRight") {
-                        acceptTab(returnedSuggestion)
-                    }
+                }, 0)
+            })
+            function acceptTab(text) {
+                if (suggestionDisplayed) {
+                    doc.replaceRange(text, pos)
+                    suggestionDisplayed = false
+                    console.log(returnedSuggestion)
+
                 }
-            }, 0)
-        })
-        function acceptTab(text) {
-            if (suggestionDisplayed) {
-                doc.replaceRange(text, pos)
-                suggestionDisplayed = false
-                console.log(returnedSuggestion)
-
             }
-        }
-        function displayGrey(text) {
-            var element = document.createElement('span')
-            element.innerText = text
-            console.log(element.innerText)
-            element.style = 'color:grey'
-            var lineIndex = pos.line;
-            editor.getElementsByClassName('CodeMirror-line')[lineIndex].appendChild(element)
-            suggestionDisplayed = true
-        }
-        window.addEventListener('message', (event) => {
-            if (event.source !== window) return
-            if (event.data.source == 'return') {
-                returnedSuggestion = event.data.payload.data
-                displayGrey(event.data.payload.data)
+            function displayGrey(text) {
+                var element = document.createElement('span')
+                element.innerText = text
+                console.log(element.innerText)
+                element.style = 'color:grey'
+                var lineIndex = pos.line;
+                editor.getElementsByClassName('CodeMirror-line')[lineIndex].appendChild(element)
+                suggestionDisplayed = true
             }
-        })
-        $('div').click(function () {
-            if (this.className === 'card' || this.className === 'card_clicked') {
-                if (selectedCar !== '') {
-                    console.log(selectedCar)
-                    if (selectedCar === $(this).attr('id').replace('#', ''))
-                        if ($(this).attr('class').replace('.', '') === 'card_clicked')
-                            $(this).attr('class', "card")
-                        else
+            window.addEventListener('message', (event) => {
+                if (event.source !== window) return
+                if (event.data.source == 'return') {
+                    returnedSuggestion = event.data.payload.data
+                    displayGrey(event.data.payload.data)
+                }
+            })
+            $('div').click(function () {
+                if (this.className === 'card' || this.className === 'card_clicked') {
+                    if (selectedCar !== '') {
+                        console.log(selectedCar)
+                        if (selectedCar === $(this).attr('id').replace('#', ''))
+                            if ($(this).attr('class').replace('.', '') === 'card_clicked')
+                                $(this).attr('class', "card")
+                            else
+                                $(this).attr('class', "card_clicked")
+                        else {
+                            $('#' + selectedCar).attr('class', "card")
                             $(this).attr('class', "card_clicked")
-                    else {
-                        $('#' + selectedCar).attr('class', "card")
+                        }
+                    } else {
                         $(this).attr('class', "card_clicked")
                     }
-                } else {
-                    $(this).attr('class', "card_clicked")
+                    selectedCar = $(this).attr('id')
                 }
-                selectedCar = $(this).attr('id')
-            }
-        });
-    </script>
+            });
+
+            $(document).ready(function () {
+                $.ajax({
+                    url: '/get-customer-name',
+                    type: 'POST',
+                    success: function (data) {
+                        //add name to customer-name class
+                        $('.customer-name').text(data.customer[0].fname + ' ' + data.customer[0].lname);
+                    }
+                });
+
+                $.ajax({
+                    url: '/get-all-cars-models',
+                    type: 'POST',
+                    success: function (data) {
+                        var dropDown = "<select class=\"col-2\">"
+                        //add data to table body
+                        console.log(data.carModels);
+                        for (var i = 0; i < data.carModels.length; i++) {
+                            var car = data.carModels[i].model;
+                            console.log(car);
+                            dropDown += "<option value=\"saab\">" + car + "</option>"
+                        }
+                        dropDown += "</select>"
+                        $('.specs').append(dropDown);
+                    }
+                });
+
+                $.ajax({
+                    url: '/get-all-cars-makes',
+                    type: 'POST',
+                    success: function (data) {
+                        var dropDown = "<select class=\"col-2\">"
+                        //add data to table body
+                        console.log(data.carMakes);
+                        for (var i = 0; i < data.carMakes.length; i++) {
+                            var car = data.carMakes[i].model;
+                            console.log(car);
+                            dropDown += "<option value=\"saab\">" + car + "</option>"
+                        }
+                        dropDown += "</select>"
+                        $('.specs').append(dropDown);
+                    }
+                });
+                $(".logout-button").click(function () {
+                    $.ajax({
+                        url: "/logout",
+                        type: "POST",
+                        success: function (response) {
+                            window.location.href = "/";
+                        }
+                    });
+                });
+            });
+        </script>
 </body>
 
 </html>
