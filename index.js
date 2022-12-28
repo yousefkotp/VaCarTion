@@ -293,7 +293,8 @@ app.post("/add-car", authorizeOffice, (req, res) => {
 
 //post request to add a reservation
 app.post("/add-reservation", (req, res) => {
-    let ssn = req.user.ssn;
+    let decodedToken = decodeToken(req.cookies.token);
+    let ssn = decodedToken.user.ssn;
     let plateId = req.body.plateId;
     let pickupDate = req.body.pickupDate;
     let returnDate = req.body.returnDate;
