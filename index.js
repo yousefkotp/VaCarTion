@@ -798,7 +798,6 @@ app.post("/show-avaialable-cars",(req,res)=>{
     if(conditions.length > 0){
         query += " AND " + conditions.join(" AND ");
     }
-    console.log(query);
     db.query(query,[return_date,pickup_date],(err,result)=>{
         if(err)
             return res.send({message:err});
