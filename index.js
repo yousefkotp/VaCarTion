@@ -557,8 +557,10 @@ app.post("/get-cars-using-model-and-make", (req, res) => {
 });
 
 //get the cars with specific office id
-app.post("/get-cars-using-office", (req, res) => {
-    var office_id=req.body.office_id;
+app.post("/get-cars-using-office",authorizeOffice, (req, res) => {
+    let token = decodeToken(req.cookies.token);
+    var office_id = token.user.office_id;
+    // var office_id=req.body.office_id;
     //get the cars info from the database
     db.query("SELECT * FROM car WHERE office_id = ?",
     [office_id], (err, result) => {
