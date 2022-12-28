@@ -732,19 +732,19 @@ app.post("/show-avaialable-cars",(req,res)=>{
                 NATURAL INNER JOIN office as o
                 WHERE c.plate_id NOT IN (SELECT r.plate_id FROM reservation as r WHERE r.pickup_date <= ? AND r.return_date >= ?)
                 `
-    if(model != "Any" ){
+    if(model != "Any" && model != ""){
         conditions.push(`c.model = '${model}'`);
     }
-    if(make != "Any"){
+    if(make != "Any" && make != ""){
         conditions.push(`c.make = '${make}'`);
     }
-    if(city != "Any"){
+    if(city != "Any" && city != ""){
         conditions.push(`o.city = '${city}'`);
     }
-    if(country != "Any"){
+    if(country != "Any" && country != ""){
         conditions.push(`o.country = '${country}'`);
     }
-    if(office_name != "Any"){
+    if(office_name != "Any" && office_name != ""){
         conditions.push(`o.office_name = '${office_name}'`);
     }
     if(conditions.length > 0){
