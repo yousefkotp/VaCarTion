@@ -9,8 +9,6 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const cookieParser = require("cookie-parser");
 const nodemailer = require("nodemailer");
-
-
 const { decodeToken, authorizeAdmin, authorizeCustomer, authorizeOffice, authroizeAdminOrCustomer } = require('./authServer');
 const saltRound = 10;
 const cookieOptions = { secure: false }; //change secure to true when deploying
@@ -111,6 +109,10 @@ app.get("/office-home", (req, res) => {
 
 app.get("/customer-home", (req, res) => {
     res.sendFile(__dirname + "/views/customer_home.html");
+});
+
+app.get("/add-car", (req, res) => {
+    res.sendFile(__dirname + "/views/add_car.html");
 });
 
 /*post requests*/
@@ -265,13 +267,15 @@ app.post("/office-signup", (req, res) => {
 });
 
 //post request to add a car
-app.post("/add-car", (req, res) => {
+app.post("/add-car", authorizeOffice, (req, res) => {
     let plateId = req.body.plate_id;
     let model = req.body.model;
     let make = req.body.make;
     let year = req.body.year;
     let price = req.body.price;
-    let officeId = req.user.office_id;
+    // let officeId = req.user.office_id;
+    let token = decodeToken(req.cookies.token);
+    var officeId = token.user.office_id;
     //store the info inside the database
     db.query("INSERT INTO car (plate_id, model, make, year, price, office_id) VALUES (?,?,?,?,?,?)",
         [plateId, model, make, year, price, officeId], (err, result) => {
@@ -282,7 +286,7 @@ app.post("/add-car", (req, res) => {
                 [plateId], (err, result) => {
                     if (err)
                         return res.send({ message: err });
-                    res.sendFile(__dirname + "/views/office_home.html");
+                    res.redirect("/office-home");
                 });
         });
 });
@@ -414,7 +418,6 @@ app.post("/get-customer-name", authroizeAdminOrCustomer, (req, res) => {
 app.post("/get-office-name", authorizeOffice, (req, res) => {
     let token = decodeToken(req.cookies.token);
     var id = token.user.office_id;
-    console.log(id);
     ///get the reservation info from the database
     db.query("SELECT name FROM office WHERE office_id = ?",
         [id], (err, result) => {
@@ -423,7 +426,6 @@ app.post("/get-office-name", authorizeOffice, (req, res) => {
             res.send({ office: result, message: "success" });
         });
 });
-// TODO
 // office reservations search
 app.post("/get-office-reservation", authorizeOffice, (req, res) => {
     //get decoded token from the request
@@ -436,12 +438,6 @@ app.post("/get-office-reservation", authorizeOffice, (req, res) => {
                 return res.send({ message: err });
             res.send({ reservations: result, message: "success" });
         });
-    // db.query("SELECT *, ((return_date-pickup_date+1)*price )as revenue FROM reservation as r NATURAL INNER JOIN customer INNER JOIN car as c on c.plate_id = r.plate_id WHERE r.ssn = ?",
-    // [ssn], (err, result) => {
-    //     if(err)
-    //         return res.send({message: err});
-    //     res.send({reservation: result, message : "success"});
-    // });
 });
 
 // customer reservation search
@@ -580,7 +576,7 @@ app.post("/get-cars-using-office", authorizeOffice, (req, res) => {
     var office_id = token.user.office_id;
     // var office_id=req.body.office_id;
     //get the cars info from the database
-    db.query("SELECT * FROM car WHERE office_id = ?",
+    db.query("SELECT * FROM car JOIN `car_status` ON `car_status`.plate_id = car.plate_id WHERE office_id = ? ORDER BY car_status.status_date DESC LIMIT 1",
         [office_id], (err, result) => {
             if (err)
                 return res.send({ message: err });
