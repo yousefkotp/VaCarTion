@@ -187,7 +187,12 @@
                 $("#getAvailable").click(function () {
                     var pickDate = $("#pickDate").val()
                     var retDate = $("#returnDate").val()
-
+                    //get today in yyyy-mm-dd format
+                    let currentDate = new Date().toISOString().slice(0, 10);
+                    if(pickDate < currentDate){
+                        alert("You can't travel in time mf!")
+                        return
+                    }
                     if (pickDate === "" || retDate === "") {
                         alert("Please select a pick up and return date")
                         return
@@ -261,7 +266,7 @@
                 $("#reserve-btn").click(function () {
                     var pickDate = $("#pickDate").val()
                     var retDate = $("#returnDate").val()
-
+                    
                     const x = new Date(pickDate);
                     const y = new Date(retDate);
                     if (pickDate === "" || retDate === "") {
