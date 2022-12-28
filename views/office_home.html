@@ -33,25 +33,16 @@
                 <table class="table table-striped">
                     <thead>
                         <tr>
-                            <th scope="col">Reservation ID</th>
-                            <th scope="col">Car ID</th>
+                            <th scope="col">Res NO.</th>
+                            <th scope="col">Plate ID</th>
+                            <th scope="col">Customer Name</th>
+                            <th scope="col">Res Date</th>
                             <th scope="col">Pickup Date</th>
                             <th scope="col">Return Date</th>
-                            <th scope="col">Pickup Location</th>
-                            <th scope="col">Return Location</th>
-                            <th scope="col">Total Cost</th>
+                            <th scope="col">Total Revenue</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr>
-                            <td>{{reservation.reservation_id}}</td>
-                            <td>{{reservation.car_id}}</td>
-                            <td>{{reservation.pickup_date}}</td>
-                            <td>{{reservation.return_date}}</td>
-                            <td>{{reservation.pickup_location}}</td>
-                            <td>{{reservation.return_location}}</td>
-                            <td>{{reservation.total_cost}}</td>
-                        </tr>
+                    <tbody class="office-reservation">
                     </tbody>
                 </table>
             </div>
@@ -74,7 +65,7 @@
                             <th scope="col">Price/Day</th>
                         </tr>
                     </thead>
-                    <tbody class="office-cars">   
+                    <tbody class="office-cars">
                     </tbody>
             </div>
         </div>
@@ -96,14 +87,21 @@
                 });
                 //make post request to get-customer-reservation
                 $.ajax({
-                    url: '/get-customer-reservation',
+                    url: '/get-office-reservation',
                     type: 'POST',
                     success: function (data) {
+                        console.log(data);
                         //add data to table body
-                        for (var i = 0; i < data.reservation.length; i++) {
-                            var reservation = data.reservation[i];
-                            var row = '<tr><td>' + reservation.reservation_no + '</td><td>' + reservation.plate_id + '</td><td>' + reservation.pickup_date.substr(0,10) + '</td><td>' + reservation.return_date.substr(0,10) + '</td><td>' + reservation.model + '</td><td>' + reservation.make + '</td><td>' + reservation.year + '</td><td>' + reservation.revenue + '</td></tr>';
-                            $('.customer-reservation').append(row);
+                        for (var i = 0; i < data.reservations.length; i++) {
+                            var reservation = data.reservations[i];
+                            const date1 = new Date(reservation.return_date);
+                            const date2 = new Date(reservation.pickup_date);
+                            const diffTime = Math.abs(date2 - date1);
+                            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                            <!-- console.log(diffDays); -->
+                            var revenue = reservation.price * diffDays;
+                            var row = '<tr><td>' + reservation.reservation_no + '</td><td>' + reservation.plate_id + '</td><td>' + reservation.fname + " " + reservation.lname + '</td><td>' + reservation.reserve_date + '</td><td>' + reservation.pickup_date + '</td><td>' + reservation.return_date + '</td><td>' + revenue + '</td></tr>';
+                            $('.office-reservation').append(row);
                         }
                     }
                 });
@@ -114,7 +112,7 @@
                         //add data to table body
                         for (var i = 0; i < data.cars.length; i++) {
                             var car = data.cars[i];
-                            var row = '<tr><td>' + car.plate_id + '</td><td>' + car.registration_date + '</td><td>' + car.make+ '</td><td>' + car.model + '</td><td>' + car.year + '</td><td>' + car.price + '</td></tr>';
+                            var row = '<tr><td>' + car.plate_id + '</td><td>' + car.registration_date + '</td><td>' + car.make + '</td><td>' + car.model + '</td><td>' + car.year + '</td><td>' + car.price + '</td></tr>';
                             $('.office-cars').append(row);
                         }
                     }
