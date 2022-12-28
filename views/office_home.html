@@ -12,25 +12,25 @@
 </head>
 
 <body>
-    <div class="container">
-        <div class="row fixed-top" style="margin:10px;">
-            <div class="col-2">
+    <div class="container-fluid">
+        <div class="row" >
+            <div class="col-2" style="margin: 10px;;">
                 <h1 class="text-center black">VaCarTion <img src="/car.png"></img></h1>
             </div>
             <div class="col" style="margin-top:20px; ">
                 <h2 class="text-center black"><span class="office-name"></h2>
             </div>
-            <div class="col-2">
-                <button type="button" class="col btn btn-outline-danger logout-button">Log Out </button>
+            <div class="col-2" style="padding-left: 100px;">
+                <button type="button" class="col btn btn-outline-danger logout-button" style="margin:10px;">Log Out </button>
             </div>
         </div>
 
-        <div class="row" style="padding-top:50px;">
+        <div class="row" style="padding-top:50px; margin:50px;">
             <div class="col-12">
                 <h3 class="text-center black">Your current reservations</h3>
             </div>
         </div>
-        <div class="row" style="margin-bottom:70px;">
+        <div class="row" style="margin-bottom:70px; margin:50px;">
             <div class="col-12">
                 <table class="table table-striped">
                     <thead>
@@ -49,7 +49,7 @@
                 </table>
             </div>
         </div>
-        <div class="row">
+        <div class="row" style="margin:50px;">
             <div class="col-3 m-0">
                 <h3 class="text-center black">Your current cars</h3>
             </div>
@@ -58,7 +58,7 @@
                 <button type="button" class="col btn btn-outline-primary" id="add_car_btn">Add Car</button>
             </div>
         </div>
-        <div class="row">
+        <div class="row" style="margin:50px;">
             <div class="col-12">
                 <table class="table table-striped">
                     <thead>
@@ -170,6 +170,7 @@
                     success: function (response) {
                         //window.location.href = "/";
                         console.log(response);
+                        if(response.success)
                         alert("Status Updated Successfully")
                     },
                     error: function (response){
