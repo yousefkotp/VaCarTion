@@ -298,9 +298,15 @@ app.post("/add-reservation", (req, res) => {
     let plateId = req.body.plateId;
     let pickupDate = req.body.pickupDate;
     let returnDate = req.body.returnDate;
+    let payNow = req.body.payNow;
     //get the current date
     //store the info inside the database
-    db.query("INSERT INTO reservation (ssn, plate_id, pickup_date, return_date) VALUES (?,?,?,?)",
+    var query = '';
+    if (payNow === "true")
+        query = "INSERT INTO reservation (ssn, plate_id, pickup_date, return_date, payment_date) VALUES (?,?,?,?, CURDATE())";
+    else
+        query = "INSERT INTO reservation (ssn, plate_id, pickup_date, return_date) VALUES (?,?,?,?)";
+    db.query(query,
         [ssn, plateId, pickupDate, returnDate], (err, result) => {
             if (err)
                 return res.send({ message: err });
@@ -313,7 +319,7 @@ app.post("/add-reservation", (req, res) => {
                         [plateId, 0, returnDate], (err, result) => {
                             if (err)
                                 return res.send({ message: err });
-                            res.redirect("customer-home");
+                            res.send({ success: true });
                         });
                 });
         });
@@ -339,13 +345,13 @@ app.post("/delete-car", authorizeOffice, (req, res) => {
     db.query("SELECT office_id FROM `car` WHERE plate_id = ?", [plate_id], (err, result) => {
         if (err)
             return res.send({ message: err });
-        if (result[0].office_id == office_id){
+        if (result[0].office_id == office_id) {
             db.query("DELETE FROM `car` WHERE plate_id = ?", [plate_id], (err, result) => {
                 if (err)
                     return res.send({ message: err });
                 res.send({ success: true });
             });
-        }else{
+        } else {
             res.send({ success: false, message: "You are not authorized to change the status of this car" });
         }
     });
@@ -357,7 +363,7 @@ app.post("/add-new-status", authorizeOffice, (req, res) => {
     //get office_id from the token
     let decodedToken = decodeToken(req.cookies.token);
     let office_id = decodedToken.user.office_id;
-    
+
     //check that only the office having that car can changes its status
     db.query("SELECT office_id FROM `car` WHERE plate_id = ?", [plate_id], (err, result) => {
         if (err)
@@ -368,7 +374,7 @@ app.post("/add-new-status", authorizeOffice, (req, res) => {
                     return res.send({ success: false, message: err });
                 res.send({ success: true });
             });
-        }else{
+        } else {
             res.send({ success: false, message: "You are not authorized to change the status of this car" });
         }
     });
@@ -763,7 +769,7 @@ app.post("/advanced-search", authorizeAdmin, (req, res) => {
         );
 });
 
-app.post("/show-avaialable-cars",(req,res)=>{
+app.post("/show-avaialable-cars", (req, res) => {
     let pickup_date = req.body.pickup_date;
     let return_date = req.body.return_date;
     let model = req.body.model;
@@ -777,31 +783,31 @@ app.post("/show-avaialable-cars",(req,res)=>{
                 NATURAL INNER JOIN office as o
                 WHERE c.plate_id NOT IN (SELECT r.plate_id FROM reservation as r WHERE r.pickup_date <= ? AND r.return_date >= ?)
                 `;
-    if(model != "Any" && model != ""){
+    if (model != "Any" && model != "") {
         conditions.push(`c.model = '${model}'`);
     }
-    if(make != "Any" && make != ""){
+    if (make != "Any" && make != "") {
         conditions.push(`c.make = '${make}'`);
     }
-    if(city != "Any" && city != ""){
+    if (city != "Any" && city != "") {
         conditions.push(`o.city = '${city}'`);
     }
-    if(country != "Any" && country != ""){
+    if (country != "Any" && country != "") {
         conditions.push(`o.country = '${country}'`);
     }
-    if(office_name != "Any" && office_name != ""){
+    if (office_name != "Any" && office_name != "") {
         conditions.push(`o.name = '${office_name}'`);
     }
-    if(office_build_no != "Any" && office_build_no != ""){
+    if (office_build_no != "Any" && office_build_no != "") {
         conditions.push(`o.building_no = '${office_build_no}'`);
     }
-    if(conditions.length > 0){
+    if (conditions.length > 0) {
         query += " AND " + conditions.join(" AND ");
     }
-    db.query(query,[return_date,pickup_date],(err,result)=>{
-        if(err)
-            return res.send({message:err});
-        res.send({cars:result,message:"success"});
+    db.query(query, [return_date, pickup_date], (err, result) => {
+        if (err)
+            return res.send({ message: err });
+        res.send({ cars: result, message: "success" });
     });
 });
 
