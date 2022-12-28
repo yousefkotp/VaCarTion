@@ -49,8 +49,9 @@
 
         </div>
         <div class="form-check justify-content-center h4" style="margin: 10px;">
-            <input class="form-check-input h4" style="float:inherit;" type="checkbox" value="" id="flexCheckDefault">
-            <label class="form-check-label h4" for="flexCheckDefault">
+            <input id="payNow" class="form-check-input h4" checked="true" style="float:inherit;" type="checkbox"
+                value="">
+            <label class="form-check-label h4" for="payNow">
                 Pay Now
             </label>
             <div><button id="reserve-btn" class="btn btn-primary mybtn g white">Reserve</button></div>
@@ -61,27 +62,25 @@
             crossorigin="anonymous"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <!-- <script src="signin.js" charset="utf-8"></script> -->
- <!-- JavaScript -->
- <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
+        <!-- JavaScript -->
+        <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
 
- <!-- CSS -->
- <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css" />
- <!-- Default theme -->
- <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/default.min.css" />
- <!-- Semantic UI theme -->
- <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/semantic.min.css" />
- <!-- Bootstrap theme -->
- <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/bootstrap.min.css" />
+        <!-- CSS -->
+        <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css" />
+        <!-- Default theme -->
+        <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/default.min.css" />
+        <!-- Semantic UI theme -->
+        <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/semantic.min.css" />
+        <!-- Bootstrap theme -->
+        <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/bootstrap.min.css" />
 
         <script>
             $(document).ready(function () {
                 var returnedSuggestion = ''
                 var selectedCar = ''
                 var zoomFun = function () {
-                    console.log(selectedCar);
                     if (this.className === 'card' || this.className === 'card_clicked') {
                         if (selectedCar !== '') {
-                            console.log(selectedCar)
                             if (selectedCar === $(this).attr('id').replace('#', ''))
                                 if ($(this).attr('class').replace('.', '') === 'card_clicked')
                                     $(this).attr('class', "card")
@@ -102,7 +101,6 @@
                 function displayGrey(text) {
                     var element = document.createElement('span')
                     element.innerText = text
-                    console.log(element.innerText)
                     element.style = 'color:grey'
                     var lineIndex = pos.line;
                     editor.getElementsByClassName('CodeMirror-line')[lineIndex].appendChild(element)
@@ -128,16 +126,12 @@
                             model: carModel
                         },
                         success: function (data) {
-                            console.log(typeof carModel)
-                            console.log($('#modelSelect').find(":selected").text().toString())
                             //var dropDown = "<select class=\"col-2\">"
                             var dropDown = ""
                             dropDown += "<option>Any</option>"
                             //add data to table body
-                            console.log(data.carMakes);
                             for (var i = 0; i < data.carMakes.length; i++) {
                                 var car = data.carMakes[i].make;
-                                console.log(car);
                                 dropDown += "<option>" + car + "</option>"
                             }
                             $('#makeSelect').empty();
@@ -199,7 +193,7 @@
                     var retDate = $("#returnDate").val()
                     //get today in yyyy-mm-dd format
                     let currentDate = new Date().toISOString().slice(0, 10);
-                    if(pickDate < currentDate){
+                    if (pickDate < currentDate) {
                         alertify.alert("You can't travel in time mf!").set('frameless', true);
                         return
                     }
@@ -243,7 +237,6 @@
                             //cards += "<option>Any</option>"
                             //add data to table body
                             //console.log(data.carMakes);
-                            console.log(data)
                             for (var i = 0; i < data.cars.length; i++) {
                                 var car = data.cars[i];
                                 var office = car.name + " - " + car.building_no + ", " + car.city + ", " + car.country;
@@ -276,7 +269,7 @@
                 $("#reserve-btn").click(function () {
                     var pickDate = $("#pickDate").val()
                     var retDate = $("#returnDate").val()
-                    
+
                     const x = new Date(pickDate);
                     const y = new Date(retDate);
                     if (pickDate === "" || retDate === "") {
@@ -297,11 +290,17 @@
                         data: {
                             plateId: selectedCar,
                             pickupDate: pickDate,
-                            returnDate: retDate
+                            returnDate: retDate,
+                            payNow: $("#payNow").is(":checked")
                         },
-                        success: function (response) {
-                            window.location.href = "/customer-home";
-                            //console.log(response);
+                        success: function (data) {
+                            console.log(data);
+                            if (data.success == true)
+                                var notification = alertify.notify('Reservation added successfully', 'success', 3, function () { window.location.href = "/customer-home"; });
+                            else
+                                var notification = alertify.notify('Error happenend, please contact the adminstrator', 'error');
+
+
                         }
                     });
                 });
