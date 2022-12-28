@@ -106,15 +106,6 @@
                     //add data to table body
                     for (var i = 0; i < data.reservations.length; i++) {
                         var reservation = data.reservations[i];
-                        const rDate = new Date(reservation.return_date);
-                        const pDate = new Date(reservation.pickup_date);
-                        const resDate = new Date(reservation.pickup_date);
-                        //const diffTime = Math.abs(pDate - rDate);
-                        //const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-
-                        reservation.return_date = moment(rDate).format('DD/MM/YYYY');
-                        reservation.pickup_date = moment(pDate).format('DD/MM/YYYY');
-                        reservation.reserve_date = moment(resDate).format('DD/MM/YYYY');
                         //var revenue = reservation.price * diffDays;
                         var row = '<tr><td>' + reservation.reservation_no + '</td><td>' + reservation.plate_id + '</td><td>' + reservation.fname + " " + reservation.lname + '</td><td>' + reservation.reserve_date.substr(0, 10) + '</td><td>' + reservation.pickup_date.substr(0, 10) + '</td><td>' + reservation.return_date.substr(0, 10) + '</td><td>' + reservation.revenue + '</td></tr>';
                         $('.office-reservation').append(row);
