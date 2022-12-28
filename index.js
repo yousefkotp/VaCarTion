@@ -724,30 +724,36 @@ app.post("/show-avaialable-cars",(req,res)=>{
     let return_date = req.body.return_date;
     let model = req.body.model;
     let make = req.body.make;;
-    let location = req.body.location;
+    let city = req.body.city;
+    let country = req.body.country;
     let office_name = req.body.office_name;
     let conditions = []
     let query = `SELECT * FROM car as c
-                WHERE c.plate_id NOT IN (SELECT r.plate_id FROM reservation as r WHERE r.pickup_date <= ? AND r.return_date >= ?)`
-    if(model != "Any"){
+                NATURAL INNER JOIN office as o
+                WHERE c.plate_id NOT IN (SELECT r.plate_id FROM reservation as r WHERE r.pickup_date <= ? AND r.return_date >= ?)
+                `
+    if(model != "Any" ){
         conditions.push(`c.model = '${model}'`);
     }
     if(make != "Any"){
         conditions.push(`c.make = '${make}'`);
     }
-    if(location != "Any"){
-        conditions.push(`c.office_id = '${location}'`);
+    if(city != "Any"){
+        conditions.push(`o.city = '${city}'`);
+    }
+    if(country != "Any"){
+        conditions.push(`o.country = '${country}'`);
     }
     if(office_name != "Any"){
-        conditions.push(`c.office_id = '${office_name}'`);
+        conditions.push(`o.office_name = '${office_name}'`);
     }
     if(conditions.length > 0){
-        query+= " WHERE " + conditions.join(" AND ");
+        query += " AND " + conditions.join(" AND ");
     }
     db.query(query,[return_date,pickup_date],(err,result)=>{
         if(err)
             return res.send({message:err});
-        res.send({car:result,message:"success"});
+        res.send({cars:result,message:"success"});
     });
 });
 
