@@ -342,9 +342,9 @@ app.post("/add-new-status", (req, res) => {
     let status = req.body.status;
     let plate_id = req.body.plate_id;
     // let status = req.body.status;
-    db.query("INSERT INTO `car_status`(`plate_id`, `status_code`, `status_date`) VALUES (?,?,DATE_ADD(curDate(), INTERVAL 10 DAY))", [plate_id,status], (err, result) => {
+    db.query("INSERT INTO `car_status`(`plate_id`, `status_code`, `status_date`) VALUES (?,?,DATE_ADD(curDate(), INTERVAL 10 DAY))", [plate_id, status], (err, result) => {
         if (err)
-            return res.send({ success:false, message : err });
+            return res.send({ success: false, message: err });
         res.send({ success: true });
     });
 });
