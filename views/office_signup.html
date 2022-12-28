@@ -153,14 +153,18 @@
                 alertify.alert("Passwords do not match.").set('frameless', true);
             }
             if (eligable === true) {
-                console.log(eligable);
                 $.ajax({
                     url: "/office-signup",
                     type: 'post',
                     async: false,
                     data: $("#formmmm").serialize(),
                     success: function (data) {
-                        var notification = alertify.notify('Signed up successfully, redirecting to signin page...', 'success', 3, function(){ window.location.href = "/signin"; });
+                        console.log(data);
+                        if (data.success == true)
+                            var notification = alertify.notify('Signed up successfully, redirecting to signin page...', 'success', 3, function () { window.location.href = "/signin"; });
+                        else
+                            var notification = alertify.notify('Error happenend, please contact the adminstrator', 'error');
+
                     }
                 });
             }
