@@ -192,6 +192,12 @@
                         alert("Please select a pick up and return date")
                         return
                     }
+                    const x = new Date(pickDate);
+                    const y = new Date(retDate);
+                    if (x > y) {
+                        alert("How the fuck you want to return a car before you pick it up!!!!!!")
+                        return
+                    }
                     var loc = $('#locationSelect').find(":selected").text().toString()
                     var office_name = ''
                     var office_building = ''
@@ -260,6 +266,10 @@
                     const y = new Date(retDate);
                     if (pickDate === "" || retDate === "") {
                         alert("Please select a pick up and return date")
+                        return
+                    }
+                    if (x > y) {
+                        alert("How the fuck you want to return a car before you pick it up!!!!!!")
                         return
                     }
                     if (selectedCar === "") {
