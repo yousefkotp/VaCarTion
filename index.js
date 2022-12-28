@@ -392,6 +392,39 @@ app.post("/get-customer-name", authroizeAdminOrCustomer,(req,res)=>
     });
 });
 
+//get office name from office_id
+app.post("/get-office-name", authorizeOffice,(req,res)=>
+{
+    let token = decodeToken(req.cookies.token);
+    var id = token.user.office_id;
+    console.log(id);
+    ///get the reservation info from the database
+    db.query("SELECT name FROM office WHERE office_id = ?",
+    [id], (err, result) => {
+        if(err)
+            return res.send({message: err});
+        res.send({office: result,message : "success"});
+    });
+});
+// TODO
+// office reservations search
+app.post("/get-office-reservation", authroizeAdminOrCustomer, (req,res)=>
+{
+    //get decoded token from the request
+    user = decodeToken(req.cookies.token);
+    var id = user.user.office_id;
+    if(ssn == null)
+        id=req.body.office_id;
+    ///get the reservation info from the database
+    db.
+    db.query("SELECT *, ((return_date-pickup_date+1)*price )as revenue FROM reservation as r NATURAL INNER JOIN customer INNER JOIN car as c on c.plate_id = r.plate_id WHERE r.ssn = ?",
+    [ssn], (err, result) => {
+        if(err)
+            return res.send({message: err});
+        res.send({reservation: result, message : "success"});
+    });
+});
+
 // customer reservation search
 app.post("/get-customer-reservation", authroizeAdminOrCustomer, (req,res)=>
 {
