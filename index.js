@@ -723,15 +723,16 @@ app.post("/show-avaialable-cars",(req,res)=>{
     let pickup_date = req.body.pickup_date;
     let return_date = req.body.return_date;
     let model = req.body.model;
-    let make = req.body.make;;
+    let make = req.body.make;
     let city = req.body.city;
     let country = req.body.country;
     let office_name = req.body.office_name;
+    let office_build_no = req.body.office_build_no;
     let conditions = []
     let query = `SELECT * FROM car as c
                 NATURAL INNER JOIN office as o
                 WHERE c.plate_id NOT IN (SELECT r.plate_id FROM reservation as r WHERE r.pickup_date <= ? AND r.return_date >= ?)
-                `
+                `;
     if(model != "Any" && model != ""){
         conditions.push(`c.model = '${model}'`);
     }
@@ -745,11 +746,15 @@ app.post("/show-avaialable-cars",(req,res)=>{
         conditions.push(`o.country = '${country}'`);
     }
     if(office_name != "Any" && office_name != ""){
-        conditions.push(`o.office_name = '${office_name}'`);
+        conditions.push(`o.name = '${office_name}'`);
+    }
+    if(office_build_no != "Any" && office_build_no != ""){
+        conditions.push(`o.building_no = '${office_build_no}'`);
     }
     if(conditions.length > 0){
         query += " AND " + conditions.join(" AND ");
     }
+    console.log(query);
     db.query(query,[return_date,pickup_date],(err,result)=>{
         if(err)
             return res.send({message:err});
