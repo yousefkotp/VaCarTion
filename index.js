@@ -553,6 +553,14 @@ app.post("/get-cars-using-model", (req, res) => {
         });
 });
 
+app.post("/get-all-offices", (req, res) => {
+    db.query("SELECT * FROM office",
+        (err, result) => {
+            if (err)
+                return res.send({ message: err });
+            res.send({ offices: result, message: "success" });
+        });
+});
 //get the cars with specific make
 app.post("/get-cars-using-make", (req, res) => {
     var make = req.body.make;
