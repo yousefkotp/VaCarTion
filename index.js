@@ -1,4 +1,3 @@
-//
 require('dotenv').config()
 const express = require("express");
 const app = express();
@@ -48,22 +47,37 @@ const transporter = nodemailer.createTransport({
 // password: "dbdbdb123",
 // database: "carrentalsysdb12"
 
-app.get("/", (req, res) => {
+function checkWhereToGo(req,res,next){
+    console.log(req.cookies.token);
+    if(req.cookies.token === undefined){
+        next();
+        return;
+    }
+    let decodedToken = decodeToken(req.cookies.token);
+    if(decodedToken && decodedToken.role === "admin")
+        res.redirect("/admin");
+    else if(decodedToken && decodedToken.role === "customer")
+        res.redirect("/customer-home");
+    else if(decodedToken && decodedToken.role === "office")
+        res.redirect("/office-home");
+}
+
+app.get("/", checkWhereToGo, (req, res) => {
     res.sendFile(__dirname + "/views/home.html");
 });
 
-app.get("/signin", (req, res) => {
+app.get("/signin", checkWhereToGo, (req, res) => {
     res.sendFile(__dirname + "/views/signin.html");
 });
-app.get("/signup", (req, res) => {
+app.get("/signup", checkWhereToGo, (req, res) => {
     res.sendFile(__dirname + "/views/signup.html");
 });
 
-app.get("/office_signup", (req, res) => {
+app.get("/office_signup", checkWhereToGo, (req, res) => {
     res.sendFile(__dirname + "/views/office_signup.html");
 });
 
-app.get("/new_car", (req, res) => {
+app.get("/new_car", authorizeOffice, (req, res) => {
     res.sendFile(__dirname + "/views/car_form.html");
 });
 
@@ -91,27 +105,23 @@ app.get("/res-search", authorizeAdmin, (req, res) => {
     res.sendFile(__dirname + "/views/res_search.html");
 });
 
-app.get("/reserve", (req, res) => {
+app.get("/reserve", authorizeCustomer, (req, res) => {
     res.sendFile(__dirname + "/views/reserve.html");
 });
 
-app.get("/car-form", (req, res) => {
-    res.sendFile(__dirname + "/views/car_form.html");
-});
-
-app.get("/advanced-search", (req, res) => {
+app.get("/advanced-search", authorizeAdmin, (req, res) => {
     res.sendFile(__dirname + "/views/advanced_search.html");
 });
 
-app.get("/office-home", (req, res) => {
+app.get("/office-home", authorizeOffice, (req, res) => {
     res.sendFile(__dirname + "/views/office_home.html");
 });
 
-app.get("/customer-home", (req, res) => {
+app.get("/customer-home", authorizeCustomer, (req, res) => {
     res.sendFile(__dirname + "/views/customer_home.html");
 });
 
-app.get("/add-car", (req, res) => {
+app.get("/add-car", authorizeOffice, (req, res) => {
     res.sendFile(__dirname + "/views/add_car.html");
 });
 
@@ -778,16 +788,16 @@ app.post("/show-avaialable-cars", (req, res) => {
     let country = req.body.country;
     let office_name = req.body.office_name;
     let office_build_no = req.body.office_build_no;
-    let conditions = []
-    //get current Date in the format of YYYY-MM-DD
+    //get current date in the format of YYYY-MM-DD
     let date = new Date().toISOString().slice(0, 10);
+    let conditions = []
 
 
     let query = `    SELECT *,MAX(status_date) FROM car as c 
                     NATURAL INNER JOIN car_photos
                     NATURAL INNER JOIN office as o
                     NATURAL INNER JOIN car_status as cs
-                    WHERE cs.status_date <= ? AND cs.status_code = 0
+                    WHERE c.plate_id NOT IN (SELECT r.plate_id FROM reservation as r WHERE r.pickup_date <= ? AND r.return_date >= ?)
                 `;
     if (model != "Any" && model != "") {
         conditions.push(`c.model = '${model}'`);
@@ -811,11 +821,12 @@ app.post("/show-avaialable-cars", (req, res) => {
         query += " AND " + conditions.join(" AND ");
     }
     query += " GROUP BY c.plate_id";
-    console.log(query);
-    db.query(query, [pickup_date, return_date], (err, result) => {
-        result = result.filter(car => car.status_code == 0);
+    query += " HAVING status_date <= ?"
+    db.query(query, [pickup_date, return_date, date], (err, result) => {
         if (err)
             return res.send({ message: err });
+        if(result != null)
+            result = result.filter(car => car.status_code == 0);
         res.send({ cars: result, message: "success" });
     });
 });
