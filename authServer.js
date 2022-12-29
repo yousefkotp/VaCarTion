@@ -90,4 +90,19 @@ function authroizeAdminOrCustomer(req, res, next) {
     });
 }
 
-module.exports = {authorizeAdmin, authorizeCustomer, authorizeOffice, authroizeAdminOrCustomer, decodeToken};
+function checkWhereToGo(req,res,next){
+    console.log(req.cookies.token);
+    if(req.cookies.token === undefined){
+        next();
+        return;
+    }
+    let decodedToken = decodeToken(req.cookies.token);
+    if(decodedToken && decodedToken.role === "admin")
+        res.redirect("/admin");
+    else if(decodedToken && decodedToken.role === "customer")
+        res.redirect("/customer-home");
+    else if(decodedToken && decodedToken.role === "office")
+        res.redirect("/office-home");
+}
+
+module.exports = {authorizeAdmin, authorizeCustomer, authorizeOffice, authroizeAdminOrCustomer, decodeToken, checkWhereToGo};

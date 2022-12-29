@@ -8,7 +8,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const cookieParser = require("cookie-parser");
 const nodemailer = require("nodemailer");
-const { decodeToken, authorizeAdmin, authorizeCustomer, authorizeOffice, authroizeAdminOrCustomer } = require('./authServer');
+const { decodeToken, authorizeAdmin, authorizeCustomer, authorizeOffice, authroizeAdminOrCustomer, checkWhereToGo} = require('./authServer');
 const saltRound = 10;
 const cookieOptions = { secure: false }; //change secure to true when deploying
 
@@ -30,7 +30,6 @@ const db = mysql.createConnection({
 });
 db.connect();
 
-
 const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
@@ -38,29 +37,6 @@ const transporter = nodemailer.createTransport({
         pass: process.env.PASSWORD
     }
 });
-
-
-// msh 3arf a run query begeb not authorized f 3mlt leha comment
-// host: "db4free.net",
-// port: "3306",
-// user: "car_sys_admin",
-// password: "dbdbdb123",
-// database: "carrentalsysdb12"
-
-function checkWhereToGo(req,res,next){
-    console.log(req.cookies.token);
-    if(req.cookies.token === undefined){
-        next();
-        return;
-    }
-    let decodedToken = decodeToken(req.cookies.token);
-    if(decodedToken && decodedToken.role === "admin")
-        res.redirect("/admin");
-    else if(decodedToken && decodedToken.role === "customer")
-        res.redirect("/customer-home");
-    else if(decodedToken && decodedToken.role === "office")
-        res.redirect("/office-home");
-}
 
 app.get("/", checkWhereToGo, (req, res) => {
     res.sendFile(__dirname + "/views/home.html");
