@@ -70,4 +70,3 @@ INSERT INTO reservation (ssn, plate_id, pickup_date, return_date) VALUES('456789
 INSERT INTO reservation (ssn, plate_id, pickup_date, return_date) VALUES('567890','56789012','2022-12-28','2022-12-30');
 
 
-UPDATE reservation SET payment_date = (CURRENT_DATE) WHERE reservation_no = 1;
