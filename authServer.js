@@ -91,7 +91,6 @@ function authroizeAdminOrCustomer(req, res, next) {
 }
 
 function checkWhereToGo(req,res,next){
-    console.log(req.cookies.token);
     if(req.cookies.token === undefined){
         next();
         return;
