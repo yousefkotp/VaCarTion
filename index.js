@@ -643,7 +643,7 @@ app.post("/get-cars-using-office", authorizeOffice, (req, res) => {
     var office_id = token.user.office_id;
     // var office_id=req.body.office_id;
     //get the cars info from the database
-    db.query("SELECT * FROM car JOIN `car_status` ON `car_status`.plate_id = car.plate_id WHERE office_id = ? ORDER BY car_status.status_date DESC LIMIT 1",
+    db.query("SELECT * FROM car JOIN `car_status` ON `car_status`.plate_id = car.plate_id WHERE office_id = ? ORDER BY car_status.status_date DESC",
         [office_id], (err, result) => {
             if (err)
                 return res.send({ message: err });
