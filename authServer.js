@@ -25,7 +25,8 @@ function authorizeAdmin(req, res, next) {
 };
 
 function decodeToken(token){
-    return jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+    let decodedToken = jwt.decode(token);
+    return decodedToken;
 }
 
 
@@ -96,6 +97,11 @@ function checkWhereToGo(req,res,next){
         return;
     }
     let decodedToken = decodeToken(req.cookies.token);
+    if(decodedToken.exp < Date.now() / 1000){
+        res.clearCookie("token");
+        next();
+        return;
+    }
     if(decodedToken && decodedToken.role === "admin")
         res.redirect("/admin");
     else if(decodedToken && decodedToken.role === "customer")
