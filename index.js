@@ -206,7 +206,17 @@ app.post("/signup", (req, res) => {
                                 from: process.env.EMAIL,
                                 to: email,
                                 subject: 'Welcome to VaCarTion🚘💚',
-                                text: "habiby ahamo"
+                                text: "Welcome to VaCarTion! 😃💚\
+\
+                                From all of us at VaCarTion, we wish you a splendid experience.\
+                                \
+                                Ride away!\
+                                \
+                                 \
+                                \
+                                Regards,\
+                                \
+                                The VaCarTion team"
                             };
                             transporter.sendMail(mailOptions, function (error, info) {
                                 if (error) {
