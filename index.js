@@ -283,9 +283,8 @@ app.post("/add-car", authorizeOffice, (req, res) => {
     let make = req.body.make;
     let year = req.body.year;
     let price = req.body.price;
-    // let officeId = req.user.office_id;
     let token = decodeToken(req.cookies.token);
-    var officeId = token.user.office_id;
+    let officeId = token.user.office_id;
     //store the info inside the database
     db.query("INSERT INTO car (plate_id, model, make, year, price, office_id) VALUES (?,?,?,?,?,?)",
         [plateId, model, make, year, price, officeId], (err, result) => {
@@ -302,7 +301,7 @@ app.post("/add-car", authorizeOffice, (req, res) => {
 });
 
 //post request to add a reservation
-app.post("/add-reservation", (req, res) => {
+app.post("/add-reservation", authorizeCustomer, (req, res) => {
     let decodedToken = decodeToken(req.cookies.token);
     let ssn = decodedToken.user.ssn;
     let plateId = req.body.plateId;
@@ -539,18 +538,6 @@ app.post("/get-car-reservation-within-period", authorizeAdmin, (req, res) => {
         });
 });
 
-//list the cars that are available at a certain date
-app.post("/get-cars-available", (req, res) => {
-    var date = req.body.date;
-    //get the cars info from the database
-    db.query("SELECT * FROM car WHERE plate_id NOT IN (SELECT DISTINCT plate_id FROM reservation WHERE return_date >= ? AND reserve_date <= ?)",
-        [date, date], (err, result) => {
-            if (err)
-                return res.send({ message: err });
-            res.send({ availableCars: result, message: "success" });
-        });
-});
-
 //get all the models of cars
 app.post("/get-all-cars-models", (req, res) => {
     //get the cars info from the database
@@ -779,7 +766,7 @@ app.post("/advanced-search", authorizeAdmin, (req, res) => {
         );
 });
 
-app.post("/show-avaialable-cars", (req, res) => {
+app.post("/show-avaialable-cars", authorizeCustomer, (req, res) => {
     let pickup_date = req.body.pickup_date;
     let return_date = req.body.return_date;
     let model = req.body.model;
