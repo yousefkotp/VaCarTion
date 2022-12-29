@@ -73,16 +73,6 @@
                 </div>
             </div>
 
-            <!-- take credit card as input -->
-
-<!-- CREATE TABLE credit_card(
-    card_no CHAR(16),
-    holder_name VARCHAR(64) NOT NULL,
-    cvv CHAR(3) NOT NULL,
-    exp_date DATE NOT NULL,
-    CONSTRAINT credit_card_pk PRIMARY KEY (card_no)
-); -->
-
             <div class="row mb-3 ">
                 <div class="col">
                     <input type="text" class="form-control myinput b" placeholder="Credit Card Holder's name" name="holder_name" maxlength="64" required ></input>
@@ -140,71 +130,7 @@
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/semantic.min.css" />
     <!-- Bootstrap theme -->
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/bootstrap.min.css" />
-    <script>
-        function validateInputs() {
-            event.preventDefault();
-            let eligible = true;
-            $.ajax({
-                url: '/check-email-customer',
-                type: 'POST',
-                async: false,
-                data: {
-                    email: $('#email').val()
-                },
-                success: function (data) {
-                    if (data.taken == true) {
-                        eligible = false;
-                        alertify.alert("Email already exists, try to signin.").set('frameless', true);
-                    }
-                }
-            });
-            $.ajax({
-                url: '/check-ssn-customer',
-                type: 'POST',
-                async: false,
-                data: {
-                    ssn: $('#ssn').val()
-                },
-                success: function (data) {
-                    if (data.taken == true) {
-                        eligible = false;
-                        alertify.alert("SSN already exists, try to signin.").set('frameless', true);
-                    }
-                }
-            });
-            $.ajax({
-                url: '/check-phone-customer',
-                type: 'POST',
-                async: false,
-                data: {
-                    phone: $('#phone').val()
-                },
-                success: function (data) {
-                    if (data.taken == true) {
-                        eligible = false;
-                        alertify.alert("Phone already exists.").set('frameless', true);
-
-                    }
-                }
-            });
-            if ($('#pass1').val() != $('#pass2').val()) {
-                eligible = false;
-                alertify.alert("Passwords do not match.").set('frameless', true);
-            }
-            if (eligible === true) {
-                console.log(eligible);
-                $.ajax({
-                    url: "/signup",
-                    type: 'post',
-                    async: false,
-                    data: $("#formmmm").serialize(),
-                    success: function (data) {
-                        var notification = alertify.notify('Signed up successfully, redirecting to signin page...', 'success', 3, function(){ window.location.href = "/signin"; });
-                    }
-                });
-            }
-        }
-    </script>
+    <script src="/js/signup.js"></script>
 </body>
 
 </html>

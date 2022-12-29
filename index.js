@@ -261,6 +261,8 @@ app.post("/add-car", authorizeOffice, (req, res) => {
     let price = req.body.price;
     let token = decodeToken(req.cookies.token);
     let officeId = token.user.office_id;
+    let photo1 = req.files.photo1;
+    let photo2 = req.files.photo2;
     //store the info inside the database
     db.query("INSERT INTO car (plate_id, model, make, year, price, office_id) VALUES (?,?,?,?,?,?)",
         [plateId, model, make, year, price, officeId], (err, result) => {
@@ -271,6 +273,17 @@ app.post("/add-car", authorizeOffice, (req, res) => {
                 [plateId], (err, result) => {
                     if (err)
                         return res.send({ message: err });
+                    //insert the photo into car_photo table
+                    db.query("INSERT INTO car_photo (plate_id, photo) VALUES (?,?)",
+                        [plateId, photo1], (err, result) => {
+                            if (err)
+                                return res.send({ message: err });
+                            db.query("INSERT INTO car_photo (plate_id, photo) VALUES (?,?)",
+                                [plateId, photo2], (err, result) => {
+                                    if (err)
+                                        return res.send({ message: err });
+                                });
+                        });
                     res.redirect("/office-home");
                 });
         });
