@@ -496,7 +496,7 @@ app.post("/get-office-reservation", authorizeOffice, (req, res) => {
     let token = decodeToken(req.cookies.token);
     var id = token.user.office_id;
     ///get the reservation info from the database
-    db.query("SELECT * , ((return_date-pickup_date+1)*price ) as revenue FROM reservation JOIN car ON reservation.plate_id = car.plate_id JOIN office on car.office_id = office.office_id JOIN customer ON reservation.ssn = customer.ssn where office.office_id = ?",
+    db.query("SELECT * , ((DATEDIFF(return_date,pickup_date)+1)*price ) as revenue FROM reservation JOIN car ON reservation.plate_id = car.plate_id JOIN office on car.office_id = office.office_id JOIN customer ON reservation.ssn = customer.ssn where office.office_id = ?",
         [id], (err, result) => {
             if (err)
                 return res.send({ message: err });
@@ -512,7 +512,7 @@ app.post("/get-customer-reservation", authroizeAdminOrCustomer, (req, res) => {
     if (ssn == null)
         ssn = req.body.ssn;
     ///get the reservation info from the database
-    db.query("SELECT *, ((return_date-pickup_date+1)*price )as revenue FROM reservation as r NATURAL INNER JOIN customer INNER JOIN car as c on c.plate_id = r.plate_id WHERE r.ssn = ?",
+    db.query("SELECT *, ((DATEDIFF(return_date,pickup_date)+1)*price )as revenue FROM reservation as r NATURAL INNER JOIN customer INNER JOIN car as c on c.plate_id = r.plate_id WHERE r.ssn = ?",
         [ssn], (err, result) => {
             if (err)
                 return res.send({ message: err });
@@ -526,7 +526,7 @@ app.post("/get-payments-within-period", authorizeAdmin, (req, res) => {
     var start_date = req.body.start_date;
     var end_date = req.body.end_date;
     //get the payments info from the database within the period
-    db.query("SELECT *,((return_date-pickup_date+1)*price )as revenue FROM reservation NATURAL INNER JOIN car WHERE payment_date BETWEEN ? AND ?",
+    db.query("SELECT *,((DATEDIFF(return_date,pickup_date)+1)*price )as revenue FROM reservation NATURAL INNER JOIN car WHERE payment_date BETWEEN ? AND ?",
         [start_date, end_date], (err, result) => {
             if (err)
                 return res.send({ message: err });
@@ -642,10 +642,17 @@ app.post("/get-cars-using-model-and-make", (req, res) => {
 app.post("/get-cars-using-office", authorizeOffice, (req, res) => {
     let token = decodeToken(req.cookies.token);
     var office_id = token.user.office_id;
+    let date = new Date().toISOString().slice(0, 10);
     // var office_id=req.body.office_id;
     //get the cars info from the database
-    db.query("SELECT * FROM car JOIN `car_status` ON `car_status`.plate_id = car.plate_id WHERE office_id = ? ORDER BY car_status.status_date DESC LIMIT 1",
-        [office_id], (err, result) => {
+    db.query(`SELECT *
+                FROM car_status
+                NATURAL INNER JOIN car
+                WHERE (plate_id,status_date) in (SELECT plate_id, MAX(status_date)
+                                                FROM car_status
+                                                where status_date <= ?
+                                                GROUP BY plate_id) AND office_id = ?`,
+        [date, office_id], (err, result) => {
             if (err)
                 return res.send({ message: err });
             res.send({ cars: result, message: "success" });
@@ -669,7 +676,7 @@ app.post("/get-most-rented-make", authorizeAdmin, (req, res) => {
 });
 
 app.post("/get-most-profitable-office", authorizeAdmin, (req, res) => {
-    let query = `SELECT o.name, o.office_id, SUM(((r.return_date-r.pickup_date+1)*c.price )) as total
+    let query = `SELECT o.name, o.office_id, SUM(((DATEDIFF(r.return_date,r.pickup_date)+1)*c.price )) as total
                 FROM reservation as r
                 NATURAL INNER JOIN car as c
                 INNER JOIN office as o ON o.office_id = c.office_id
