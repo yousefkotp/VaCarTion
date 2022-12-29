@@ -794,6 +794,16 @@ app.post("/show-avaialable-cars", authorizeCustomer, (req, res) => {
     });
 });
 
+app.post("/pay-reservation",(req,res)=>{
+    let reservation_no = req.body.reservation_no;
+    let currentDate = new Date().toISOString().slice(0, 10);
+    let query = `UPDATE reservation SET payment_date = ? WHERE reservation_no = ?`;
+    db.query(query, [currentDate,reservation_no], (err, result) => {
+        if (err)
+            return res.send({ message: err });
+        res.send({ message: "success" });
+    });
+});
 
 app.post("/logout", (req, res) => {
     res.clearCookie("token");

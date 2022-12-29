@@ -9,6 +9,17 @@
         integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
 
     <link rel="stylesheet" href="styles.css">
+    <!-- JavaScript -->
+    <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css" />
+    <!-- Default theme -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/default.min.css" />
+    <!-- Semantic UI theme -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/semantic.min.css" />
+    <!-- Bootstrap theme -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/bootstrap.min.css" />
 </head>
 
 <body>
@@ -47,6 +58,7 @@
                             <th scope="col">Make</th>
                             <th scope="col">Year</th>
                             <th scope="col">Total Cost</th>
+                            <th scope="col">Payment Date</th>
                         </tr>
                     </thead>
                     <tbody class="customer-reservation">
@@ -82,9 +94,32 @@
                         //add data to table body
                         for (var i = 0; i < data.reservation.length; i++) {
                             var reservation = data.reservation[i];
-                            var row = '<tr><td>' + reservation.reservation_no + '</td><td>' + reservation.plate_id + '</td><td>' + reservation.pickup_date.substr(0, 10) + '</td><td>' + reservation.return_date.substr(0, 10) + '</td><td>' + reservation.model + '</td><td>' + reservation.make + '</td><td>' + reservation.year + '</td><td>' + reservation.revenue + '</td></tr>';
+                            var row = '<tr><td>' + reservation.reservation_no + '</td><td>' + reservation.plate_id + '</td><td>' + reservation.pickup_date.substr(0, 10) + '</td><td>' + reservation.return_date.substr(0, 10) + '</td><td>' + reservation.model + '</td><td>' + reservation.make + '</td><td>' + reservation.year + '</td><td>' + reservation.revenue + '</td>';
+                            //check if payment_date is null
+                            if (reservation.payment_date == null) {
+                                //if null, add button to pay
+                                row += '<td> <button type="button" class="btn btn-outline-success pay-button" id="' + reservation.reservation_no + '">Pay</button></td> </tr>';
+                            }else{
+                                //if not null, add payment date
+                                row+= '<td>' + reservation.payment_date.substr(0, 10) + '</td> </tr>';
+                            }
                             $('.customer-reservation').append(row);
                         }
+
+                        //add click event to pay button
+                        $(".pay-button").click(function () {
+                            //make post request to pay-reservation
+                            $.ajax({
+                                url: "/pay-reservation",
+                                type: "POST",
+                                data: {
+                                    reservation_no: this.id
+                                },
+                                success: function (response) {
+                                    var notification = alertify.notify('Reservation Paid successfully', 'success', 3, function () { window.location.href = "/customer-home"; });
+                                }
+                            });
+                        });
                     }
                 });
             });
