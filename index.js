@@ -804,32 +804,33 @@ app.post("/show-avaialable-cars", authorizeCustomer, (req, res) => {
     let office_name = req.body.office_name;
     let office_build_no = req.body.office_build_no;
     //get current date in the format of YYYY-MM-DD
-    let date = new Date().toISOString().slice(0, 10);
+    console.log(req.body);
     let conditions = []
 
     let query = `SELECT *
                 FROM car_status
-                NATURAL INNER JOIN car
+                NATURAL INNER JOIN car as c
+                NATURAL INNER JOIN office as o
                 WHERE (plate_id,status_date) in (SELECT plate_id, MAX(status_date)
                                                 FROM car_status
                                                 where status_date <= ?
-                                                GROUP BY plate_id);`
-    if (model != "Any" && model != "") {
+                                                GROUP BY plate_id)`
+    if (model != "Any") {
         conditions.push(`c.model = '${model}'`);
     }
-    if (make != "Any" && make != "") {
+    if (make != "Any") {
         conditions.push(`c.make = '${make}'`);
     }
-    if (city != "Any" && city != "") {
+    if (city != "") {
         conditions.push(`o.city = '${city}'`);
     }
-    if (country != "Any" && country != "") {
+    if (country != "") {
         conditions.push(`o.country = '${country}'`);
     }
-    if (office_name != "Any" && office_name != "") {
+    if (office_name != "") {
         conditions.push(`o.name = '${office_name}'`);
     }
-    if (office_build_no != "Any" && office_build_no != "") {
+    if (office_build_no != "") {
         conditions.push(`o.building_no = '${office_build_no}'`);
     }
     if (conditions.length > 0) {
