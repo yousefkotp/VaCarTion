@@ -779,13 +779,15 @@ app.post("/show-avaialable-cars", (req, res) => {
     let office_name = req.body.office_name;
     let office_build_no = req.body.office_build_no;
     let conditions = []
+    //get current Date in the format of YYYY-MM-DD
+    let date = new Date().toISOString().slice(0, 10);
 
 
     let query = `    SELECT *,MAX(status_date) FROM car as c 
                     NATURAL INNER JOIN car_photos
                     NATURAL INNER JOIN office as o
                     NATURAL INNER JOIN car_status as cs
-                    WHERE c.plate_id NOT IN (SELECT r.plate_id FROM reservation as r WHERE r.pickup_date <= ? AND r.return_date >= ?)
+                    WHERE cs.status_date <= ? AND cs.status_code = 0
                 `;
     if (model != "Any" && model != "") {
         conditions.push(`c.model = '${model}'`);
