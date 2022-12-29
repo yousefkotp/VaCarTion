@@ -51,7 +51,7 @@ $(document).ready(function () {
     });
 
     $('.office-cars').on('click', 'select', function (e) {
-        var new_status = status.indexOf($(this).find(":selected").text()) - 1;
+        var new_status = status.indexOf($(this).find(":selected").text());
         console.log(new_status);
         //console.log($(this).closest('tr').children('td:first').text());
         $.ajax({
