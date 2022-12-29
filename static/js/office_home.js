@@ -1,4 +1,6 @@
-let status = ["Available", "In Maintainance", "Being Cleaned", "Rented"];
+let refStatuss = ["Available", "In Maintainance", "Being Cleaned", "Rented"];
+
+let statuss = ["Available", "In Maintainance", "Being Cleaned", "Rented"];
 
 // wait for the DOM to be loaded
 $(document).ready(function () {
@@ -32,10 +34,9 @@ $(document).ready(function () {
             for (var i = 0; i < data.cars.length; i++) {
                 var car = data.cars[i];
                 console.log(car);
-                var d = new Date(car.registration_date);
-                status.unshift(status[Number(car.status_code)]);
-                var status_codes = status.filter((element, index) => {
-                    return status.indexOf(element) === index;
+                statuss.unshift(statuss[Number(car.status_code)]);
+                var status_codes = statuss.filter((element, index) => {
+                    return statuss.indexOf(element) === index;
                 });
                 var row = '<tr><td>' + car.plate_id + '</td>' + "<TD> <select>\
                          <option value=\"saab\">"+ status_codes[0] + "</option>\
@@ -51,9 +52,10 @@ $(document).ready(function () {
     });
 
     $('.office-cars').on('click', 'select', function (e) {
-        var new_status = status.indexOf($(this).find(":selected").text()) - 1;
+        var new_status = refStatuss.indexOf($(this).find(":selected").text());
         console.log(new_status);
-        //console.log($(this).closest('tr').children('td:first').text());
+        console.log($(this).find(":selected").text())
+        console.log($(this).closest('tr').children('td:first').text());
         $.ajax({
             url: "/add-new-status",
             type: "POST",
@@ -62,10 +64,10 @@ $(document).ready(function () {
                 status: new_status
             },
             success: function (response) {
-                //window.location.href = "/";
                 console.log(response);
-                if (response.success)
-                    alert("Status Updated Successfully")
+                if (response.success == true)
+                    var notification = alertify.notify("Status Updated Successfully", 'success');
+
             },
             error: function (response) {
                 console.log(response);
