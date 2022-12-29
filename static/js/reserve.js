@@ -126,6 +126,7 @@ $(document).ready(function () {
         }
         const x = new Date(pickDate);
         const y = new Date(retDate);
+        console.log(x);
         if (x > y) {
             alertify.alert("How the fuck you want to return a car before you pick it up!!!!!!").set('frameless', true);
             return

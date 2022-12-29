@@ -796,6 +796,7 @@ app.post("/advanced-search", authorizeAdmin, (req, res) => {
 app.post("/show-avaialable-cars", authorizeCustomer, (req, res) => {
     let pickup_date = req.body.pickup_date;
     let return_date = req.body.return_date;
+    pickup_date += " 00:00:00";
     let model = req.body.model;
     let make = req.body.make;
     let city = req.body.city;
@@ -804,16 +805,15 @@ app.post("/show-avaialable-cars", authorizeCustomer, (req, res) => {
     let office_build_no = req.body.office_build_no;
     //get current date in the format of YYYY-MM-DD
     let date = new Date().toISOString().slice(0, 10);
-    date += " 00:00:00";
     let conditions = []
 
-
-    let query = `    SELECT *,MAX(status_date) FROM car as c 
-                    NATURAL INNER JOIN car_photos
-                    NATURAL INNER JOIN office as o
-                    NATURAL INNER JOIN car_status as cs
-                    WHERE c.plate_id NOT IN (SELECT r.plate_id FROM reservation as r WHERE r.pickup_date <= ? AND r.return_date >= ?)
-                `;
+    let query = `SELECT *
+                FROM car_status
+                NATURAL INNER JOIN car
+                WHERE (plate_id,status_date) in (SELECT plate_id, MAX(status_date)
+                                                FROM car_status
+                                                where status_date <= ?
+                                                GROUP BY plate_id);`
     if (model != "Any" && model != "") {
         conditions.push(`c.model = '${model}'`);
     }
@@ -835,9 +835,7 @@ app.post("/show-avaialable-cars", authorizeCustomer, (req, res) => {
     if (conditions.length > 0) {
         query += " AND " + conditions.join(" AND ");
     }
-    query += " GROUP BY c.plate_id";
-    query += " HAVING status_date <= ?"
-    db.query(query, [pickup_date, return_date, date], (err, result) => {
+    db.query(query, [pickup_date], (err, result) => {
         if (err)
             return res.send({ message: err });
         if(result != null)
