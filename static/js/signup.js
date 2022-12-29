@@ -1,6 +1,6 @@
-function validateInputs(event) {
-    console.log(event);
-    event.preventDefault();
+// add action listner to the form
+document.getElementById('formmmm').addEventListener('submit', function(e) {
+    e.preventDefault();
     let eligible = true;
     $.ajax({
         url: '/check-email-customer',
@@ -57,8 +57,8 @@ function validateInputs(event) {
             async: false,
             data: $("#formmmm").serialize(),
             success: function (data) {
-                var notification = alertify.notify('Signed up successfully, redirecting to signin page...', 'success', 3);
+                var notification = alertify.notify('Signed up successfully, redirecting to signin page...', 'success', 3, function () {window.location.href = '/signin';});
             }
         });
     }
-}
+});
