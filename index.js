@@ -42,7 +42,7 @@ app.get("/", checkWhereToGo, (req, res) => {
     res.sendFile(__dirname + "/views/home.html");
 });
 
-app.get("/signin", checkWhereToGo, (req, res) => {
+app.get("/signin", (req, res) => {
     res.sendFile(__dirname + "/views/signin.html");
 });
 app.get("/signup", checkWhereToGo, (req, res) => {
@@ -181,21 +181,27 @@ app.post("/signup", (req, res) => {
     //add credit card info to the database
     db.query("INSERT INTO credit_card (card_no, holder_name, exp_date, cvv) VALUES (?,?,?,?)",
         [creditCardNo, holdreName, expDate, cvv], (err, result) => {
-            if (err)
+            if (err){
+                console.log(err);
                 return res.send({ message: err });
+            }
+                
         });
     //convert password to hash
     bcrypt.hash(password, saltRound, function (err, hash) {
         //store the info inside the database
         db.query("INSERT INTO customer (email, password, fname, lname, ssn, phone_no) VALUES (?,?,?,?,?,?)",
             [email, hash, fName, lName, ssn, phone], (err, result) => {
-                if (err)
+                if (err){
+                    console.log(err);
                     return res.send({ message: err });
+                }
 
                 db.query("INSERT INTO customer_credit (ssn, card_no) VALUES (?,?)",
                     [ssn, creditCardNo], (err, result) => {
                         if (err) {
-                            res.send({ message: err });
+                            console.log(err);
+                            return res.send({ message: err });
                         } else {
                             //authenticating and authorize the user
                             const user = result[0];

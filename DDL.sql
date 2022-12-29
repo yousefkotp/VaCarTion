@@ -8,7 +8,7 @@ CREATE TABLE admin(
 );
 
 CREATE TABLE customer (
-    ssn CHAR(6) ON DELETE CASCADE,
+    ssn CHAR(6),
     fname VARCHAR(32) NOT NULL,
     lname VARCHAR(32) NOT NULL,
     email VARCHAR(64) UNIQUE NOT NULL,
@@ -31,11 +31,11 @@ CREATE TABLE customer_credit(
     card_no CHAR(16),
     CONSTRAINT customer_credit_pk PRIMARY KEY (ssn, card_no),
     CONSTRAINT customer_credit_customer_fk FOREIGN KEY (ssn) REFERENCES customer(ssn),
-    CONSTRAINT customer_credit_card_fk FOREIGN KEY (card_no) REFERENCES credit_card(card_no)
+    CONSTRAINT customer_credit_card_fk FOREIGN KEY (card_no) REFERENCES credit_card(card_no) ON DELETE CASCADE
 );
 
 CREATE TABLE office(
-    office_id INT AUTO_INCREMENT ON DELETE CASCADE,
+    office_id INT AUTO_INCREMENT,
     name VARCHAR(32) NOT NULL,
     email VARCHAR(64) UNIQUE NOT NULL,
     phone_no CHAR(11) UNIQUE NOT NULL,
@@ -47,7 +47,7 @@ CREATE TABLE office(
 );
 
 CREATE TABLE car(
-    plate_id VARCHAR(8) ON DELETE CASCADE,
+    plate_id VARCHAR(8),
     model VARCHAR(32) NOT NULL,
     make VARCHAR(32) NOT NULL,
     year YEAR NOT NULL,
@@ -55,7 +55,7 @@ CREATE TABLE car(
     registration_date DATE DEFAULT (CURRENT_DATE),
     office_id INT NOT NULL,
     CONSTRAINT car_pk PRIMARY KEY (plate_id),
-    CONSTRAINT car_office_fk FOREIGN KEY (office_id) REFERENCES office(office_id)
+    CONSTRAINT car_office_fk FOREIGN KEY (office_id) REFERENCES office(office_id) ON DELETE CASCADE
 );
 
 CREATE TABLE reservation(
