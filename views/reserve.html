@@ -31,10 +31,10 @@
             </div>
         </div>
         <div>
-            <h3 class="display-3 align-content-center text-center">Reserve a Car</h3>
+            <h3 class="display-5 align-content-center text-center" style="padding: 1.8rem 0;">Reserve a Car</h3>
         </div>
         <div class="row specs" style="margin:50px;">
-            <select class="col m-5" id="modelSelect"></select>
+            <select class="col m-5 " id="modelSelect"></select>
             <select class="col m-5" id="makeSelect"></select>
             <select class="col m-5" id="locationSelect"></select>
         </div>
@@ -43,18 +43,18 @@
             <input type="date" id="pickDate" name="start_date" required="">
             <label for="returnDate" class="display-6 date">Return Date:</label>
             <input type="date" id="returnDate" name="end_date" required="">
-            <div><button id="getAvailable" class="btn btn-light mybtn g black">Show Available Cars</button></div>
+            <div><button id="getAvailable" class="btn btn-outline-success mybtn g black reserve-btn1">Show Available Cars</button></div>
         </div>
         <div class="card-container overflow-auto" style="max-height:1000px;">
 
         </div>
-        <div class="form-check justify-content-center h4" style="margin: 10px;">
+        <div class="form-check justify-content-center h4" style="padding: 0;">
             <input id="payNow" class="form-check-input h4" checked="true" style="float:inherit;" type="checkbox"
                 value="">
             <label class="form-check-label h4" for="payNow">
                 Pay Now
             </label>
-            <div><button id="reserve-btn" class="btn btn-primary mybtn g white">Reserve</button></div>
+            <div><button id="reserve-btn" class="btn btn-success mybtn g white reserve-btn1">Reserve</button></div>
         </div>
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"
