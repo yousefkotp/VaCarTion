@@ -101,10 +101,7 @@ app.get("/add-car", authorizeOffice, (req, res) => {
     res.sendFile(__dirname + "/views/add_car.html");
 });
 
-// write a get req for signup-landing
-app.get("/signup-landing", (req, res) => {
-    res.send("bet redirect l hena ghalat");
-});
+
 
 /*post requests*/
 // ---------------------------------------------------------------------------------------------------------------------
@@ -173,7 +170,6 @@ app.post("/signin", (req, res) => {
 
 app.post("/signup", (req, res) => {
     //signing up as a customer
-    console.log(req.body);
     let email = req.body.email;
     let password = req.body.password;
     let fName = req.body.fName;
