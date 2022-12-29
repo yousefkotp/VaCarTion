@@ -402,7 +402,7 @@ app.post("/add-new-status", authorizeOffice, (req, res) => {
             return res.send({ message: err });
         if (result[0].office_id == office_id) {
             //DATE_ADD(curDate(), INTERVAL 10 DAY)
-            db.query("INSERT INTO `car_status`(`plate_id`, `status_code`, `status_date`) VALUES (?,?,curDate())", [plate_id, status], (err, result) => {
+            db.query("INSERT INTO `car_status`(`plate_id`, `status_code`, `status_date`) VALUES (?,?,CURRENT_TIMESTAMP())", [plate_id, status], (err, result) => {
                 if (err)
                     return res.send({ success: false, message: err });
                 res.send({ success: true });
@@ -642,17 +642,15 @@ app.post("/get-cars-using-model-and-make", (req, res) => {
 app.post("/get-cars-using-office", authorizeOffice, (req, res) => {
     let token = decodeToken(req.cookies.token);
     var office_id = token.user.office_id;
-    let date = new Date().toISOString().slice(0, 10);
-    // var office_id=req.body.office_id;
-    //get the cars info from the database
+
     db.query(`SELECT *
                 FROM car_status
                 NATURAL INNER JOIN car
                 WHERE (plate_id,status_date) in (SELECT plate_id, MAX(status_date)
                                                 FROM car_status
-                                                where status_date <= ?
+                                                where status_date <= CURRENT_TIMESTAMP()
                                                 GROUP BY plate_id) AND office_id = ?`,
-        [date, office_id], (err, result) => {
+        [office_id], (err, result) => {
             if (err)
                 return res.send({ message: err });
             res.send({ cars: result, message: "success" });
@@ -693,6 +691,7 @@ app.post("/get-most-profitable-office", authorizeAdmin, (req, res) => {
 
 app.post("/get-car-status-on-a-day", authorizeAdmin, (req, res) => {
     let date = req.body.date;
+    date+=" 00:00:00";
     let query = `SELECT *
                 FROM car_status
                 NATURAL INNER JOIN car
@@ -709,17 +708,14 @@ app.post("/get-car-status-on-a-day", authorizeAdmin, (req, res) => {
 
 app.post("/get-car-status-by-plate-id", authorizeOffice, (req, res) => {
     let plate_id = req.body.plate_id;
-    //get current Date in the format of YYYY-MM-DD
-    let date = new Date().toISOString().slice(0, 10);
-
     let query = `SELECT *
                 FROM car_status
                 NATURAL INNER JOIN car
                 WHERE (plate_id,status_date) in (SELECT plate_id, MAX(status_date)
                                                 FROM car_status
-                                                where plate_id = ? and status_date <= ?
+                                                where plate_id = ? and status_date <= current_timestamp()
                                                 GROUP BY plate_id);`
-    db.query(query, [plate_id, date], (err, result) => {
+    db.query(query, [plate_id], (err, result) => {
         if (err)
             return res.send({ message: err });
         res.send({ carStatus: result, message: "success" });
@@ -808,6 +804,7 @@ app.post("/show-avaialable-cars", authorizeCustomer, (req, res) => {
     let office_build_no = req.body.office_build_no;
     //get current date in the format of YYYY-MM-DD
     let date = new Date().toISOString().slice(0, 10);
+    date += " 00:00:00";
     let conditions = []
 
 
