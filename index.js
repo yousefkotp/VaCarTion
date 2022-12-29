@@ -691,7 +691,7 @@ app.post("/get-most-profitable-office", authorizeAdmin, (req, res) => {
 
 app.post("/get-car-status-on-a-day", authorizeAdmin, (req, res) => {
     let date = req.body.date;
-    date+=" 00:00:00";
+    date+=" 23:59:59";
     let query = `SELECT *
                 FROM car_status
                 NATURAL INNER JOIN car
@@ -796,7 +796,7 @@ app.post("/advanced-search", authorizeAdmin, (req, res) => {
 app.post("/show-avaialable-cars", authorizeCustomer, (req, res) => {
     let pickup_date = req.body.pickup_date;
     let return_date = req.body.return_date;
-    pickup_date += " 00:00:00";
+    pickup_date += " 23:59:59";
     let model = req.body.model;
     let make = req.body.make;
     let city = req.body.city;
