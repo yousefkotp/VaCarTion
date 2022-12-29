@@ -779,9 +779,13 @@ app.post("/show-avaialable-cars", (req, res) => {
     let office_name = req.body.office_name;
     let office_build_no = req.body.office_build_no;
     let conditions = []
-    let query = `SELECT * FROM car as c JOIN car_photos ON c.plate_id = car_photos.plate_id
-                NATURAL INNER JOIN office as o
-                WHERE c.plate_id NOT IN (SELECT r.plate_id FROM reservation as r WHERE r.pickup_date <= ? AND r.return_date >= ?)
+
+
+    let query = `    SELECT *,MAX(status_date) FROM car as c 
+                    NATURAL INNER JOIN car_photos
+                    NATURAL INNER JOIN office as o
+                    NATURAL INNER JOIN car_status as cs
+                    WHERE c.plate_id NOT IN (SELECT r.plate_id FROM reservation as r WHERE r.pickup_date <= ? AND r.return_date >= ?)
                 `;
     if (model != "Any" && model != "") {
         conditions.push(`c.model = '${model}'`);
@@ -804,7 +808,10 @@ app.post("/show-avaialable-cars", (req, res) => {
     if (conditions.length > 0) {
         query += " AND " + conditions.join(" AND ");
     }
-    db.query(query, [return_date, pickup_date], (err, result) => {
+    query += " GROUP BY c.plate_id";
+    console.log(query);
+    db.query(query, [pickup_date, return_date], (err, result) => {
+        result = result.filter(car => car.status_code == 0);
         if (err)
             return res.send({ message: err });
         res.send({ cars: result, message: "success" });
