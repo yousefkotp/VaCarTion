@@ -213,15 +213,11 @@ app.post("/signup", (req, res) => {
                                 to: email,
                                 subject: 'Welcome to VaCarTion🚘💚',
                                 text: "Welcome to VaCarTion! 😃💚\
-\
                                 From all of us at VaCarTion, we wish you a splendid experience.\
                                 \
                                 Ride away!\
                                 \
-                                 \
-                                \
                                 Regards,\
-                                \
                                 The VaCarTion team"
                             };
                             transporter.sendMail(mailOptions, function (error, info) {
