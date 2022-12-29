@@ -641,10 +641,17 @@ app.post("/get-cars-using-model-and-make", (req, res) => {
 app.post("/get-cars-using-office", authorizeOffice, (req, res) => {
     let token = decodeToken(req.cookies.token);
     var office_id = token.user.office_id;
+    let date = new Date().toISOString().slice(0, 10);
     // var office_id=req.body.office_id;
     //get the cars info from the database
-    db.query("SELECT * FROM car JOIN `car_status` ON `car_status`.plate_id = car.plate_id WHERE office_id = ? ORDER BY car_status.status_date DESC",
-        [office_id], (err, result) => {
+    db.query(`SELECT *
+                FROM car_status
+                NATURAL INNER JOIN car
+                WHERE (plate_id,status_date) in (SELECT plate_id, MAX(status_date)
+                                                FROM car_status
+                                                where status_date <= ?
+                                                GROUP BY plate_id) AND office_id = ?`,
+        [date, office_id], (err, result) => {
             if (err)
                 return res.send({ message: err });
             res.send({ cars: result, message: "success" });
