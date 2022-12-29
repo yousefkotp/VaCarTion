@@ -8,7 +8,7 @@ CREATE TABLE admin(
 );
 
 CREATE TABLE customer (
-    ssn CHAR(6),
+    ssn CHAR(6) ON DELETE CASCADE,
     fname VARCHAR(32) NOT NULL,
     lname VARCHAR(32) NOT NULL,
     email VARCHAR(64) UNIQUE NOT NULL,
@@ -35,7 +35,7 @@ CREATE TABLE customer_credit(
 );
 
 CREATE TABLE office(
-    office_id INT AUTO_INCREMENT,
+    office_id INT AUTO_INCREMENT ON DELETE CASCADE,
     name VARCHAR(32) NOT NULL,
     email VARCHAR(64) UNIQUE NOT NULL,
     phone_no CHAR(11) UNIQUE NOT NULL,
@@ -47,7 +47,7 @@ CREATE TABLE office(
 );
 
 CREATE TABLE car(
-    plate_id VARCHAR(8),
+    plate_id VARCHAR(8) ON DELETE CASCADE,
     model VARCHAR(32) NOT NULL,
     make VARCHAR(32) NOT NULL,
     year YEAR NOT NULL,
