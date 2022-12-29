@@ -32,9 +32,8 @@
 
 
 
-    <div  class="center ">
+    <div  class="center" id="">
         <h1 class="display-6 myheader black">Add new Car</h1>
-        <form method="post" action="/add-car">
             <div class="row mb-3 ">
                 <div class="col ">
                     <input type="text" class="form-control myinput a" placeholder="Plate ID" name="plate_id"  required></input>
@@ -58,32 +57,46 @@
                     <input type="text" class="form-control myinput b" placeholder="year" name="year" required ></input>
                 </div>
             </div>
+
             <div class="row mb-3 ">
                 <div class="col ">
                     <input type="text" class="form-control myinput b" placeholder="Price/Day" name="price" required ></input>
                 </div>
             </div>
+
             <div class="row mb-3 ">
                 <div class="col ">
                     <input type="text" class="form-control myinput b" placeholder="Photo Link" name="photo1" required ></input>
                 </div>
             </div>
-            <div class="row mb-3 ">
+            <div class="row mb-3 " >
                 <div class="col ">
-                    <input type="text" class="form-control myinput b" placeholder="Photo Link" name="photo2" required ></input>
+                    <input hidden="true" type="text" class="form-control myinput b" placeholder="Photo Link" name="photo2" ></input>
                 </div>
             </div>
-            <button type="submit" class="btn btn-light mybtn g black"  >Add</button>
+            <div class="row mb-3 " >
+                <div class="col ">
+                    <input hidden="true" type="text" class="form-control myinput b" placeholder="Photo Link" name="photo3" ></input>
+                </div>
+            </div>
+            </div>
 
-        </form>
+                 
     </div>
+    <div class="center extra-photo">
+        <button type="submit" class="btn btn-light mybtn g black " id="submit-button" >Add</button>
+        <!-- create a button which adds extra input fields for photos -->
+        <button class="btn btn-light mybtn g black" id="addPhoto">Add Photo</button>
+    </div>   
+    
+
     
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa"
     crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="app.js" charset="utf-8"></script>
+    <script src="/js/add_car.js"></script>
 </body>
 
 </html>

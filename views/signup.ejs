@@ -30,18 +30,9 @@
         </div>
     </nav>
 
-    <!-- ssn CHAR(6),
-    fname VARCHAR(32) NOT NULL,
-    lname VARCHAR(32) NOT NULL,
-    email VARCHAR(64) UNIQUE NOT NULL,
-    phone_no CHAR(11) UNIQUE NOT NULL,
-    password VARCHAR(256) NOT NULL,
-    wallet REAL DEFAULT 0,
-    CONSTRAINT customer_pk PRIMARY KEY (ssn) -->
-
     <div  class="center ">
         <h1 class="display-6 myheader black">Sign Up</h1>
-        <form id="formmmm" method="POST" action="/signup">
+        <form id="formmmm">
 
             <div class="row mb-3 ">
                 <div class="col ">
@@ -69,7 +60,7 @@
 
             <div class="row mb-3 ">
                 <div class="col ">
-                    <input id="phone" type="tel" class="form-control myinput b" placeholder="Phone Number" name="phone_no"   minlength="11" required ></input>
+                    <input id="phone" type="tel" class="form-control myinput b" placeholder="Phone Number" name="phone_no"   minlength="11" maxlength="11" required ></input>
                 </div>
             </div>
 

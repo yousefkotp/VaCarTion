@@ -277,30 +277,50 @@ app.post("/add-car", authorizeOffice, (req, res) => {
     let price = req.body.price;
     let token = decodeToken(req.cookies.token);
     let officeId = token.user.office_id;
-    let photo1 = req.files.photo1;
-    let photo2 = req.files.photo2;
+    let photo1 = req.body.photo1;
+    let photo2 = req.body.photo2;
+    let photo3 = req.body.photo3;
+
     //store the info inside the database
     db.query("INSERT INTO car (plate_id, model, make, year, price, office_id) VALUES (?,?,?,?,?,?)",
         [plateId, model, make, year, price, officeId], (err, result) => {
-            if (err)
+            if (err){
+                console.log(err);
                 return res.send({ message: err });
+            }            
             //make the car status = 0 (available) in the car_status table
             db.query("INSERT INTO car_status (plate_id) VALUES (?)",
                 [plateId], (err, result) => {
-                    if (err)
+                    if (err){
+                        console.log(err);
                         return res.send({ message: err });
-                    //insert the photo into car_photo table
-                    db.query("INSERT INTO car_photo (plate_id, photo) VALUES (?,?)",
-                        [plateId, photo1], (err, result) => {
-                            if (err)
-                                return res.send({ message: err });
-                            db.query("INSERT INTO car_photo (plate_id, photo) VALUES (?,?)",
-                                [plateId, photo2], (err, result) => {
-                                    if (err)
-                                        return res.send({ message: err });
-                                });
-                        });
-                    res.redirect("/office-home");
+                    }
+                    if(photo1 !== "")
+                        db.query("INSERT INTO car_photos (plate_id, photo) VALUES (?,?)",
+                            [plateId, photo1], (err, result) => {
+                                if (err){
+                                    console.log(err);
+                                    return res.send({ message: err });
+                                }
+                            });
+                    if(photo2 !== "")
+                        db.query("INSERT INTO car_photos (plate_id, photo) VALUES (?,?)",
+                            [plateId, photo2], (err, result) => {
+                                if (err){
+                                    console.log(err);
+                                    return res.send({ message: err });
+                                }
+                            });
+                    if(photo3 !== "")
+                        db.query("INSERT INTO car_photos (plate_id, photo) VALUES (?,?)",
+                            [plateId, photo3], (err, result) => {
+                                if (err){
+                                    console.log(err);
+                                    return res.send({ message: err });
+                                }
+                            });
+
+                    res.send({ message: "Car added successfully" });
                 });
         });
 });
