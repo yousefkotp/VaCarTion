@@ -799,15 +799,13 @@ app.post("/advanced-search", authorizeAdmin, (req, res) => {
 app.post("/show-avaialable-cars", authorizeCustomer, (req, res) => {
     let pickup_date = req.body.pickup_date;
     let return_date = req.body.return_date;
-    let date =pickup_date+ " 23:59:59";
+    let date = pickup_date + " 23:59:59";
     let model = req.body.model;
     let make = req.body.make;
     let city = req.body.city;
     let country = req.body.country;
     let office_name = req.body.office_name;
     let office_build_no = req.body.office_build_no;
-    //get current date in the format of YYYY-MM-DD
-    console.log(req.body);
     let conditions = []
 
     let query = `SELECT *
@@ -817,7 +815,7 @@ app.post("/show-avaialable-cars", authorizeCustomer, (req, res) => {
                 WHERE (plate_id,status_date) in (SELECT plate_id, MAX(status_date)
                                                 FROM car_status
                                                 where status_date <= ?
-                                                GROUP BY plate_id) AND c.plate_id NOT IN (SELECT plate_id FROM reservation WHERE (pickup_date <= ? AND return_date >= ?) OR (pickup_date <= ? AND return_date >= ?) OR (pickup_date >= ? AND return_date <= ?))`;
+                                                GROUP BY plate_id) AND c.plate_id NOT IN (SELECT plate_id FROM reservation WHERE (pickup_date <= ? AND return_date >= ?) or (pickup_date <= ? AND return_date >= ?) or (pickup_date >= ? AND return_date <= ?) or (pickup_date <= ? AND return_date >= ?))`;
     if (model != "Any") {
         conditions.push(`c.model = '${model}'`);
     }
@@ -839,7 +837,7 @@ app.post("/show-avaialable-cars", authorizeCustomer, (req, res) => {
     if (conditions.length > 0) {
         query += " AND " + conditions.join(" AND ");
     }
-    db.query(query, [date, pickup_date, return_date, pickup_date, return_date, pickup_date,return_date], (err, result) => {
+    db.query(query, [date, pickup_date, pickup_date, pickup_date, return_date, pickup_date, return_date, pickup_date, return_date], (err, result) => {
         if (err)
             return res.send({ message: err });
         if(result != null)
@@ -854,7 +852,6 @@ app.post("/pay-reservation",(req,res)=>{
     db.query(query, [reservation_no], (err, result) => {
         if (err)
             return res.send({ message: err });
-        console.log(result);
         res.send({ message: "success" });
     });
 });
