@@ -398,7 +398,6 @@ app.post("/add-new-status", authorizeOffice, (req, res) => {
     //get office_id from the token
     let decodedToken = decodeToken(req.cookies.token);
     let office_id = decodedToken.user.office_id;
-
     //check that only the office having that car can changes its status
     db.query("SELECT office_id FROM `car` WHERE plate_id = ?", [plate_id], (err, result) => {
         if (err)

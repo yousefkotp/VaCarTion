@@ -62,17 +62,29 @@ $(document).ready(function () {
             }
         }
     });
-
+    //save the original status 
+    var prev;
     $('.office-cars').on('click', 'select', function (e) {
+        prev = $(this).find(":selected").text();
+    });
+
+    $('.office-cars').on('change', function (e) {
+        //get row where change happened
+        var row = $(e.target).closest('tr');
+        //get plate_id
+        var plate_id = row.children('td:first').text();
+        //get new status
         var new_status = refStatuss.indexOf($(this).find(":selected").text());
-        console.log(new_status);
-        console.log($(this).find(":selected").text())
-        console.log($(this).closest('tr').children('td:first').text());
+        if(new_status == 3){
+            $(this).find(":selected").text(prev);
+            alertify.notify("The office can't rent cars", 'error');            
+            return;
+        }
         $.ajax({
             url: "/add-new-status",
             type: "POST",
             data: {
-                plate_id: $(this).closest('tr').children('td:first').text(),
+                plate_id: plate_id,
                 status: new_status
             },
             success: function (response) {
