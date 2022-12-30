@@ -9,6 +9,11 @@
         - [ER Diagram](#er-diagram)
     - [Authentication and Authorization](#authentication-and-authorization)
     - [Deployment](#deployment)
+    - [Screenshots](#screenshots)
+        - [Landing Page](#landing-page)
+        - [Office Agent Dashboard](#office-agent-dashboard)
+        - [Customer Dashboard](#customer-dashboard)
+        - [Reservation Page](#reservation-page)
     - [Contributers](#contributers)
 
 ## Overview
@@ -75,8 +80,18 @@ npm start
 http://localhost:3000
 ``` 
 
-<!--add a bold note -->
 - **Note:** If you want to run the server on a different port, you can change the port number in index.js file
+
+## Screenshots
+
+### Landing Page
+
+### Office Agent Dashboard
+
+### Customer Dashboard
+
+
+### Reservation Page
 
 
 ## Contributers
