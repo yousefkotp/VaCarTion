@@ -69,6 +69,10 @@ $(document).ready(function () {
     });
 
     $('.office-cars').on('change', function (e) {
+        if(prev == "Rented"){
+            alertify.notify("Can't change the status of currently rented car", 'error');
+            return;
+        }
         //get row where change happened
         var row = $(e.target).closest('tr');
         //get plate_id
