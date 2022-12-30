@@ -49,7 +49,7 @@ INSERT INTO car (plate_id, model, make, year, price, office_id) VALUES('56789012
 -- generate values to insert into the car_photo table
 INSERT INTO car_photos (plate_id, photo) VALUES('12345678','https://gearkhana.com/wp-content/uploads/2019/06/A157415_small.jpg');
 INSERT INTO car_photos (plate_id, photo) VALUES('23456789','https://www.elbalad.news/Upload/libfiles/964/6/302.png');
-INSERT INTO car_photos (plate_id, photo) VALUES('34567890','https://img1.icarcdn.com/59036/prev-desktop_review-2017-mercedes-benz-c200-w205--nine-speed-refinement-63095_cover_2017_c200_exc_tn.jpg');
+INSERT INTO car_photos (plate_id, photo) VALUES('34567890','https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTdhsugUJ8iDiY9QKoIBTecKVH9WlpMri-NbZOiLPhc&s');
 INSERT INTO car_photos (plate_id, photo) VALUES('45678901','https://media.ed.edmunds-media.com/audi/a6/2016/fe/2016_audi_a6_f34_fe_208161_717.jpg');
 INSERT INTO car_photos (plate_id, photo) VALUES('56789012','https://ymimg1.b8cdn.com/system/uploads/4104/original/2015-bmw-x6_100468788_h.jpg?1409246727');
 
