@@ -5,8 +5,11 @@ $(document).ready(function () {
         if (this.className === 'card' || this.className === 'card_clicked') {
             if (selectedCar !== '') {
                 if (selectedCar === $(this).attr('id').replace('#', ''))
-                    if ($(this).attr('class').replace('.', '') === 'card_clicked')
+                    if ($(this).attr('class').replace('.', '') === 'card_clicked') {
                         $(this).attr('class', "card")
+                        selectedCar = '';
+                        return
+                    }
                     else
                         $(this).attr('class', "card_clicked")
                 else {
@@ -167,7 +170,7 @@ $(document).ready(function () {
                     console.log(car);
                     cards += "<div class=\"card\" id=\"" + car.plate_id + "\">\
                         <img src=\""+ car.photo + "\">\
-                         <!--<h1>"+car.photo+"</h1>-->\
+                         <!--<h1>"+ car.photo + "</h1>-->\
                         <div class=\"content\">\
                             <h4>"+ car.make + " - " + car.model + ", " + car.year + "</h4>\
                             <p>"+ car.price + " $/Day" + "</p>\
