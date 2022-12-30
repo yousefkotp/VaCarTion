@@ -1,7 +1,7 @@
-# Car-Rental-System
-- You can check the live demo of the system [here]()
+# VaCarTion
+- You can check the live demo of the system [here](https://car-rental-system-2022.herokuapp.com/)
 ## Table of Contents
-- [Car-Rental-System](#car-rental-system)
+- [VaCarTion](#vacartion)
     - [Overview](#overview)
     - [Dependencies](#dependencies)
     - [Database Schema](#database-schema)
