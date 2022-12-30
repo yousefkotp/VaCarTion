@@ -351,8 +351,8 @@ app.post("/add-reservation", authorizeCustomer, (req, res) => {
             if (err)
                 return res.send({ message: err });
 
-            db.query("INSERT INTO car_status (plate_id, status_code, status_date) VALUES (?,?,CURRENT_TIMESTAMP())",
-                [plateId, 3], (err, result) => {
+            db.query("INSERT INTO car_status (plate_id, status_code, status_date) VALUES (?,?,?)",
+                [plateId, 3, pickupForCarStatus], (err, result) => {
                     if (err)
                         return res.send({ message: err });
                     db.query("INSERT INTO car_status (plate_id, status_code, status_date) VALUES (?,?,?)",
