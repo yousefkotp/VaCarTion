@@ -1,17 +1,14 @@
-<div style = "text-align: center;">
-<h1> Car-Rental-System </h1>
-</div>
-
-
-
+# Car-Rental-System
 ## Table of Contents
 - [Car-Rental-System](#car-rental-system)
     - [Overview](#overview)
     - [Dependencies](#dependencies)
-    - [Tech Stack](#tech-stack)
     - [Database Schema](#database-schema)
-    - [ER Diagram](#er-diagram)
+        - [DDL](#ddl)
+        - [ER Diagram](#er-diagram)
+    - [Authentication and Authorization](#authentication-and-authorization)
     - [Deployment](#deployment)
+    - [Screenshots](#screenshots)
     - [Contributers](#contributers)
 
 ## Overview
@@ -80,6 +77,8 @@ http://localhost:3000
 
 <!--add a bold note -->
 - **Note:** If you want to run the server on a different port, you can change the port number in index.js file
+
+## Screenshots
 
 
 ## Contributers
