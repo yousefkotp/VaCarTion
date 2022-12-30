@@ -331,6 +331,9 @@ app.post("/add-reservation", authorizeCustomer, (req, res) => {
     let pickupDate = req.body.pickupDate;
     let returnDate = req.body.returnDate;
     let payNow = req.body.payNow;
+
+    let pickupForCarStatus = pickupDate + " 00:00:00";
+    let returnForCarStatus = returnDate + " 00:00:00";
     //get the current date
     //store the info inside the database
     var query = '';
@@ -344,11 +347,11 @@ app.post("/add-reservation", authorizeCustomer, (req, res) => {
                 return res.send({ message: err });
 
             db.query("INSERT INTO car_status (plate_id, status_code, status_date) VALUES (?,?,?)",
-                [plateId, 3, pickupDate], (err, result) => {
+                [plateId, 3, pickupForCarStatus], (err, result) => {
                     if (err)
                         return res.send({ message: err });
                     db.query("INSERT INTO car_status (plate_id, status_code, status_date) VALUES (?,?,?)",
-                        [plateId, 0, returnDate], (err, result) => {
+                        [plateId, 0, returnForCarStatus], (err, result) => {
                             if (err)
                                 return res.send({ message: err });
                             res.send({ success: true });
@@ -796,7 +799,7 @@ app.post("/advanced-search", authorizeAdmin, (req, res) => {
 app.post("/show-avaialable-cars", authorizeCustomer, (req, res) => {
     let pickup_date = req.body.pickup_date;
     let return_date = req.body.return_date;
-    pickup_date += " 23:59:59";
+    let date =pickup_date+ " 23:59:59";
     let model = req.body.model;
     let make = req.body.make;
     let city = req.body.city;
@@ -814,7 +817,7 @@ app.post("/show-avaialable-cars", authorizeCustomer, (req, res) => {
                 WHERE (plate_id,status_date) in (SELECT plate_id, MAX(status_date)
                                                 FROM car_status
                                                 where status_date <= ?
-                                                GROUP BY plate_id)`
+                                                GROUP BY plate_id) AND c.plate_id NOT IN (SELECT plate_id FROM reservation WHERE (pickup_date <= ? AND return_date >= ?) OR (pickup_date <= ? AND return_date >= ?) OR (pickup_date >= ? AND return_date <= ?))`;
     if (model != "Any") {
         conditions.push(`c.model = '${model}'`);
     }
@@ -836,7 +839,7 @@ app.post("/show-avaialable-cars", authorizeCustomer, (req, res) => {
     if (conditions.length > 0) {
         query += " AND " + conditions.join(" AND ");
     }
-    db.query(query, [pickup_date], (err, result) => {
+    db.query(query, [date, pickup_date, return_date, pickup_date, return_date, pickup_date,return_date], (err, result) => {
         if (err)
             return res.send({ message: err });
         if(result != null)
@@ -847,11 +850,11 @@ app.post("/show-avaialable-cars", authorizeCustomer, (req, res) => {
 
 app.post("/pay-reservation",(req,res)=>{
     let reservation_no = req.body.reservation_no;
-    let currentDate = new Date().toISOString().slice(0, 10);
-    let query = `UPDATE reservation SET payment_date = ? WHERE reservation_no = ?`;
-    db.query(query, [currentDate,reservation_no], (err, result) => {
+    let query = `UPDATE reservation SET payment_date = CURDATE() WHERE reservation_no = ?`;
+    db.query(query, [reservation_no], (err, result) => {
         if (err)
             return res.send({ message: err });
+        console.log(result);
         res.send({ message: "success" });
     });
 });

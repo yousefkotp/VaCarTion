@@ -42,15 +42,26 @@ let currentDiv = $(".ajax");
                         //create table body
                         let tbody = $("<tbody></tbody>");
                         for (let i = 0; i < data.reservation.length; i++) {
+                            //get date object for reserve_date, pickup_date, return_date, payment_date
+                            let reserve_date = new Date(data.reservation[i].reserve_date);
+                            let pickup_date = new Date(data.reservation[i].pickup_date);
+                            let return_date = new Date(data.reservation[i].return_date);
+                            let payment_date = new Date(data.reservation[i].payment_date);
+                            //format in yyyy-mm-dd
+                            let reserve_date_str = reserve_date.getFullYear() + "-" + (reserve_date.getMonth() + 1) + "-" + reserve_date.getDate();
+                            let pickup_date_str = pickup_date.getFullYear() + "-" + (pickup_date.getMonth() + 1) + "-" + pickup_date.getDate();
+                            let return_date_str = return_date.getFullYear() + "-" + (return_date.getMonth() + 1) + "-" + return_date.getDate();
+                            let payment_date_str = payment_date.getFullYear() + "-" + (payment_date.getMonth() + 1) + "-" + payment_date.getDate();
+
                             let tr = $("<tr></tr>");
                             tr.append($("<td></td>").text(data.reservation[i].reservation_no));
-                            tr.append($("<td></td>").text(data.reservation[i].reserve_date.substr(0,10)));
-                            tr.append($("<td></td>").text(data.reservation[i].pickup_date.substr(0,10)));
-                            tr.append($("<td></td>").text(data.reservation[i].return_date.substr(0,10)));
+                            tr.append($("<td></td>").text(reserve_date));
+                            tr.append($("<td></td>").text(pickup_date));
+                            tr.append($("<td></td>").text(return_date));
                             if(data.reservation.payment_date == null)
                                 tr.append($("<td></td>").text("Not Paid Yet"));
                             else
-                                tr.append($("<td></td>").text(data.reservation[i].payment_date.substr(0,10)));
+                                tr.append($("<td></td>").text(payment_date));
                             tr.append($("<td></td>").text(data.reservation[i].plate_id));
                             tr.append($("<td></td>").text(data.reservation[i].model));
                             tr.append($("<td></td>").text(data.reservation[i].make));

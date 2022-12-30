@@ -21,7 +21,15 @@ $(document).ready(function () {
             for (var i = 0; i < data.reservations.length; i++) {
                 var reservation = data.reservations[i];
                 //var revenue = reservation.price * diffDays;
-                var row = '<tr><td>' + reservation.reservation_no + '</td><td>' + reservation.plate_id + '</td><td>' + reservation.fname + " " + reservation.lname + '</td><td>' + reservation.reserve_date.substr(0, 10) + '</td><td>' + reservation.pickup_date.substr(0, 10) + '</td><td>' + reservation.return_date.substr(0, 10) + '</td><td>' + reservation.revenue + '</td></tr>';
+                //get date object for reservation_date, pickup_date, return_date
+                reservation.reserve_date = new Date(reservation.reserve_date);
+                reservation.pickup_date = new Date(reservation.pickup_date);
+                reservation.return_date = new Date(reservation.return_date);
+                //format in yyyy-mm-dd
+                reservation.reserve_date = reservation.reserve_date.getFullYear() + '-' + (reservation.reserve_date.getMonth() + 1) + '-' + reservation.reserve_date.getDate();
+                reservation.pickup_date = reservation.pickup_date.getFullYear() + '-' + (reservation.pickup_date.getMonth() + 1) + '-' + reservation.pickup_date.getDate();
+                reservation.return_date = reservation.return_date.getFullYear() + '-' + (reservation.return_date.getMonth() + 1) + '-' + reservation.return_date.getDate();
+                var row = '<tr><td>' + reservation.reservation_no + '</td><td>' + reservation.plate_id + '</td><td>' + reservation.fname + " " + reservation.lname + '</td><td>' + reservation.reserve_date + '</td><td>' + reservation.pickup_date + '</td><td>' + reservation.return_date+ '</td><td>' + reservation.revenue + '</td></tr>';
                 $('.office-reservation').append(row);
             }
         }
@@ -38,13 +46,17 @@ $(document).ready(function () {
                 var status_codes = statuss.filter((element, index) => {
                     return statuss.indexOf(element) === index;
                 });
+                //convert registration date to date format
+                let date = new Date(car.registration_date);
+                //format in yyyy-mm-dd
+                let formatted_date = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate();
                 var row = '<tr><td>' + car.plate_id + '</td>' + "<TD> <select>\
                          <option value=\"saab\">"+ status_codes[0] + "</option>\
                          <option value=\"volvo\">" + status_codes[1] + "</option>\
                          <option value=\"mercedes\">"+ status_codes[2] + "</option>\
                          <option value=\"audi\">"+ status_codes[3] + "</option>\
                     </select>\
-                 </TD><td>" + car.registration_date.substr(0, 10) + '</td><td>' + car.make + '</td><td>' + car.model + '</td><td>' + car.year + '</td><td>' + car.price +
+                 </TD><td>" + formatted_date + '</td><td>' + car.make + '</td><td>' + car.model + '</td><td>' + car.year + '</td><td>' + car.price +
                     "<td><button style=\"padding: 0\;border: none\;background: none\; \"><img src=\"/remove.png\" width=25 height=25> </button></td>" + '</td></tr>';
                 $('.office-cars').append(row);
             }

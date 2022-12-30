@@ -17,14 +17,26 @@ $(document).ready(function () {
             //add data to table body
             for (var i = 0; i < data.reservation.length; i++) {
                 var reservation = data.reservation[i];
-                var row = '<tr><td>' + reservation.reservation_no + '</td><td>' + reservation.plate_id + '</td><td>' + reservation.pickup_date.substr(0, 10) + '</td><td>' + reservation.return_date.substr(0, 10) + '</td><td>' + reservation.model + '</td><td>' + reservation.make + '</td><td>' + reservation.year + '</td><td>' + reservation.revenue + '</td>';
+                console.log(reservation);
+                reservation.pickup_date = new Date(reservation.pickup_date);
+                reservation.return_date = new Date(reservation.return_date);
+                if(reservation.payment_date != null)
+                    reservation.payment_date = new Date(reservation.payment_date);
+                //convert to yyyy-mm-dd format
+                reservation.pickup_date = reservation.pickup_date.getFullYear() + '-' + (reservation.pickup_date.getMonth() + 1) + '-' + reservation.pickup_date.getDate();
+                reservation.return_date = reservation.return_date.getFullYear() + '-' + (reservation.return_date.getMonth() + 1) + '-' + reservation.return_date.getDate();
+                if(reservation.payment_date != null)
+                    reservation.payment_date = reservation.payment_date.getFullYear() + '-' + (reservation.payment_date.getMonth() + 1) + '-' + reservation.payment_date.getDate();
+
+                
+                var row = '<tr><td>' + reservation.reservation_no + '</td><td>' + reservation.plate_id + '</td><td>' + reservation.pickup_date+ '</td><td>' + reservation.return_date + '</td><td>' + reservation.model + '</td><td>' + reservation.make + '</td><td>' + reservation.year + '</td><td>' + reservation.revenue + '</td>';
                 //check if payment_date is null
                 if (reservation.payment_date == null) {
                     //if null, add button to pay
                     row += '<td> <button type="button" class="btn btn-outline-success pay-button" id="' + reservation.reservation_no + '">Pay</button></td> </tr>';
                 }else{
                     //if not null, add payment date
-                    row+= '<td>' + reservation.payment_date.substr(0, 10) + '</td> </tr>';
+                    row+= '<td>' + reservation.payment_date + '</td> </tr>';
                 }
                 $('.customer-reservation').append(row);
             }

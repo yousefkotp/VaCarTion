@@ -43,13 +43,24 @@ let currentDiv = $(".ajax");
                         let tbody = $("<tbody></tbody>");
                         for (let i = 0; i < data.payment.length; i++) {
                             let tr = $("<tr></tr>");
+                            //convert reserve_date, pickup_date, return_date, payment_date to date format
+                            let reserve_date = new Date(data.payment[i].reserve_date);
+                            let pickup_date = new Date(data.payment[i].pickup_date);
+                            let return_date = new Date(data.payment[i].return_date);
+                            let payment_date = new Date(data.payment[i].payment_date);
+                            //convert to yyyy-mm-dd format
+                            reserve_date = reserve_date.getFullYear() + "-" + (reserve_date.getMonth() + 1) + "-" + reserve_date.getDate();
+                            pickup_date = pickup_date.getFullYear() + "-" + (pickup_date.getMonth() + 1) + "-" + pickup_date.getDate();
+                            return_date = return_date.getFullYear() + "-" + (return_date.getMonth() + 1) + "-" + return_date.getDate();
+                            payment_date = payment_date.getFullYear() + "-" + (payment_date.getMonth() + 1) + "-" + payment_date.getDate();
+
                             tr.append($("<td></td>").text(data.payment[i].reservation_no));
                             tr.append($("<td></td>").text(data.payment[i].ssn));
                             tr.append($("<td></td>").text(data.payment[i].plate_id));
-                            tr.append($("<td></td>").text(data.payment[i].reserve_date.substr(0,10)));
-                            tr.append($("<td></td>").text(data.payment[i].pickup_date.substr(0,10)));
-                            tr.append($("<td></td>").text(data.payment[i].return_date.substr(0,10)));
-                            tr.append($("<td></td>").text(data.payment[i].payment_date.substr(0,10)));
+                            tr.append($("<td></td>").text(reserve_date));
+                            tr.append($("<td></td>").text(pickup_date));
+                            tr.append($("<td></td>").text(return_date));
+                            tr.append($("<td></td>").text(payment_date));
                             tr.append($("<td></td>").text(data.payment[i].revenue));
                             tbody.append(tr);
                         }

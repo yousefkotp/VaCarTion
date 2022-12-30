@@ -58,6 +58,17 @@ let currentDiv = $(".ajax");
                 console.log(data);
                 let tbody = $("<tbody></tbody>");
                 for (let i = 0; i < data.reservation.length; i++) {
+                    //convert reserved date, pickup date, return date, and payment date to a readable format
+                    let reserved_date = new Date(data.reservation[i].reserve_date);
+                    let pickup_date = new Date(data.reservation[i].pickup_date);
+                    let return_date = new Date(data.reservation[i].return_date);
+                    let payment_date = new Date(data.reservation[i].payment_date);
+                    //convert to yyyy-mm-dd format
+                    reserved_date = reserved_date.getFullYear() + "-" + (reserved_date.getMonth() + 1) + "-" + reserved_date.getDate();
+                    pickup_date = pickup_date.getFullYear() + "-" + (pickup_date.getMonth() + 1) + "-" + pickup_date.getDate();
+                    return_date = return_date.getFullYear() + "-" + (return_date.getMonth() + 1) + "-" + return_date.getDate();
+                    payment_date = payment_date.getFullYear() + "-" + (payment_date.getMonth() + 1) + "-" + payment_date.getDate();
+
                     let tr = $("<tr></tr>");
                     if(data.reservation[i].reservation_no == null)
                         tr.append($("<td></td>").text("No Results Found"));
@@ -86,19 +97,19 @@ let currentDiv = $(".ajax");
                     if(data.reservation[i].reserve_date == null)
                         tr.append($("<td></td>").text("No Results Found"));
                     else
-                        tr.append($("<td></td>").text(data.reservation[i].reserve_date));
+                        tr.append($("<td></td>").text(reserved_date));
                     if(data.reservation[i].pickup_date == null)
                         tr.append($("<td></td>").text("No Results Found"));
                     else
-                        tr.append($("<td></td>").text(data.reservation[i].pickup_date));
+                        tr.append($("<td></td>").text(pickup_date));
                     if(data.reservation[i].return_date == null)
                         tr.append($("<td></td>").text("No Results Found"));
                     else
-                        tr.append($("<td></td>").text(data.reservation[i].return_date.substr(0,10)));
+                        tr.append($("<td></td>").text(return_date));
                     if(data.reservation[i].payment_date == null)
                         tr.append($("<td></td>").text("Not Paid Yet"));
                     else
-                        tr.append($("<td></td>").text(data.reservation[i].payment_date));
+                        tr.append($("<td></td>").text(payment_date));
                     if(data.reservation[i].ssn == null)
                         tr.append($("<td></td>").text("No Results Found"));
                     else
