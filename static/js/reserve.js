@@ -167,6 +167,7 @@ $(document).ready(function () {
 
                     cards += "<div class=\"card\" id=\"" + car.plate_id + "\">\
                         <img src=\""+ car.photo + "\">\
+                         <!--<h1>"+car.photo+"</h1>-->\
                         <div class=\"content\">\
                             <h4>"+ car.make + " - " + car.model + ", " + car.year + "</h4>\
                             <p>"+ car.price + " $/Day" + "</p>\
