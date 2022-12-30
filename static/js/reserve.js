@@ -117,7 +117,7 @@ $(document).ready(function () {
         //get today in yyyy-mm-dd format
         let currentDate = new Date().toISOString().slice(0, 10);
         if (pickDate < currentDate) {
-            alertify.alert("You can't travel in time mf!").set('frameless', true);
+            alertify.alert("You can't travel in time!").set('frameless', true);
             return
         }
         if (pickDate === "" || retDate === "") {
@@ -128,7 +128,7 @@ $(document).ready(function () {
         const y = new Date(retDate);
         console.log(x);
         if (x > y) {
-            alertify.alert("How the fuck you want to return a car before you pick it up!!!!!!").set('frameless', true);
+            alertify.alert("Unavailable dates!").set('frameless', true);
             return
         }
         var loc = $('#locationSelect').find(":selected").text().toString()
@@ -202,7 +202,7 @@ $(document).ready(function () {
             return
         }
         if (x > y) {
-            alertify.alert("How the fuck you want to return a car before you pick it up!!!!!!!!").set('frameless', true);
+            alertify.alert("Unavailable dates!").set('frameless', true);
             return
         }
         if (selectedCar === "") {
