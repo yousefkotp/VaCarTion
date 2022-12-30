@@ -86,9 +86,16 @@ http://localhost:3000
 
 ### Landing Page
 
+![image](https://user-images.githubusercontent.com/41492875/210100324-b5569c69-7bb2-432f-9106-504f0d384faa.png)
+
 ### Office Agent Dashboard
 
+![image](https://user-images.githubusercontent.com/41492875/210100300-802136e9-4684-4775-9274-a7fb6be4dfd8.png)
+
+
 ### Customer Dashboard
+
+![image](https://user-images.githubusercontent.com/41492875/210100281-281f7fd9-f4ed-445e-8c9f-98f9453d117e.png)
 
 
 ### Reservation Page
