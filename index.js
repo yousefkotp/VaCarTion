@@ -128,6 +128,8 @@ app.post("/signin", (req, res) => {
                     const accessToken = jwt.sign({ user, role: "admin" }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "1h" });
                     res.cookie("token", accessToken, cookieOptions);
                     res.redirect("/admin");
+                }else{
+                    res.redirect("/signin");
                 }
             });
         } else {
@@ -142,6 +144,8 @@ app.post("/signin", (req, res) => {
                             const accessToken = jwt.sign({ user, role: "customer" }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "1h" });
                             res.cookie("token", accessToken, cookieOptions);
                             res.redirect("/customer-home");
+                        }else{
+                            res.redirect("/signin");
                         }
                     });
                 } else {
@@ -156,10 +160,10 @@ app.post("/signin", (req, res) => {
                                     res.cookie("token", accessToken, cookieOptions);
                                     res.redirect("/office-home")
                                 } else
-                                    res.sendFile(__dirname + "/views/signin.html");
+                                    res.redirect("/signin");
                             });
                         } else {
-                            res.sendFile(__dirname + "/views/signin.html");
+                            res.redirect("/signin");
                         }
                     });
                 }
