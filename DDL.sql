@@ -74,7 +74,7 @@ CREATE TABLE reservation(
 CREATE TABLE car_photos(
     plate_id VARCHAR(8),
     photo VARCHAR(512),
-    CONSTRAINT car_photos_pk PRIMARY KEY (plate_id),
+    CONSTRAINT car_photos_pk PRIMARY KEY (plate_id,photo),
     CONSTRAINT car_photos_fk FOREIGN KEY (plate_id) REFERENCES car(plate_id) ON DELETE CASCADE
 );
 

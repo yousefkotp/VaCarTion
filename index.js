@@ -816,6 +816,7 @@ app.post("/show-avaialable-cars", authorizeCustomer, (req, res) => {
                 FROM car_status
                 NATURAL INNER JOIN car as c
                 NATURAL INNER JOIN office as o
+                NATURAL INNER JOIN car_photos
                 WHERE (plate_id,status_date) in (SELECT plate_id, MAX(status_date)
                                                 FROM car_status
                                                 where status_date <= ?

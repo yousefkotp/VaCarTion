@@ -164,7 +164,7 @@ $(document).ready(function () {
                 for (var i = 0; i < data.cars.length; i++) {
                     var car = data.cars[i];
                     var office = car.name + " - " + car.building_no + ", " + car.city + ", " + car.country;
-
+                    console.log(car);
                     cards += "<div class=\"card\" id=\"" + car.plate_id + "\">\
                         <img src=\""+ car.photo + "\">\
                          <!--<h1>"+car.photo+"</h1>-->\
