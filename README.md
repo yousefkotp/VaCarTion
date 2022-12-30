@@ -1,9 +1,12 @@
-# Car-Rental-System
+<div style = "text-align: center;">
+<h1> Car-Rental-System </h1>
+</div>
+
+
 
 ## Table of Contents
 - [Car-Rental-System](#car-rental-system)
     - [Overview](#overview)
-    - [Features](#features)
     - [Dependencies](#dependencies)
     - [Tech Stack](#tech-stack)
     - [Database Schema](#database-schema)
@@ -12,43 +15,8 @@
     - [Contributers](#contributers)
 
 ## Overview
+A car rental system which enables customers to rent cars they need and manage their reservations with the option of paying later. The car agencies are allowed to register on the system and add their cars to the system. The system admin can manage the whole system. The system is built using Node.js and Express.js. The database is built using MySQL.
 
-
-## Features
-- Customer Can:
-    - Register and Login
-    - View all the cars available
-    - Book a car
-    - View all the bookings
-    - Choose to pay now or later
-    - View all the cars he has booked
-
-
-- Admin can:
-    - Login
-    - View the most rented model
-    - View the most rented make
-    - View the most profitable office
-    - View all the current and previous bookings
-    - View all the cars
-    - View all the customers
-    - View detailed payment report for a specific interval
-    - View car status on a specific date
-    - View all the current and previous bookings of a specific customer
-    - View all the current and previous bookings of a specific car
-    - View all the current and previous bookings of a specific office
-    - View all the current and previous bookings of a specific model
-    - View all the current and previous bookings of a specific make
-    - View all the current and previous bookings of a specific office
-
-- Office can:
-    - Register and Login
-    - View all the bookings of its cars
-    - View all its cars
-    - View all the of its customers
-    - Add a new car
-    - Delete a car
-    - Update the status of a car
 ## Dependencies
 - [Node.js](https://nodejs.org/en/)
 - [Express.js](https://expressjs.com/)
@@ -65,12 +33,17 @@
 ```bash
 npm install
 ```
-
-## Tech Stack
-
 ## Database Schema
 
-## ER Diagram
+### DDL
+- You can find the database schema in the following link: [Database Schema](https://github.com/yousefkotp/Car-Rental-System/blob/main/DDL.sql)
+
+### ER Diagram
+<!-- embed the photo whose link is  here -->
+![ER Diagram](https://github.com/yousefkotp/Car-Rental-System/blob/main/ER%20model/ER%20diagram.png)
+## Authentication and Authorization
+- The system uses [JSON Web Tokens](https://jwt.io/) for authentication and authorization.
+- The system uses [cookie-parser](https://www.npmjs.com/package/cookie-parser) to store the access token in the cookies.
 
 ## Deployment
 
