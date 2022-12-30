@@ -61,7 +61,7 @@ let currentDiv = $(".ajax");
                             if(data.reservation.payment_date == null)
                                 tr.append($("<td></td>").text("Not Paid Yet"));
                             else
-                                tr.append($("<td></td>").text(payment_date));
+                                tr.append($("<td></td>").text(payment_date_str));
                             tr.append($("<td></td>").text(data.reservation[i].plate_id));
                             tr.append($("<td></td>").text(data.reservation[i].model));
                             tr.append($("<td></td>").text(data.reservation[i].make));
