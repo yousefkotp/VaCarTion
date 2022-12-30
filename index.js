@@ -645,7 +645,23 @@ app.post("/get-cars-using-model-and-make", (req, res) => {
 });
 
 //get the cars with specific office id
+//1
 app.post("/get-cars-using-office", authorizeOffice, (req, res) => {
+
+    /*let date = req.body.date;
+    date+=" 23:59:59";
+    let query = `SELECT *
+                FROM car_status
+                NATURAL INNER JOIN car
+                WHERE (plate_id,status_date) in (SELECT plate_id, MAX(status_date)
+                                                FROM car_status
+                                                where status_date <= ?
+                                                GROUP BY plate_id);`
+    db.query(query, [date], (err, result) => {
+        if (err)
+            return res.send({ message: err });
+        res.send({ carStatus: result, message: "success" });
+    });*/ 
     let token = decodeToken(req.cookies.token);
     var office_id = token.user.office_id;
 
@@ -694,9 +710,10 @@ app.post("/get-most-profitable-office", authorizeAdmin, (req, res) => {
         res.send({ mostProfitableOffice: result, message: "success" });
     });
 });
-
+//2
 app.post("/get-car-status-on-a-day", authorizeAdmin, (req, res) => {
     let date = req.body.date;
+    console.log(date);
     date+=" 23:59:59";
     let query = `SELECT *
                 FROM car_status
