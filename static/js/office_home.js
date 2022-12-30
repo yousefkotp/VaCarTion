@@ -70,6 +70,7 @@ $(document).ready(function () {
 
     $('.office-cars').on('change', function (e) {
         if(prev == "Rented"){
+            $(this).find(":selected").text(prev);
             alertify.notify("Can't change the status of currently rented car", 'error');
             return;
         }
