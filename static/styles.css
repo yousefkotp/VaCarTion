@@ -411,3 +411,7 @@ body {
 
 
 /*  */
+.height
+{
+  max-height: 20rem;
+}
