@@ -55,9 +55,9 @@ let currentDiv = $(".ajax");
 
                             let tr = $("<tr></tr>");
                             tr.append($("<td></td>").text(data.reservation[i].reservation_no));
-                            tr.append($("<td></td>").text(reserve_date));
-                            tr.append($("<td></td>").text(pickup_date));
-                            tr.append($("<td></td>").text(return_date));
+                            tr.append($("<td></td>").text(reserve_date_str));
+                            tr.append($("<td></td>").text(pickup_date_str));
+                            tr.append($("<td></td>").text(return_date_str));
                             if(data.reservation.payment_date == null)
                                 tr.append($("<td></td>").text("Not Paid Yet"));
                             else
