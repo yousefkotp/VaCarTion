@@ -20,8 +20,15 @@ $(document).ready(function () {
             //add data to table body
             for (var i = 0; i < data.reservations.length; i++) {
                 var reservation = data.reservations[i];
+                reservation.pickup_date = new Date(reservation.pickup_date);
+                reservation.return_date = new Date(reservation.return_date);
+                reservation.reserve_date = new Date(reservation.reserve_date);
+                //convert to yyyy-mm-dd format
+                reservation.pickup_date = reservation.pickup_date.getFullYear() + '-' + (reservation.pickup_date.getMonth() + 1) + '-' + reservation.pickup_date.getDate();
+                reservation.return_date = reservation.return_date.getFullYear() + '-' + (reservation.return_date.getMonth() + 1) + '-' + reservation.return_date.getDate();
+                reservation.reserve_date = reservation.reserve_date.getFullYear() + '-' + (reservation.reserve_date.getMonth() + 1) + '-' + reservation.reserve_date.getDate();
                 //var revenue = reservation.price * diffDays;
-                var row = '<tr><td>' + reservation.reservation_no + '</td><td>' + reservation.plate_id + '</td><td>' + reservation.fname + " " + reservation.lname + '</td><td>' + reservation.reserve_date.substr(0, 10) + '</td><td>' + reservation.pickup_date.substr(0, 10) + '</td><td>' + reservation.return_date.substr(0, 10) + '</td><td>' + reservation.revenue + '</td></tr>';
+                var row = '<tr><td>' + reservation.reservation_no + '</td><td>' + reservation.plate_id + '</td><td>' + reservation.fname + " " + reservation.lname + '</td><td>' + reservation.reserve_date + '</td><td>' + reservation.pickup_date + '</td><td>' + reservation.return_date + '</td><td>' + reservation.revenue + '</td></tr>';
                 $('.office-reservation').append(row);
             }
         }
