@@ -1,4 +1,5 @@
 # Car-Rental-System
+- You can check the live demo of the system [here]()
 ## Table of Contents
 - [Car-Rental-System](#car-rental-system)
     - [Overview](#overview)
@@ -8,7 +9,6 @@
         - [ER Diagram](#er-diagram)
     - [Authentication and Authorization](#authentication-and-authorization)
     - [Deployment](#deployment)
-    - [Screenshots](#screenshots)
     - [Contributers](#contributers)
 
 ## Overview
@@ -77,8 +77,6 @@ http://localhost:3000
 
 <!--add a bold note -->
 - **Note:** If you want to run the server on a different port, you can change the port number in index.js file
-
-## Screenshots
 
 
 ## Contributers
