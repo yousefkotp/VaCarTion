@@ -339,8 +339,7 @@ app.post("/add-reservation", authorizeCustomer, (req, res) => {
 
     let pickupForCarStatus = pickupDate + " 00:00:00";
     let returnForCarStatus = returnDate + " 23:59:59";
-    //get the current date
-    //store the info inside the database
+
     var query = '';
     if (payNow === "true")
         query = "INSERT INTO reservation (ssn, plate_id, pickup_date, return_date, payment_date) VALUES (?,?,?,?, CURDATE())";
@@ -351,8 +350,8 @@ app.post("/add-reservation", authorizeCustomer, (req, res) => {
             if (err)
                 return res.send({ message: err });
 
-            db.query("INSERT INTO car_status (plate_id, status_code, status_date) VALUES (?,?,?)",
-                [plateId, 3, pickupForCarStatus], (err, result) => {
+            db.query("INSERT INTO car_status (plate_id, status_code, status_date) VALUES (?,?,CURRENT_TIMESTAMP())",
+                [plateId, 3], (err, result) => {
                     if (err)
                         return res.send({ message: err });
                     db.query("INSERT INTO car_status (plate_id, status_code, status_date) VALUES (?,?,?)",
