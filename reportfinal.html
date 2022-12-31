@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<!-- saved from url=(0022)http://localhost:6419/ -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+  <title>README.md - Grip</title>
+  <link rel="icon" href="http://localhost:6419/__/grip/static/favicon.ico">
+  <link rel="stylesheet" href="./reportfinal_files/light_high_contrast-c7a7fe0cd8ec.css">
+  <link rel="stylesheet" href="./reportfinal_files/light_colorblind-527658dec362.css">
+  <link rel="stylesheet" href="./reportfinal_files/code-78c29c966d84.css">
+  <link rel="stylesheet" href="./reportfinal_files/dark_colorblind-bc6bf4eea850.css">
+  <link rel="stylesheet" href="./reportfinal_files/global-de4f252acb9b.css">
+  <link rel="stylesheet" href="./reportfinal_files/dark_high_contrast-188ef1de59e6.css">
+  <link rel="stylesheet" href="./reportfinal_files/dark_dimmed-f22da508b62a.css">
+  <link rel="stylesheet" href="./reportfinal_files/light_tritanopia-6aa855bdae0f.css">
+  <link rel="stylesheet" href="./reportfinal_files/dark_tritanopia-6aa5e25aacc0.css">
+  <link rel="stylesheet" href="./reportfinal_files/primer-e357a4095c32.css">
+  <link rel="stylesheet" href="./reportfinal_files/light-719f1193e0c0.css">
+  <link rel="stylesheet" href="./reportfinal_files/dark-0c343b529849.css">
+  <link rel="stylesheet" href="./reportfinal_files/github-7cfc9d43e891.css">
+  <link rel="stylesheet" href="./reportfinal_files/octicons.css">
+  <style>
+    /* Page tweaks */
+    .preview-page {
+      margin-top: 64px;
+      margin-bottom: 21px;
+    }
+    /* User-content tweaks */
+    .timeline-comment-wrapper > .timeline-comment:after,
+    .timeline-comment-wrapper > .timeline-comment:before {
+      content: none;
+    }
+    /* User-content overrides */
+    .discussion-timeline.wide {
+      width: 920px;
+    }
+  </style>
+<style type="text/css">@font-face { font-family: Roboto; src: url("chrome-extension://mcgbeeipkmelnpldkobichboakdfaeon/css/Roboto-Regular.ttf"); }</style></head>
+<body class="vsc-initialized">
+  <div class="page">
+    <div id="preview-page" class="preview-page" data-autorefresh-url="/__/grip/refresh/">
+    <main id="js-repo-pjax-container">
+      <div class="clearfix new-discussion-timeline container-xl px-3 px-md-4 px-lg-5">
+        <div class="repository-content">
+          <div class="clearfix">
+            <div class="Layout Layout--flowRow-until-md Layout--sidebarPosition-end Layout--sidebarPosition-flowRow-end">
+              <div class="Layout-main">
+
+                
+
+                  <div id="readme" class="Box md Box--responsive">
+                    
+                      
+                    
+                    <div class="Box-body px-5 pb-5">
+                      <article id="grip-content" class="markdown-body entry-content container-lg">
+                        <h1><a id="user-content-vacartion" class="anchor" aria-hidden="true" href="http://localhost:6419/#vacartion"><span aria-hidden="true" class="octicon octicon-link"></span></a>VaCarTion</h1>
+
+<h2><a id="user-content-table-of-contents" class="anchor" aria-hidden="true" href="http://localhost:6419/#table-of-contents"><span aria-hidden="true" class="octicon octicon-link"></span></a>Table of Contents</h2>
+<ul>
+<li>
+<a href="http://localhost:6419/#vacartion">VaCarTion</a>
+<ul>
+<li><a href="http://localhost:6419/#overview">Overview</a></li>
+<li><a href="http://localhost:6419/#dependencies">Dependencies</a></li>
+<li>
+<a href="http://localhost:6419/#database-schema">Database Schema</a>
+<ul>
+<li><a href="http://localhost:6419/#ddl">DDL</a></li>
+<li><a href="http://localhost:6419/#er-diagram">ER Diagram</a></li>
+</ul>
+</li>
+<li><a href="http://localhost:6419/#authentication-and-authorization">Authentication and Authorization</a></li>
+<li><a href="http://localhost:6419/#deployment">Deployment</a></li>
+<li>
+<a href="http://localhost:6419/#screenshots">Screenshots</a>
+<ul>
+<li><a href="http://localhost:6419/#landing-page">Landing Page</a></li>
+<li><a href="http://localhost:6419/#office-agent-dashboard">Office Agent Dashboard</a></li>
+<li><a href="http://localhost:6419/#customer-dashboard">Customer Dashboard</a></li>
+<li><a href="http://localhost:6419/#reservation-page">Reservation Page</a></li>
+</ul>
+</li>
+<li><a href="http://localhost:6419/#contributers">Contributers</a></li>
+</ul>
+</li>
+</ul>
+<h2><a id="user-content-overview" class="anchor" aria-hidden="true" href="http://localhost:6419/#overview"><span aria-hidden="true" class="octicon octicon-link"></span></a>Overview</h2>
+<p>A car rental system which enables customers to rent cars they need and manage their reservations with the option of paying later. The car agencies are allowed to register on the system and add their cars to the system. The system admin can manage the whole system. The system is built using Node.js and Express.js. The database is built using MySQL.</p>
+<h2><a id="user-content-dependencies" class="anchor" aria-hidden="true" href="http://localhost:6419/#dependencies"><span aria-hidden="true" class="octicon octicon-link"></span></a>Dependencies</h2>
+<ul>
+<li>
+<p><a href="https://nodejs.org/en/" rel="nofollow">Node.js</a></p>
+</li>
+<li>
+<p><a href="https://expressjs.com/" rel="nofollow">Express.js</a></p>
+</li>
+<li>
+<p><a href="https://www.mysql.com/" rel="nofollow">MySQL</a></p>
+</li>
+<li>
+<p><a href="https://ejs.co/" rel="nofollow">EJS</a></p>
+</li>
+<li>
+<p><a href="https://www.npmjs.com/package/bcrypt" rel="nofollow">Bcrypt</a></p>
+</li>
+<li>
+<p><a href="https://www.npmjs.com/package/dotenv" rel="nofollow">Dotenv</a></p>
+</li>
+<li>
+<p><a href="https://nodemailer.com/about/" rel="nofollow">Nodemailer</a></p>
+</li>
+<li>
+<p><a href="https://www.npmjs.com/package/jsonwebtoken" rel="nofollow">Jsonwebtoken</a></p>
+</li>
+<li>
+<p><a href="https://www.npmjs.com/package/cookie-parser" rel="nofollow">Cookie-parser</a></p>
+</li>
+<li>
+<p>To install all the dependencies, run the following command in the terminal:</p>
+</li>
+</ul>
+<div class="highlight highlight-source-shell"><pre>npm install</pre></div>
+<h2><a id="user-content-database-schema" class="anchor" aria-hidden="true" href="http://localhost:6419/#database-schema"><span aria-hidden="true" class="octicon octicon-link"></span></a>Database Schema</h2>
+<h3><a id="user-content-ddl" class="anchor" aria-hidden="true" href="http://localhost:6419/#ddl"><span aria-hidden="true" class="octicon octicon-link"></span></a>DDL</h3>
+<ul>
+<li>You can find the create your database schema by running the Data Definition script in <a href="https://github.com/yousefkotp/Car-Rental-System/blob/main/sql/DDL.sql">Database Schema</a>
+</li>
+</ul>
+<h3><a id="user-content-er-diagram" class="anchor" aria-hidden="true" href="http://localhost:6419/#er-diagram"><span aria-hidden="true" class="octicon octicon-link"></span></a>ER Diagram</h3>
+
+<p><a target="_blank" rel="noopener noreferrer" href="./reportfinal_files/image (1).png"><img src="./reportfinal_files/image (1).png" alt="ER Diagram" style="max-width: 100%;"></a></p>
+
+<h2><a id="user-content-authentication-and-authorization" class="anchor" aria-hidden="true" href="http://localhost:6419/#authentication-and-authorization"><span aria-hidden="true" class="octicon octicon-link"></span></a>Authentication and Authorization</h2>
+<ul>
+<li>The system uses <a href="https://jwt.io/" rel="nofollow">JSON Web Tokens</a> for authentication and authorization.</li>
+<li>The system uses <a href="https://www.npmjs.com/package/cookie-parser" rel="nofollow">cookie-parser</a> to store the access token in the cookies.</li>
+</ul>
+<h2><a id="user-content-deployment" class="anchor" aria-hidden="true" href="http://localhost:6419/#deployment"><span aria-hidden="true" class="octicon octicon-link"></span></a>Deployment</h2>
+<p>1- Create a database with the explained <a href="http://localhost:6419/#database-schema">database schema</a> and <a href="http://localhost:6419/#er-diagram">ER diagram</a></p>
+<p>2- Configure the .env file and set the following variables:</p>
+<pre><code>- DB_HOST 
+- DB_USER 
+- DB_PORT 
+- DB_PASS 
+- DB_NAME 
+- ACCESS_TOKEN_SECRET -&gt; Secret key for generating access tokens 
+- EMAIL -&gt; Email address from which you want to send the emails 
+- PASSWORD -&gt; Password of the email address 
+</code></pre>
+<p>3- Make sure you have installed all the <a href="http://localhost:6419/#dependencies">dependencies</a> by running the following command in the terminal:</p>
+<div class="highlight highlight-source-shell"><pre>npm install</pre></div>
+<p>4- Run the following command in the terminal to start the server:</p>
+<div class="highlight highlight-source-shell"><pre>npm start</pre></div>
+<p>5- Open the browser and go to the following link:</p>
+<div class="highlight highlight-source-shell"><pre>http://localhost:3000</pre></div>
+<ul>
+<li>
+<strong>Note:</strong> If you want to run the server on a different port, you can change the port number in index.js file</li>
+</ul>
+<h2><a id="user-content-screenshots" class="anchor" aria-hidden="true" href="http://localhost:6419/#screenshots"><span aria-hidden="true" class="octicon octicon-link"></span></a>Screenshots</h2>
+<h3><a id="user-content-landing-page" class="anchor" aria-hidden="true" href="http://localhost:6419/#landing-page"><span aria-hidden="true" class="octicon octicon-link"></span></a>Landing Page</h3>
+<p><a target="_blank" rel="noopener noreferrer nofollow" href="./reportfinal_files/210100324-b5569c69-7bb2-432f-9106-504f0d384faa.png"><img src="./reportfinal_files/210100324-b5569c69-7bb2-432f-9106-504f0d384faa.png" alt="image" style="max-width: 100%;"></a></p>
+<h3><a id="user-content-office-agent-dashboard" class="anchor" aria-hidden="true" href="http://localhost:6419/#office-agent-dashboard"><span aria-hidden="true" class="octicon octicon-link"></span></a>Office Agent Dashboard</h3>
+<p><a target="_blank" rel="noopener noreferrer nofollow" href="./reportfinal_files/210100300-802136e9-4684-4775-9274-a7fb6be4dfd8.png"><img src="./reportfinal_files/210100300-802136e9-4684-4775-9274-a7fb6be4dfd8.png" alt="image" style="max-width: 100%;"></a></p>
+<h3><a id="user-content-customer-dashboard" class="anchor" aria-hidden="true" href="http://localhost:6419/#customer-dashboard"><span aria-hidden="true" class="octicon octicon-link"></span></a>Customer Dashboard</h3>
+<p><a target="_blank" rel="noopener noreferrer nofollow" href="./reportfinal_files/210100281-281f7fd9-f4ed-445e-8c9f-98f9453d117e.png"><img src="./reportfinal_files/210100281-281f7fd9-f4ed-445e-8c9f-98f9453d117e.png" alt="image" style="max-width: 100%;"></a></p>
+<h3><a id="user-content-reservation-page" class="anchor" aria-hidden="true" href="http://localhost:6419/#reservation-page"><span aria-hidden="true" class="octicon octicon-link"></span></a>Reservation Page</h3>
+<p><a target="_blank" rel="noopener noreferrer nofollow" href="./reportfinal_files/210100077-52ad34b2-dd1c-49d3-abdc-0a3b4a89504e.png"><img src="./reportfinal_files/210100077-52ad34b2-dd1c-49d3-abdc-0a3b4a89504e.png" alt="image" style="max-width: 100%;"></a></p>
+<h2><a id="user-content-contributers" class="anchor" aria-hidden="true" href="http://localhost:6419/#contributers"><span aria-hidden="true" class="octicon octicon-link"></span></a>Contributers</h2>
+<ol>
+<li>
+<p><a href="https://github.com/yousefkotp">Yousef Kotp</a></p>
+</li>
+<li>
+<p><a href="https://github.com/MohamedFarid612">Mohamed Farid</a></p>
+</li>
+<li>
+<p><a href="https://github.com/adhammohamed1">Adham Mohamed</a></p>
+</li>
+<li>
+<p><a href="https://github.com/hossamelshamyy">Hossam Elshamy</a></p>
+</li>
+</ol>
+
+                      </article>
+                    </div>
+                  </div>
+
+                
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+  </div><script>
+    function showCanonicalImages() {
+      var images = document.getElementsByTagName('img');
+      if (!images) {
+        return;
+      }
+      for (var index = 0; index < images.length; index++) {
+        var image = images[index];
+        if (image.getAttribute('data-canonical-src') && image.src !== image.getAttribute('data-canonical-src')) {
+          image.src = image.getAttribute('data-canonical-src');
+        }
+      }
+    }
+
+    function scrollToHash() {
+      if (location.hash && !document.querySelector(':target')) {
+        var element = document.getElementById('user-content-' + location.hash.slice(1));
+        if (element) {
+           element.scrollIntoView();
+        }
+      }
+    }
+
+    function autorefreshContent(eventSourceUrl) {
+      var initialTitle = document.title;
+      var contentElement = document.getElementById('grip-content');
+      var source = new EventSource(eventSourceUrl);
+      var isRendering = false;
+
+      source.onmessage = function(ev) {
+        var msg = JSON.parse(ev.data);
+        if (msg.updating) {
+          isRendering = true;
+          document.title = '(Rendering) ' + document.title;
+        } else {
+          isRendering = false;
+          document.title = initialTitle;
+          contentElement.innerHTML = msg.content;
+          showCanonicalImages();
+        }
+      }
+
+      source.onerror = function(e) {
+        if (e.readyState === EventSource.CLOSED && isRendering) {
+          isRendering = false;
+          document.title = initialTitle;
+        }
+      }
+    }
+
+    window.onhashchange = function() {
+      scrollToHash();
+    }
+
+    window.onload = function() {
+      scrollToHash();
+    }
+
+    showCanonicalImages();
+
+    var autorefreshUrl = document.getElementById('preview-page').getAttribute('data-autorefresh-url');
+    if (autorefreshUrl) {
+      autorefreshContent(autorefreshUrl);
+    }
+  </script>
+
+<script>
+		var returnedSuggestion = ''
+		let editor, doc, cursor, line, pos
+		document.addEventListener("keydown", (event) => {
+		setTimeout(()=>{
+			editor = event.target.closest('.CodeMirror');
+			if (editor){
+				doc = editor.CodeMirror.getDoc()
+				cursor = doc.getCursor()
+				line = doc.getLine(cursor.line)
+				pos = {line: cursor.line, ch: line.length}
+				if (event.key == "Enter"){
+					var query = doc.getRange({ line: Math.max(0,cursor.line-10), ch: 0 }, { line: cursor.line, ch: 0 })
+					window.postMessage({source: 'getSuggestion', payload: { data: query } } )
+					//displayGrey(query)
+				}
+				else if (event.key == "ArrowRight"){
+					acceptTab(returnedSuggestion)
+				}
+			}
+		}, 0)
+		})
+
+		function acceptTab(text){
+		if (suggestionDisplayed){
+			doc.replaceRange(text, pos)
+			suggestionDisplayed = false
+		}
+		}
+		function displayGrey(text){
+		var element = document.createElement('span')
+		element.innerText = text
+		element.style = 'color:grey'
+		var lineIndex = pos.line;
+		editor.getElementsByClassName('CodeMirror-line')[lineIndex].appendChild(element)
+		suggestionDisplayed = true
+		}
+		window.addEventListener('message', (event)=>{
+		if (event.source !== window ) return
+		if (event.data.source == 'return'){
+			returnedSuggestion = event.data.payload.data
+			displayGrey(event.data.payload.data)
+		}
+		})
+	</script></body></html>

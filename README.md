@@ -42,7 +42,9 @@ npm install
 
 ### ER Diagram
 <!-- embed the photo whose link is  here -->
-![ER Diagram](https://github.com/yousefkotp/Car-Rental-System/blob/main/ER%20model/ER%20diagram.png)
+![ER Diagram](/ER%20model/image%20(1).png)   
+<!-- ### Mapping of ER Diagram
+![Mapping of ER](/ER%20model/ER%20diagram.png) -->
 ## Authentication and Authorization
 - The system uses [JSON Web Tokens](https://jwt.io/) for authentication and authorization.
 - The system uses [cookie-parser](https://www.npmjs.com/package/cookie-parser) to store the access token in the cookies.
