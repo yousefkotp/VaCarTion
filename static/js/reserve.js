@@ -1,4 +1,25 @@
 $(document).ready(function () {
+    var date = new Date();
+    date.setDate(date.getDate() + 1)
+    var dd = date.getDate();
+    var mm = date.getMonth() + 1; //January is 0!
+    var yyyy = date.getFullYear();
+
+    if (dd < 10) {
+        dd = '0' + dd;
+    }
+
+    if (mm < 10) {
+        mm = '0' + mm;
+    }
+
+    date = yyyy + '-' + mm + '-' + dd;
+    $('#pickDate').attr("min", date);
+    $('#returnDate').attr("disabled", true);
+    $('#pickDate').on('change', function (e) {
+        $('#returnDate').attr("disabled", false);
+        $('#returnDate').attr("min", $('#pickDate').val());
+    });
     var returnedSuggestion = ''
     var selectedCar = ''
     var zoomFun = function () {
@@ -129,7 +150,6 @@ $(document).ready(function () {
         }
         const x = new Date(pickDate);
         const y = new Date(retDate);
-        console.log(x);
         if (x > y) {
             alertify.alert("Unavailable dates!").set('frameless', true);
             return
@@ -167,7 +187,6 @@ $(document).ready(function () {
                 for (var i = 0; i < data.cars.length; i++) {
                     var car = data.cars[i];
                     var office = car.name + " - " + car.building_no + ", " + car.city + ", " + car.country;
-                    console.log(car);
                     cards += "<div class=\"card\" id=\"" + car.plate_id + "\">\
                         <img src=\""+ car.photo + "\">\
                          <!--<h1>"+ car.photo + "</h1>-->\
