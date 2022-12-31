@@ -40,14 +40,14 @@
         <form id="formmmm">
             <div class="row mb-3 ">
                 <div class="col ">
-                    <input type="username" class="form-control myinput a" placeholder="Office Name" name="name"
+                    <input type="username" class="form-control myinput a" placeholder="Office Name" name="name" required maxlength="32"
                         required></input>
                 </div>
             </div>
 
             <div class="row mb-3 ">
                 <div class="col ">
-                    <input type="email" id="email" class="form-control myinput b" placeholder="E-Mail" name="email"
+                    <input type="email" id="email" class="form-control myinput b" placeholder="E-Mail" name="email" required maxlength="64"
                         required></input>
                 </div>
             </div>
@@ -55,24 +55,24 @@
             <div class="row mb-3 ">
                 <div class="col ">
                     <input type="tel" id="phone" class="form-control myinput b" placeholder="Phone Number"
-                        name="phone_no" required></input>
+                        name="phone_no" required minlength="11" maxlength="11"></input>
                 </div>
             </div>
 
             <div class="row mb-3 ">
                 <div class="col ">
                     <input type="text" class="form-control myinput b" placeholder="County" name="country"
-                        required></input>
+                        required required maxlength="64"></input>
                 </div>
             </div>
             <div class="row mb-3 ">
                 <div class="col ">
-                    <input type="text" class="form-control myinput b" placeholder="City" name="city" required></input>
+                    <input type="text" class="form-control myinput b" placeholder="City" name="city" required maxlength="64"></input>
                 </div>
             </div>
             <div class="row mb-3 ">
                 <div class="col ">
-                    <input type="text" class="form-control myinput b" placeholder="Building Number" name="building_no"
+                    <input type="text" class="form-control myinput b" placeholder="Building Number" name="building_no" maxlength="16"
                         required></input>
                 </div>
             </div>
