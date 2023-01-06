@@ -38,7 +38,7 @@ npm install
 ## Database Schema
 
 ### DDL
-- You can find the create your database schema by running the Data Definition script in [Database Schema](https://github.com/yousefkotp/Car-Rental-System/blob/main/sql/DDL.sql)
+- You can create your database schema by running the Data Definition script in [Database Schema](https://github.com/yousefkotp/Car-Rental-System/blob/main/sql/DDL.sql)
 
 ### ER Diagram
 <!-- embed the photo whose link is  here -->
