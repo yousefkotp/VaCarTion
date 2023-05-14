@@ -1,0 +1,43 @@
+version: '3'
+
+services:
+  db:
+    image: mysql:8.0.29
+    command: '--default-authentication-plugin=mysql_native_password'
+    volumes:
+      - db_data:/var/lib/mysql
+    restart: always
+    ports:
+      - 3306:3306
+    environment:
+      - MYSQL_ROOT_HOST=%
+      - MYSQL_ROOT_PASSWORD=someassignment
+      - MYSQL_DATABASE=car_rental
+      - MYSQL_USER=mysqluser
+      - MYSQL_PASSWORD=mysqlpassword
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+
+  web:
+    depends_on:
+      - db
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - 80:3000
+    environment:
+      - DB_HOST=db
+      - DB_PORT=3306
+      - DB_USER=mysqluser
+      - DB_PASS=mysqlpassword
+      - DB_NAME=car_rental
+      - ACCESS_TOKEN_SECRET=ydPZBN4XVTnf?Sh0C39yY4P
+
+volumes:
+  db_data:
